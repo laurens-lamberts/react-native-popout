@@ -3,17 +3,19 @@ import {Text, View, useWindowDimensions} from 'react-native';
 import {
   Gesture,
   GestureDetector,
-  PanGestureHandler,
   ScrollView,
 } from 'react-native-gesture-handler';
 import Animated, {
+  Easing,
   Extrapolation,
+  ZoomIn,
+  ZoomOutEasyDown,
   interpolate,
   runOnJS,
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import {ENABLE_DEBUG_COLORS} from '../app/config/settings';
 import {SPRING_CONFIG} from '../app/config/animations';
@@ -35,6 +37,59 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
 const Overlay = ({item, hide, ...props}: Props) => {
   const {width: screenWidth, height: screenHeight} = useWindowDimensions();
   const insets = useSafeAreaInsets(); // TODO: make more generic
+
+  const ContentScaleEntering: EntryOrExitLayoutType = values => {
+    'worklet';
+    const animations = {
+      transform: [
+        {
+          scale: withSpring(1, SPRING_CONFIG),
+        },
+      ],
+      opacity: withTiming(1, {duration: 500}),
+    };
+    const initialValues = {
+      // initial values for animations
+      transform: [{scale: 0}],
+      opacity: 0,
+    };
+    const callback = (finished: boolean) => {
+      // optional callback that will fire when layout animation ends
+    };
+    return {
+      initialValues,
+      animations,
+      callback,
+    };
+  };
+
+  const ContentScaleExiting: EntryOrExitLayoutType = values => {
+    'worklet';
+    const animations = {
+      transform: [
+        {
+          scale: withSpring(
+            (item.origin?.width || 0) / screenWidth,
+            SPRING_CONFIG,
+          ),
+        },
+      ],
+      opacity: withTiming(0, {duration: 500}),
+    };
+    const initialValues = {
+      // initial values for animations
+      transform: [{scale: 1}],
+      opacity: 1,
+    };
+    const callback = (finished: boolean) => {
+      // optional callback that will fire when layout animation ends
+    };
+    return {
+      initialValues,
+      animations,
+      callback,
+    };
+  };
 
   const x = useSharedValue(0);
   const y = useSharedValue(0);
@@ -117,7 +172,6 @@ const Overlay = ({item, hide, ...props}: Props) => {
             borderRadius: 16,
             width: screenWidth,
             height: screenHeight,
-            padding: 12,
             position: 'absolute',
             overflow: 'hidden',
             transformOrigin: 'top center',
@@ -125,88 +179,108 @@ const Overlay = ({item, hide, ...props}: Props) => {
           animatedStyle,
         ]}
         {...props}>
-        <ScrollView
-          contentContainerStyle={{
-            gap: 20,
+        <Animated.View
+          entering={ContentScaleEntering}
+          exiting={ContentScaleExiting}
+          style={{
+            transformOrigin: 'top left',
+            padding: 12,
           }}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.title}</Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
-            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
-            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
-            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
-            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
-            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
-            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
-            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi.
-          </Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
-            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
-            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
-            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
-            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
-            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
-            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
-            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi.
-          </Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
-            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
-            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
-            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
-            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
-            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
-            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
-            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi.
-          </Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
-            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
-            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
-            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
-            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
-            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
-            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
-            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
-            facilisi.
-          </Text>
-        </ScrollView>
+          <View
+            style={{
+              marginBottom: 20,
+              backgroundColor: '#678',
+              marginLeft: -12,
+              marginRight: -12,
+              marginTop: -12,
+              padding: 12,
+            }}>
+            <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
+              {item.title}
+            </Text>
+          </View>
+          <ScrollView
+            contentContainerStyle={{
+              gap: 20,
+            }}>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+              nunc non hendrerit finibus, massa nunc blandit ante, vitae
+              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
+              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
+              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
+              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
+              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
+              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
+              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
+              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi.
+            </Text>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+              nunc non hendrerit finibus, massa nunc blandit ante, vitae
+              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
+              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
+              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
+              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
+              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
+              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
+              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
+              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi.
+            </Text>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+              nunc non hendrerit finibus, massa nunc blandit ante, vitae
+              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
+              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
+              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
+              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
+              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
+              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
+              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
+              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi.
+            </Text>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+              nunc non hendrerit finibus, massa nunc blandit ante, vitae
+              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
+              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
+              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
+              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
+              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
+              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
+              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
+              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
+              Nulla facilisi. Nulla facilisi.
+            </Text>
+          </ScrollView>
+        </Animated.View>
       </Animated.View>
     </GestureDetector>
   );

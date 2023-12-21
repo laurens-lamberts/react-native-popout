@@ -1,6 +1,6 @@
 import React from 'react';
-import {Dimensions, View} from 'react-native';
-import Animated, {
+import {Dimensions, View, useWindowDimensions} from 'react-native';
+import {
   Easing,
   useSharedValue,
   withSpring,
@@ -11,16 +11,17 @@ import {TileInfo} from '../../screens/Overview';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Overlay from '../../screens/Overlay';
 
-const {height, width} = Dimensions.get('window');
-
 const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
   const insets = useSafeAreaInsets();
+  const {width: screenWidth, height: screenHeight} = useWindowDimensions();
+
+  // const animationValue = useSharedValue(0);
 
   const CustomEnteringAnimation: EntryOrExitLayoutType = values => {
     'worklet';
     const animations = {
-      width: withSpring(width, SPRING_CONFIG),
-      height: withSpring(height - insets.top, SPRING_CONFIG),
+      width: withSpring(screenWidth, SPRING_CONFIG),
+      height: withSpring(screenHeight - insets.top, SPRING_CONFIG),
       transform: [
         {translateX: withSpring(-(item.origin?.x || 0), SPRING_CONFIG)},
         {
@@ -69,8 +70,8 @@ const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
     };
     const initialValues = {
       // initial values for animations
-      width: exitingScale.value * width,
-      height: exitingScale.value * (height - insets.top),
+      width: exitingScale.value * screenWidth,
+      height: exitingScale.value * (screenHeight - insets.top),
       transform: [
         {translateX: -(item.origin?.x || 0) + exitingX.value},
         {
@@ -91,9 +92,9 @@ const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
     };
   };
 
-  if (!item) {
+  /* if (!item) {
     return null;
-  }
+  } */
 
   return (
     <View
