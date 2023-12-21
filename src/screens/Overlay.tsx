@@ -4,6 +4,7 @@ import {
   Gesture,
   GestureDetector,
   PanGestureHandler,
+  ScrollView,
 } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
@@ -42,7 +43,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
   const startX = useSharedValue(0);
   const startY = useSharedValue(0);
 
-  const gestureHandler = useMemo(
+  const panGesture = useMemo(
     () =>
       Gesture.Pan()
         .onStart(() => {
@@ -89,40 +90,6 @@ const Overlay = ({item, hide, ...props}: Props) => {
     ],
   );
 
-  /* const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx) => {
-      ctx.startX = -(item?.origin?.x || 0);
-      ctx.startY = -(item?.origin?.y || 0) + insets.top;
-    },
-    onActive: (event, ctx) => {
-      x.value = ctx.startX + event.translationX;
-      y.value = ctx.startY + event.translationY;
-
-      // console.log(y.value);
-
-      scale.value = interpolate(
-        event.translationY,
-        [0, 500],
-        [1, 0.75],
-        Extrapolation.CLAMP,
-      );
-    },
-    onEnd: (event, ctx) => {
-      if (event.translationY > 200) {
-        // close
-        runOnJS(hide)({
-          dragX: event.translationX,
-          dragY: event.translationY,
-          scale: scale.value,
-        });
-      } else {
-        x.value = withSpring(ctx.startX, SPRING_CONFIG);
-        y.value = withSpring(ctx.startY, SPRING_CONFIG);
-        scale.value = withSpring(1, SPRING_CONFIG);
-      }
-    },
-  }); */
-
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -140,7 +107,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
   }, [x, y, scale]);
 
   return (
-    <GestureDetector gesture={gestureHandler}>
+    <GestureDetector gesture={panGesture}>
       <Animated.View
         style={[
           {
@@ -152,11 +119,91 @@ const Overlay = ({item, hide, ...props}: Props) => {
             height: screenHeight,
             padding: 12,
             position: 'absolute',
+            overflow: 'hidden',
+            gap: 20,
           },
           animatedStyle,
         ]}
         {...props}>
-        <Text>{item.title}</Text>
+        <ScrollView>
+          <Text>{item.title}</Text>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
+            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
+            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
+            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
+            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
+            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
+            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
+            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi.
+          </Text>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
+            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
+            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
+            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
+            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
+            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
+            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
+            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi.
+          </Text>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
+            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
+            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
+            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
+            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
+            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
+            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
+            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi.
+          </Text>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+            eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
+            facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
+            nunc non hendrerit finibus, massa nunc blandit ante, vitae tincidunt
+            est eros id nunc. Sed vitae lorem et libero tincidunt molestie.
+            Donec sit amet libero eget mi aliquam aliquet. Nullam id augue quis
+            enim lacinia consequat. Maecenas vitae nunc eget diam ultrices
+            lacinia. Donec euismod ultricies nunc, sed aliquet nunc commodo
+            vitae. Nulla facilisi. Morbi et lorem at nisl aliquet luctus. Sed
+            quis rhoncus nisi. Nullam vitae libero quis turpis aliquam ultricies
+            eget eget elit. Nullam eget nisl vel ipsum aliquam molestie. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
+            facilisi.
+          </Text>
+        </ScrollView>
       </Animated.View>
     </GestureDetector>
   );
