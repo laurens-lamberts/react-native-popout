@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {Text, View, useWindowDimensions} from 'react-native';
-import {PanGestureHandler} from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -35,7 +39,57 @@ const Overlay = ({item, hide, ...props}: Props) => {
   const y = useSharedValue(0);
   const scale = useSharedValue(1);
 
-  const gestureHandler = useAnimatedGestureHandler({
+  const startX = useSharedValue(0);
+  const startY = useSharedValue(0);
+
+  const gestureHandler = useMemo(
+    () =>
+      Gesture.Pan()
+        .onStart(() => {
+          startX.value = -(item?.origin?.x || 0);
+          startY.value = -(item?.origin?.y || 0) + insets.top;
+        })
+        .onChange(event => {
+          x.value = startX.value + event.translationX;
+          y.value = startY.value + event.translationY;
+
+          // console.log(y.value);
+
+          scale.value = interpolate(
+            event.translationY,
+            [0, 500],
+            [1, 0.75],
+            Extrapolation.CLAMP,
+          );
+        })
+        .onEnd(event => {
+          if (event.translationY > 200) {
+            // close
+            runOnJS(hide)({
+              dragX: event.translationX,
+              dragY: event.translationY,
+              scale: scale.value,
+            });
+          } else {
+            x.value = withSpring(startX.value, SPRING_CONFIG);
+            y.value = withSpring(startY.value, SPRING_CONFIG);
+            scale.value = withSpring(1, SPRING_CONFIG);
+          }
+        }),
+    [
+      hide,
+      insets.top,
+      item?.origin?.x,
+      item?.origin?.y,
+      startX,
+      startY,
+      x,
+      y,
+      scale,
+    ],
+  );
+
+  /* const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.startX = -(item?.origin?.x || 0);
       ctx.startY = -(item?.origin?.y || 0) + insets.top;
@@ -44,7 +98,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
       x.value = ctx.startX + event.translationX;
       y.value = ctx.startY + event.translationY;
 
-      console.log(y.value);
+      // console.log(y.value);
 
       scale.value = interpolate(
         event.translationY,
@@ -67,7 +121,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
         scale.value = withSpring(1, SPRING_CONFIG);
       }
     },
-  });
+  }); */
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -86,7 +140,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
   }, [x, y, scale]);
 
   return (
-    <PanGestureHandler onGestureEvent={gestureHandler}>
+    <GestureDetector gesture={gestureHandler}>
       <Animated.View
         style={[
           {
@@ -104,7 +158,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
         {...props}>
         <Text>{item.title}</Text>
       </Animated.View>
-    </PanGestureHandler>
+    </GestureDetector>
   );
 };
 
