@@ -108,9 +108,6 @@ const Overlay = ({item, hide, ...props}: Props) => {
         .onChange(event => {
           x.value = startX.value + event.translationX;
           y.value = startY.value + event.translationY;
-
-          // console.log(y.value);
-
           scale.value = interpolate(
             event.translationY,
             [0, 500],
@@ -120,9 +117,8 @@ const Overlay = ({item, hide, ...props}: Props) => {
         })
         .onEnd(event => {
           if (event.translationY > 200) {
-            // close
             runOnJS(hide)({
-              dragX: event.translationX,
+              dragX: event.translationX + 32, // TODO: why this magic number?
               dragY: event.translationY,
               scale: scale.value,
             });
@@ -132,31 +128,15 @@ const Overlay = ({item, hide, ...props}: Props) => {
             scale.value = withSpring(1, SPRING_CONFIG);
           }
         }),
-    [
-      hide,
-      insets.top,
-      item?.origin?.x,
-      item?.origin?.y,
-      startX,
-      startY,
-      x,
-      y,
-      scale,
-    ],
+    [hide, insets.top, item, startX, startY, x, y, scale],
   );
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        {
-          translateX: x.value,
-        },
-        {
-          translateY: y.value,
-        },
-        {
-          scale: scale.value,
-        },
+        {translateX: x.value},
+        {translateY: y.value},
+        {scale: scale.value},
       ],
     };
   }, [x, y, scale]);

@@ -159,24 +159,17 @@ const Overview = () => {
         pointerEvents="box-none"
         ref={overviewRef}
         style={{
-          flex: 1,
           backgroundColor: ENABLE_DEBUG_COLORS ? '#666' : 'black',
           zIndex: 1,
         }}>
         <Animated.ScrollView
-          style={[
-            {
-              flex: 1,
-            },
-            animatedOverviewStyle,
-          ]}
+          style={animatedOverviewStyle}
           scrollEnabled={!elementOpened}>
           <Pressable
             style={{
               margin: 12,
               backgroundColor: ENABLE_DEBUG_COLORS ? 'blue' : undefined,
               gap: 20,
-              flex: 1,
             }}
             onPress={onClose}>
             {ROWS.map(rowData => (
@@ -200,7 +193,6 @@ const Overview = () => {
           </Pressable>
         </Animated.ScrollView>
       </View>
-      {/* {!!elementOpened && ( */}
       <Animated.View
         pointerEvents="none"
         style={[
@@ -218,7 +210,6 @@ const Overview = () => {
           style={{
             flex: 1,
           }}>
-          {/* <Group /> */}
           <Image
             image={snapshot}
             fit="contain"
@@ -228,7 +219,6 @@ const Overview = () => {
           </Image>
         </Canvas>
       </Animated.View>
-      {/* )} */}
       {elementOpened && (
         <View style={{position: 'absolute', zIndex: 99}}>
           <TileAnimation item={elementOpened} hide={onClose} />
