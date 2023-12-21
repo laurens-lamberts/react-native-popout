@@ -120,13 +120,15 @@ const Overlay = ({item, hide, ...props}: Props) => {
             padding: 12,
             position: 'absolute',
             overflow: 'hidden',
-            gap: 20,
           },
           animatedStyle,
         ]}
         {...props}>
-        <ScrollView>
-          <Text>{item.title}</Text>
+        <ScrollView
+          contentContainerStyle={{
+            gap: 20,
+          }}>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.title}</Text>
           <Text>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
             eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
