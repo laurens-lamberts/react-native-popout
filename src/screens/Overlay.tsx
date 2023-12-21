@@ -120,6 +120,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
             padding: 12,
             position: 'absolute',
             overflow: 'hidden',
+            transformOrigin: 'top center',
           },
           animatedStyle,
         ]}
