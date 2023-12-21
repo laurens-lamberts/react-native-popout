@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, Text, View, useWindowDimensions} from 'react-native';
 import {
   Gesture,
   GestureDetector,
@@ -21,6 +21,8 @@ import {ENABLE_DEBUG_COLORS} from '../app/config/settings';
 import {SPRING_CONFIG} from '../app/config/animations';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TileInfo} from './Overview';
+import OverlayContent from './OverlayContent';
+import CloseButton from '../app/components/CloseButton';
 
 interface Props extends React.ComponentProps<typeof Animated.View> {
   item: TileInfo;
@@ -166,100 +168,8 @@ const Overlay = ({item, hide, ...props}: Props) => {
             transformOrigin: 'top left',
             padding: 12,
           }}>
-          <View
-            style={{
-              marginBottom: 20,
-              backgroundColor: '#678',
-              marginLeft: -12,
-              marginRight: -12,
-              marginTop: -12,
-              padding: 12,
-            }}>
-            <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
-              {item.title}
-            </Text>
-          </View>
-          <ScrollView
-            contentContainerStyle={{
-              gap: 20,
-            }}>
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-              nunc non hendrerit finibus, massa nunc blandit ante, vitae
-              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
-              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
-              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
-              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
-              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
-              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
-              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
-              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi.
-            </Text>
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-              nunc non hendrerit finibus, massa nunc blandit ante, vitae
-              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
-              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
-              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
-              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
-              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
-              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
-              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
-              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi.
-            </Text>
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-              nunc non hendrerit finibus, massa nunc blandit ante, vitae
-              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
-              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
-              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
-              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
-              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
-              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
-              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
-              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi.
-            </Text>
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
-              facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
-              nunc non hendrerit finibus, massa nunc blandit ante, vitae
-              tincidunt est eros id nunc. Sed vitae lorem et libero tincidunt
-              molestie. Donec sit amet libero eget mi aliquam aliquet. Nullam id
-              augue quis enim lacinia consequat. Maecenas vitae nunc eget diam
-              ultrices lacinia. Donec euismod ultricies nunc, sed aliquet nunc
-              commodo vitae. Nulla facilisi. Morbi et lorem at nisl aliquet
-              luctus. Sed quis rhoncus nisi. Nullam vitae libero quis turpis
-              aliquam ultricies eget eget elit. Nullam eget nisl vel ipsum
-              aliquam molestie. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
-              Nulla facilisi. Nulla facilisi.
-            </Text>
-          </ScrollView>
+          <OverlayContent item={item} />
+          <CloseButton hide={hide} />
         </Animated.View>
       </Animated.View>
     </GestureDetector>
