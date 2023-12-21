@@ -1,0 +1,111 @@
+import React from 'react';
+import {Text, View, useWindowDimensions} from 'react-native';
+import {PanGestureHandler} from 'react-native-gesture-handler';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  runOnJS,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
+import {ENABLE_DEBUG_COLORS} from '../app/config/settings';
+import {SPRING_CONFIG} from '../app/config/animations';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {TileInfo} from './Overview';
+
+interface Props extends React.ComponentProps<typeof Animated.View> {
+  item: TileInfo;
+  hide: ({
+    dragX,
+    dragY,
+    scale,
+  }: {
+    dragX: number;
+    dragY: number;
+    scale: number;
+  }) => void;
+}
+const Overlay = ({item, hide, ...props}: Props) => {
+  const {width: screenWidth, height: screenHeight} = useWindowDimensions();
+  const insets = useSafeAreaInsets(); // TODO: make more generic
+
+  const x = useSharedValue(0);
+  const y = useSharedValue(0);
+  const scale = useSharedValue(1);
+
+  const gestureHandler = useAnimatedGestureHandler({
+    onStart: (_, ctx) => {
+      ctx.startX = -(item?.origin?.x || 0);
+      ctx.startY = -(item?.origin?.y || 0) + insets.top;
+    },
+    onActive: (event, ctx) => {
+      x.value = ctx.startX + event.translationX;
+      y.value = ctx.startY + event.translationY;
+
+      console.log(y.value);
+
+      scale.value = interpolate(
+        event.translationY,
+        [0, 500],
+        [1, 0.75],
+        Extrapolation.CLAMP,
+      );
+    },
+    onEnd: (event, ctx) => {
+      if (event.translationY > 200) {
+        // close
+        runOnJS(hide)({
+          dragX: event.translationX,
+          dragY: event.translationY,
+          scale: scale.value,
+        });
+      } else {
+        x.value = withSpring(ctx.startX, SPRING_CONFIG);
+        y.value = withSpring(ctx.startY, SPRING_CONFIG);
+        scale.value = withSpring(1, SPRING_CONFIG);
+      }
+    },
+  });
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: x.value,
+        },
+        {
+          translateY: y.value,
+        },
+        {
+          scale: scale.value,
+        },
+      ],
+    };
+  }, [x, y, scale]);
+
+  return (
+    <PanGestureHandler onGestureEvent={gestureHandler}>
+      <Animated.View
+        style={[
+          {
+            flex: 1,
+            backgroundColor: ENABLE_DEBUG_COLORS ? 'lime' : 'white',
+            zIndex: 100,
+            borderRadius: 16,
+            width: screenWidth,
+            height: screenHeight,
+            padding: 12,
+            position: 'absolute',
+          },
+          animatedStyle,
+        ]}
+        {...props}>
+        <Text>{item.title}</Text>
+      </Animated.View>
+    </PanGestureHandler>
+  );
+};
+
+export default Overlay;
