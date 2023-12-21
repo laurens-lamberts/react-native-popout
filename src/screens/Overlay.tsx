@@ -1,15 +1,8 @@
 import React, {useMemo} from 'react';
-import {Pressable, Text, View, useWindowDimensions} from 'react-native';
-import {
-  Gesture,
-  GestureDetector,
-  ScrollView,
-} from 'react-native-gesture-handler';
+import {useWindowDimensions} from 'react-native';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
-  Easing,
   Extrapolation,
-  ZoomIn,
-  ZoomOutEasyDown,
   interpolate,
   runOnJS,
   useAnimatedStyle,
@@ -45,14 +38,14 @@ const Overlay = ({item, hide, ...props}: Props) => {
     const animations = {
       transform: [
         {
-          scale: withSpring(1, SPRING_CONFIG),
+          scale: withTiming(1, SPRING_CONFIG),
         },
       ],
       opacity: withTiming(1, {duration: 500}),
     };
     const initialValues = {
       // initial values for animations
-      transform: [{scale: 0}],
+      transform: [{scale: (item.origin?.width || 0) / screenWidth}],
       opacity: 0,
     };
     const callback = (finished: boolean) => {
