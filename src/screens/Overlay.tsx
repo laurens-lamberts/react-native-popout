@@ -38,7 +38,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
     const animations = {
       transform: [
         {
-          scale: withTiming(1, SPRING_CONFIG),
+          scale: withSpring(1, SPRING_CONFIG),
         },
       ],
       opacity: withTiming(1, {duration: 500}),
