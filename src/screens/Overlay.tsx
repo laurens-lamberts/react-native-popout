@@ -16,6 +16,12 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TileInfo} from './Overview';
 import OverlayContent from './OverlayContent';
 import CloseButton from '../app/components/CloseButton';
+import OverlayBackdrop from './OverlayBackdrop';
+import {
+  getReadableTextColorByBackground,
+  useImageColors,
+} from '../app/helpers/colors';
+import {SkImage} from '@shopify/react-native-skia';
 
 interface Props extends React.ComponentProps<typeof Animated.View> {
   item: TileInfo;
@@ -28,8 +34,9 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
     dragY: number;
     scale: number;
   }) => void;
+  image: SkImage;
 }
-const Overlay = ({item, hide, ...props}: Props) => {
+const Overlay = ({item, hide, image, ...props}: Props) => {
   const {width: screenWidth, height: screenHeight} = useWindowDimensions();
   const insets = useSafeAreaInsets(); // TODO: make more generic
 
@@ -51,11 +58,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
     const callback = (finished: boolean) => {
       // optional callback that will fire when layout animation ends
     };
-    return {
-      initialValues,
-      animations,
-      callback,
-    };
+    return {initialValues, animations, callback};
   };
 
   const ContentScaleExiting: EntryOrExitLayoutType = values => {
@@ -79,11 +82,7 @@ const Overlay = ({item, hide, ...props}: Props) => {
     const callback = (finished: boolean) => {
       // optional callback that will fire when layout animation ends
     };
-    return {
-      initialValues,
-      animations,
-      callback,
-    };
+    return {initialValues, animations, callback};
   };
 
   const x = useSharedValue(0);
@@ -136,13 +135,25 @@ const Overlay = ({item, hide, ...props}: Props) => {
     };
   }, [x, y, scale]);
 
+  /* const colors = useImageColors(item.image);
+
+  const textColor = useMemo(() => {
+    const backgroundColor =
+      colors?.platform === 'android'
+        ? colors?.dominant
+        : colors?.platform === 'ios'
+        ? colors?.background
+        : 'white';
+    return getReadableTextColorByBackground(backgroundColor);
+  }, [colors]); */
+
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View
         style={[
           {
             flex: 1,
-            backgroundColor: ENABLE_DEBUG_COLORS ? 'lime' : 'white',
+            // backgroundColor: ENABLE_DEBUG_COLORS ? 'lime' : 'white',
             zIndex: 100,
             borderRadius: 16,
             width: screenWidth,
@@ -161,7 +172,8 @@ const Overlay = ({item, hide, ...props}: Props) => {
             transformOrigin: 'top left',
             padding: 12,
           }}>
-          <OverlayContent item={item} />
+          <OverlayBackdrop image={image} />
+          <OverlayContent item={item} textColor={'white'} />
           <CloseButton hide={hide} />
         </Animated.View>
       </Animated.View>

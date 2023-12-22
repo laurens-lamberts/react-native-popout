@@ -10,6 +10,7 @@ import {SPRING_CONFIG} from '../config/animations';
 import {TileInfo} from '../../screens/Overview';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Overlay from '../../screens/Overlay';
+import {useImage} from '@shopify/react-native-skia';
 
 const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
   const insets = useSafeAreaInsets();
@@ -45,11 +46,7 @@ const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
     const callback = (finished: boolean) => {
       // optional callback that will fire when layout animation ends
     };
-    return {
-      initialValues,
-      animations,
-      callback,
-    };
+    return {initialValues, animations, callback};
   };
 
   const exitingX = useSharedValue(0);
@@ -66,7 +63,7 @@ const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
         {translateY: withSpring(0, SPRING_CONFIG)},
       ],
       borderRadius: withSpring(4, SPRING_CONFIG),
-      opacity: withTiming(0, {duration: 700, easing: Easing.quad}),
+      opacity: withTiming(0, {duration: 800, easing: Easing.ease}),
     };
     const initialValues = {
       // initial values for animations
@@ -85,16 +82,15 @@ const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
       // optional callback that will fire when layout animation ends
       // finished && runOnJS(hide)();
     };
-    return {
-      initialValues,
-      animations,
-      callback,
-    };
+    return {initialValues, animations, callback};
   };
 
   /* if (!item) {
     return null;
   } */
+
+  const skiaImage = useImage(item?.image);
+  // if (!skiaImage) return null;
 
   return (
     <View
@@ -114,6 +110,7 @@ const TileAnimation = ({item, hide}: {item: TileInfo; hide: () => void}) => {
         }}
         entering={CustomEnteringAnimation}
         exiting={CustomExitingAnimation}
+        image={skiaImage}
       />
     </View>
   );

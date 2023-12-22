@@ -19,7 +19,8 @@ const Row = ({children, scrollEnabled}: PropsWithChildren<ScrollViewProps>) => {
         flexDirection: 'row',
         backgroundColor: ENABLE_DEBUG_COLORS ? 'red' : undefined,
       }}
-      scrollEnabled={scrollEnabled}>
+      scrollEnabled={scrollEnabled}
+      showsHorizontalScrollIndicator={false}>
       {children}
     </ScrollView>
   );

@@ -1,4 +1,4 @@
-import React, {RefObject, useRef} from 'react';
+import React, {RefObject, useRef, useState} from 'react';
 import Row from '../app/components/Row';
 import Animated, {
   Easing,
@@ -8,13 +8,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {SPRING_CONFIG} from '../app/config/animations';
-import {Pressable, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import TilePresentation from '../app/components/TilePresentation';
 import TileAnimation from '../app/components/TileAnimation';
 import {ENABLE_DEBUG_COLORS} from '../app/config/settings';
 import {
   Blur,
-  BlurMask,
   Canvas,
   Image,
   SkImage,
@@ -24,6 +23,7 @@ import {
 export type TileInfo = {
   id: number;
   title: string;
+  image: string;
   origin?: {
     x: number;
     y: number;
@@ -32,24 +32,35 @@ export type TileInfo = {
   };
 };
 
+const DUMMY_IMAGES = [
+  'https://m.media-amazon.com/images/M/MV5BYzhiNDkyNzktNTZmYS00ZTBkLTk2MDAtM2U0YjU1MzgxZjgzXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg',
+  'https://upload.wikimedia.org/wikipedia/en/d/df/CureforWellnessOfficialPoster.jpeg',
+  'https://m.media-amazon.com/images/M/MV5BMTYzMjA3OTgxOV5BMl5BanBnXkFtZTgwMjAwMDU5NjM@._V1_FMjpg_UX1000_.jpg',
+  'https://cms.giggster.com/guide/directus/assets/49134223-36d0-489e-86f3-d2f528e14236?fit=cover&width=400&quality=80',
+  'https://resizing.flixster.com/lpJkDxnEFNQT1OWJjnmYfvpAHJ0=/ems.cHJkLWVtcy1hc3NldHMvdHZzZXJpZXMvUlRUVjI2NjgyOS53ZWJw',
+];
+
 const DATA = {
   testCollection: [
     {
       id: 0,
       title: 'Kip',
-      // image:
+      image: DUMMY_IMAGES[0],
     },
     {
       id: 1,
       title: 'Paard',
+      image: DUMMY_IMAGES[1],
     },
     {
       id: 2,
       title: 'Koe',
+      image: DUMMY_IMAGES[2],
     },
     {
       id: 3,
       title: 'Schaap',
+      image: DUMMY_IMAGES[3],
     },
   ],
 } as {
@@ -57,9 +68,7 @@ const DATA = {
 };
 
 const Overview = () => {
-  const [elementOpened, setElementOpened] = React.useState<TileInfo | null>(
-    null,
-  );
+  const [elementOpened, setElementOpened] = useState<TileInfo | null>(null);
 
   const onElementTap = async (
     viewRef: RefObject<Animated.View>,
@@ -120,7 +129,7 @@ const Overview = () => {
 
   const overviewRef = useRef<View>(null);
   const snapshot = useSharedValue<SkImage | null>(null);
-  const [snapshotOrigin, setSnapshotOrigin] = React.useState<{
+  const [snapshotOrigin, setSnapshotOrigin] = useState<{
     x: number;
     y: number;
     width: number;

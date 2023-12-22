@@ -3,13 +3,19 @@ import {Text, View} from 'react-native';
 import {TileInfo} from './Overview';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const OverlayContent = ({item}: {item: TileInfo}) => {
+const OverlayContent = ({
+  item,
+  textColor,
+}: {
+  item: TileInfo;
+  textColor: string;
+}) => {
   return (
     <View>
       <View
         style={{
           marginBottom: 20,
-          backgroundColor: '#678',
+          backgroundColor: 'rgba(102, 119, 136, 0.3)',
           marginLeft: -12,
           marginRight: -12,
           marginTop: -12,
@@ -23,7 +29,10 @@ const OverlayContent = ({item}: {item: TileInfo}) => {
         contentContainerStyle={{
           gap: 20,
         }}>
-        <Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
@@ -41,7 +50,10 @@ const OverlayContent = ({item}: {item: TileInfo}) => {
           facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
           facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
         </Text>
-        <Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
@@ -59,7 +71,10 @@ const OverlayContent = ({item}: {item: TileInfo}) => {
           facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
           facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
         </Text>
-        <Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
@@ -77,7 +92,10 @@ const OverlayContent = ({item}: {item: TileInfo}) => {
           facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi. Nulla
           facilisi. Nulla facilisi. Nulla facilisi. Nulla facilisi.
         </Text>
-        <Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
