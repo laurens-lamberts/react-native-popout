@@ -8,9 +8,9 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {SPRING_CONFIG} from '../app/config/animations';
-import {Pressable, Text, View} from 'react-native';
+import {Pressable, Text, View, useWindowDimensions} from 'react-native';
 import TilePresentation from '../app/components/TilePresentation';
-import TileAnimation from '../app/components/TileAnimation';
+import OverlayAnchor from '../app/components/OverlayAnchor';
 import {ENABLE_DEBUG_COLORS} from '../app/config/settings';
 import {
   Blur,
@@ -69,6 +69,8 @@ const DATA = {
 
 const Overview = () => {
   const [elementOpened, setElementOpened] = useState<TileInfo | null>(null);
+
+  const {width: screenWidth, height: screenHeight} = useWindowDimensions();
 
   const onElementTap = async (
     viewRef: RefObject<Animated.View>,
@@ -229,8 +231,14 @@ const Overview = () => {
         </Canvas>
       </Animated.View>
       {elementOpened && (
-        <View style={{position: 'absolute', zIndex: 99}}>
-          <TileAnimation item={elementOpened} hide={onClose} />
+        <View
+          style={{
+            position: 'absolute',
+            zIndex: 99,
+            width: screenWidth,
+            height: screenHeight,
+          }}>
+          <OverlayAnchor item={elementOpened} hide={onClose} />
         </View>
       )}
     </>

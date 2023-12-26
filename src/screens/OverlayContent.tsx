@@ -11,14 +11,10 @@ const OverlayContent = ({
   textColor: string;
 }) => {
   return (
-    <View>
+    <View style={{}}>
       <View
         style={{
-          marginBottom: 20,
           backgroundColor: 'rgba(102, 119, 136, 0.3)',
-          marginLeft: -12,
-          marginRight: -12,
-          marginTop: -12,
           padding: 12,
         }}>
         <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
@@ -28,6 +24,7 @@ const OverlayContent = ({
       <ScrollView
         contentContainerStyle={{
           gap: 20,
+          padding: 12,
         }}>
         <Text
           style={{
