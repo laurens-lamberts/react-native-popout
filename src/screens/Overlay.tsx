@@ -85,13 +85,9 @@ const Overlay = ({item, hide, image, ...props}: Props) => {
   const panGesture = useMemo(
     () =>
       Gesture.Pan()
-        .onStart(() => {
-          panStartX.value = -(item?.origin?.x || 0);
-          panStartY.value = -(item?.origin?.y || 0) + insets.top;
-        })
         .onChange(event => {
-          panX.value = panStartX.value + event.translationX;
-          panY.value = panStartY.value + event.translationY;
+          panX.value = event.translationX;
+          panY.value = event.translationY;
           panScale.value = interpolate(
             event.translationY,
             [0, 500],
@@ -103,8 +99,8 @@ const Overlay = ({item, hide, image, ...props}: Props) => {
           if (event.translationY > 200) {
             onClose();
           } else {
-            panX.value = withSpring(panStartX.value, SPRING_CONFIG);
-            panY.value = withSpring(panStartY.value, SPRING_CONFIG);
+            panX.value = withSpring(0, SPRING_CONFIG);
+            panY.value = withSpring(0, SPRING_CONFIG);
             panScale.value = withSpring(1, SPRING_CONFIG);
           }
         }),
