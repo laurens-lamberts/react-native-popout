@@ -2,7 +2,7 @@ import React, {RefObject, useMemo, useRef} from 'react';
 import {Pressable, Text} from 'react-native';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import {TileInfo} from '../../screens/Overview';
-import {ENABLE_DEBUG_COLORS} from '../config/settings';
+import {BORDER_RADIUS_TILE, ENABLE_DEBUG_COLORS} from '../config/settings';
 
 export const TILE_HEIGHT = 160;
 export const TILE_WIDTH = 108;
@@ -34,7 +34,7 @@ const TilePresentation = ({
             height: TILE_HEIGHT,
             width: TILE_WIDTH,
             padding: 12,
-            borderRadius: 4,
+            borderRadius: BORDER_RADIUS_TILE,
             overflow: 'hidden',
           },
         ]}

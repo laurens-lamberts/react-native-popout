@@ -19,6 +19,10 @@ import OverlayContent from './OverlayContent';
 import CloseButton from '../app/components/CloseButton';
 import OverlayBackdrop from './OverlayBackdrop';
 import {SkImage} from '@shopify/react-native-skia';
+import {
+  BORDER_RADIUS_OVERLAY,
+  BORDER_RADIUS_TILE,
+} from '../app/config/settings';
 
 interface Props extends React.ComponentProps<typeof Animated.View> {
   item: TileInfo;
@@ -31,7 +35,7 @@ const Overlay = ({item, hide, image}: Props) => {
   const screenHeightMinusInset = screenHeight - insets.top;
 
   // We have all separate values, because we need to perform the animations imperatively due to new data coming in via props
-  const overlayBorderRadius = useSharedValue(0);
+  const overlayProgress = useSharedValue(0);
   const overlayX = useSharedValue(0);
   const overlayY = useSharedValue(0);
 
@@ -50,7 +54,7 @@ const Overlay = ({item, hide, image}: Props) => {
 
   const resetOverlay = () => {
     'worklet';
-    overlayBorderRadius.value = withTiming(0, SPRING_CONFIG, () => {
+    overlayProgress.value = withTiming(0, SPRING_CONFIG, () => {
       runOnJS(hide)(); // todo; earlier
     });
     overlayX.value = withTiming(0, SPRING_CONFIG);
@@ -74,7 +78,7 @@ const Overlay = ({item, hide, image}: Props) => {
   const onOpen = () => {
     'worklet';
     // Entering animation
-    overlayBorderRadius.value = withTiming(1, SPRING_CONFIG);
+    overlayProgress.value = withTiming(1, SPRING_CONFIG);
     overlayX.value = withTiming(-(item?.origin?.x || 0), SPRING_CONFIG);
     overlayY.value = withTiming(
       -(item.origin?.y || 0) + insets.top,
@@ -115,13 +119,12 @@ const Overlay = ({item, hide, image}: Props) => {
         [item.origin?.height || 0, screenHeight - insets.top],
         Extrapolation.CLAMP,
       ), */
-      borderRadius: interpolate(overlayBorderRadius.value, [0, 1], [4, 16]),
-      opacity: interpolate(
-        overlayBorderRadius.value,
-        [0, 0.05, 1],
-        [0, 0.7, 1],
+      borderRadius: interpolate(
+        overlayProgress.value,
+        [0, 1],
+        [BORDER_RADIUS_TILE, BORDER_RADIUS_OVERLAY],
       ),
-      // opacity: interpolate(overlayBorderRadius.value, [0, 1], [0, 1]),
+      opacity: interpolate(overlayProgress.value, [0, 0.05, 1], [0, 0.7, 1]),
     };
   }, [item]);
 
@@ -170,18 +173,10 @@ const Overlay = ({item, hide, image}: Props) => {
       ]}>
       <GestureDetector gesture={panGesture}>
         <View>
-          <OverlayBackdrop image={image} blurred />
+          <OverlayBackdrop image={image} blurred opacity={1} />
           <OverlayContent item={item} textColor="white" />
           <CloseButton hide={onClose} />
           <OverlayBackdrop image={image} opacity={shadowImageOpacity} />
-          {/* <Image
-            source={{uri: item.image}}
-            style={{
-              width: screenWidth,
-              height: screenHeightMinusInset,
-            }}
-            resizeMode="contain"
-          /> */}
         </View>
       </GestureDetector>
     </Animated.View>
