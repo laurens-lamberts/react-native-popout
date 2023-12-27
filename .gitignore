@@ -64,3 +64,7 @@ yarn-error.log
 
 # testing
 /coverage
+
+TOBEMOVED/ios/Pods
+TOBEMOVED/ios/.xcode.env.local
+TOBEMOVED/vendor
