@@ -77,8 +77,11 @@
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": ">=18.0",
+    "react-native": ">=0.64",
+    "react-native-gesture-handler": ">=2.0.0",
+    "react-native-reanimated": ">=2.0.0",
+    "react-native-skia": ">=0.1.200"
   },
   "workspaces": [
     "example"

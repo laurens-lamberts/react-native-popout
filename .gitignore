@@ -47,6 +47,8 @@ example/ios/Pods
 # Ruby
 example/vendor/
 
+example/.yarn/cache
+
 # node.js
 #
 node_modules/
@@ -79,7 +81,3 @@ lib/
 
 # testing
 /coverage
-
-TOBEMOVED/ios/Pods
-TOBEMOVED/ios/.xcode.env.local
-TOBEMOVED/vendor
