@@ -11,7 +11,7 @@ const OverlayContent = ({
   textColor: string;
 }) => {
   return (
-    <View style={{}}>
+    <View>
       <View
         style={{
           backgroundColor: 'rgba(102, 119, 136, 0.3)',

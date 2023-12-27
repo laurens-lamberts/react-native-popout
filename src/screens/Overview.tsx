@@ -160,8 +160,8 @@ const Overview = () => {
   };
 
   const onClose = () => {
-    setElementOpened(null);
-    blur.value = withTiming(0, {duration: 600, easing: Easing.out(Easing.exp)});
+    setElementOpened(null); // TODO: animations are cut off too early
+    blur.value = withTiming(0, {duration: 700, easing: Easing.out(Easing.exp)});
   };
 
   return (
