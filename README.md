@@ -29,10 +29,16 @@ I find this transition to be natural and visually pleasing. Using the `reanimate
 yarn add react-native-popout-transition
 ```
 
+and if not yet present in your project, install the following packages;
+
+```sh
+yarn add react-native-reanimated react-native-gesture-handler react-native-safe-area-context @shopify/react-native-skia
+```
+
 ## Usage
 
 ```js
-import { multiply } from 'react-native-popout-transition';
+import { multiply } from "react-native-popout-transition";
 
 // ...
 

@@ -1,8 +1,8 @@
-import React, {RefObject, useMemo, useRef} from 'react';
-import {Pressable, Text} from 'react-native';
-import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
-import {TileInfo} from '../../screens/Overview';
-import {BORDER_RADIUS_TILE, ENABLE_DEBUG_COLORS} from '../config/settings';
+import React, { RefObject, useRef } from 'react';
+import { Pressable } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { TileInfo } from '../../screens/Overview';
+import { BORDER_RADIUS_TILE, ENABLE_DEBUG_COLORS } from '../config/settings';
 
 export const TILE_HEIGHT = 160;
 export const TILE_WIDTH = 108;
@@ -23,7 +23,8 @@ const TilePresentation = ({
         height: TILE_HEIGHT,
         width: TILE_WIDTH,
       }}
-      onPress={() => onTap(viewRef)}>
+      onPress={() => onTap(viewRef)}
+    >
       {/* {!isOpened && ( */}
       <Animated.View
         entering={FadeIn.delay(200)}
@@ -38,9 +39,12 @@ const TilePresentation = ({
             overflow: 'hidden',
           },
         ]}
-        ref={viewRef}>
+        ref={viewRef}
+      >
         <Animated.Image
           src={item.image}
+          // @ts-ignore works!
+          source={undefined}
           resizeMode={'cover'}
           entering={FadeIn}
           style={{

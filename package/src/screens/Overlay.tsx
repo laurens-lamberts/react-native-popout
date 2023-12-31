@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo} from 'react';
-import {Image, View, useWindowDimensions} from 'react-native';
-import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import React, { useEffect, useMemo } from 'react';
+import { View, useWindowDimensions } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -8,17 +8,16 @@ import Animated, {
   runOnUI,
   useAnimatedStyle,
   useSharedValue,
-  withSequence,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import {SPRING_CONFIG} from '../app/config/animations';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {TileInfo} from './Overview';
+import { SPRING_CONFIG } from '../app/config/animations';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { TileInfo } from './Overview';
 import OverlayContent from './OverlayContent';
 import CloseButton from '../app/components/CloseButton';
 import OverlayBackdrop from './OverlayBackdrop';
-import {SkImage} from '@shopify/react-native-skia';
+import { SkImage } from '@shopify/react-native-skia';
 import {
   BORDER_RADIUS_OVERLAY,
   BORDER_RADIUS_TILE,
@@ -29,8 +28,8 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
   hide: () => void;
   image: SkImage;
 }
-const Overlay = ({item, hide, image}: Props) => {
-  const {width: screenWidth, height: screenHeight} = useWindowDimensions();
+const Overlay = ({ item, hide, image }: Props) => {
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets(); // TODO: make more generic
   const screenHeightMinusInset = screenHeight - insets.top;
 
@@ -40,9 +39,9 @@ const Overlay = ({item, hide, image}: Props) => {
   const overlayY = useSharedValue(0);
 
   const scale = (item.origin?.width || 0) / screenWidth;
-  const aspectRatio = (item.origin?.width || 0) / (item.origin?.height || 0);
+  // const aspectRatio = (item.origin?.width || 0) / (item.origin?.height || 0);
   const overlayScale = useSharedValue(scale);
-  const overlayHeight = useSharedValue(item.origin?.height || 0);
+  // const overlayHeight = useSharedValue(item.origin?.height || 0);
 
   const shadowImageOpacity = useSharedValue(1);
 
@@ -61,7 +60,7 @@ const Overlay = ({item, hide, image}: Props) => {
     overlayY.value = withTiming(0, SPRING_CONFIG);
     overlayScale.value = withTiming(
       (item.origin?.width || 0) / screenWidth,
-      SPRING_CONFIG,
+      SPRING_CONFIG
     );
     shadowImageOpacity.value = withTiming(1, SPRING_CONFIG);
     /* overlayHeight.value = withTiming(
@@ -82,7 +81,7 @@ const Overlay = ({item, hide, image}: Props) => {
     overlayX.value = withTiming(-(item?.origin?.x || 0), SPRING_CONFIG);
     overlayY.value = withTiming(
       -(item.origin?.y || 0) + insets.top,
-      SPRING_CONFIG,
+      SPRING_CONFIG
     );
     // overlayHeight.value = withTiming(item.origin?.height, {duration: 0});
     // overlayHeight.value = withTiming(screenHeight - insets.top, SPRING_CONFIG);
@@ -103,9 +102,9 @@ const Overlay = ({item, hide, image}: Props) => {
   const overlayAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        {translateX: overlayX.value + panX.value},
-        {translateY: overlayY.value + panY.value},
-        {scale: overlayScale.value + panScale.value - 1},
+        { translateX: overlayX.value + panX.value },
+        { translateY: overlayY.value + panY.value },
+        { scale: overlayScale.value + panScale.value - 1 },
       ],
       /* height: interpolate(
         overlayScale.value,
@@ -122,7 +121,7 @@ const Overlay = ({item, hide, image}: Props) => {
       borderRadius: interpolate(
         overlayProgress.value,
         [0, 1],
-        [BORDER_RADIUS_TILE, BORDER_RADIUS_OVERLAY],
+        [BORDER_RADIUS_TILE, BORDER_RADIUS_OVERLAY]
       ),
       opacity: interpolate(overlayProgress.value, [0, 0.05, 1], [0, 0.7, 1]),
     };
@@ -131,20 +130,20 @@ const Overlay = ({item, hide, image}: Props) => {
   const panGesture = useMemo(
     () =>
       Gesture.Pan()
-        .onChange(event => {
+        .onChange((event) => {
           panX.value = event.translationX;
           panY.value = event.translationY;
           panScale.value = interpolate(
             event.translationY,
             [0, 500],
             [1, 0.75],
-            Extrapolation.CLAMP,
+            Extrapolation.CLAMP
           );
         })
-        .onEnd(event => {
+        .onEnd((event) => {
           event.translationY > 200 ? onClose() : resetPan();
         }),
-    [onClose, insets.top, item, panStartX, panStartY, panX, panY, panScale],
+    [onClose, insets.top, item, panStartX, panStartY, panX, panY, panScale]
   );
 
   /* const colors = useImageColors(item.image);
@@ -167,10 +166,12 @@ const Overlay = ({item, hide, image}: Props) => {
           width: screenWidth,
           height: screenHeightMinusInset,
           overflow: 'hidden',
+          // @ts-ignore works!
           transformOrigin: 'top left',
         },
         overlayAnimatedStyle,
-      ]}>
+      ]}
+    >
       <GestureDetector gesture={panGesture}>
         <View>
           <OverlayBackdrop image={image} blurred opacity={1} />

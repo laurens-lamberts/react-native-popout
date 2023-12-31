@@ -47,7 +47,19 @@ example/ios/Pods
 # Ruby
 example/vendor/
 
-example/.yarn/cache
+# Example yarn files
+example/.yarn/*
+!example/.yarn.yarn/patches
+!example/.yarn.yarn/plugins
+!example/.yarn.yarn/releases
+!example/.yarn.yarn/sdks
+!example/.yarn.yarn/versions
+package/.yarn/*
+!package/.yarn.yarn/patches
+!package/.yarn.yarn/plugins
+!package/.yarn.yarn/releases
+!package/.yarn.yarn/sdks
+!package/.yarn.yarn/versions
 
 # node.js
 #

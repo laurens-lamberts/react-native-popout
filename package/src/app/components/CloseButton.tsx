@@ -1,15 +1,11 @@
 import React from 'react';
-import {Pressable, Text} from 'react-native';
+import { Pressable, Text } from 'react-native';
 
-const CloseButton = ({hide}) => {
+const CloseButton = ({ hide }: { hide: () => void }) => {
   return (
     <Pressable
       onPress={() => {
-        hide({
-          dragX: 0,
-          dragY: 0,
-          scale: 1,
-        });
+        hide();
       }}
       style={{
         borderRadius: 18,
@@ -21,7 +17,8 @@ const CloseButton = ({hide}) => {
         right: 6,
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
+      }}
+    >
       <Text
         style={{
           color: 'white',
@@ -29,7 +26,8 @@ const CloseButton = ({hide}) => {
           fontWeight: 'bold',
           top: -2, // ?
           left: 1, // ?
-        }}>
+        }}
+      >
         ×
       </Text>
     </Pressable>

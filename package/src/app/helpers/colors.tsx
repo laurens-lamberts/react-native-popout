@@ -1,7 +1,7 @@
-import {useMemo} from 'react';
-import {getColors} from 'react-native-image-colors';
+import { useMemo } from 'react';
+import { getColors } from 'react-native-image-colors';
 
-export const useImageColors = url => {
+export const useImageColors = (url: string) => {
   return useMemo(() => {
     return getColors(url, {
       fallback: '#000000',

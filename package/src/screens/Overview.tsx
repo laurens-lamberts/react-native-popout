@@ -1,4 +1,4 @@
-import React, {RefObject, useRef, useState} from 'react';
+import React, { RefObject, useRef, useState } from 'react';
 import Row from '../app/components/Row';
 import Animated, {
   Easing,
@@ -7,11 +7,11 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import {SPRING_CONFIG} from '../app/config/animations';
-import {Pressable, Text, View, useWindowDimensions} from 'react-native';
+import { SPRING_CONFIG } from '../app/config/animations';
+import { Pressable, Text, View, useWindowDimensions } from 'react-native';
 import TilePresentation from '../app/components/TilePresentation';
 import OverlayAnchor from '../app/components/OverlayAnchor';
-import {ENABLE_DEBUG_COLORS} from '../app/config/settings';
+import { ENABLE_DEBUG_COLORS } from '../app/config/settings';
 import {
   Blur,
   Canvas,
@@ -70,11 +70,11 @@ const DATA = {
 const Overview = () => {
   const [elementOpened, setElementOpened] = useState<TileInfo | null>(null);
 
-  const {width: screenWidth, height: screenHeight} = useWindowDimensions();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const onElementTap = async (
     viewRef: RefObject<Animated.View>,
-    index: number,
+    index: number
   ) => {
     if (elementOpened) {
       setElementOpened(null);
@@ -123,10 +123,10 @@ const Overview = () => {
   });
 
   const ROWS = [
-    {id: 0, title: 'Favorites'},
-    {id: 1, title: 'Trending'},
-    {id: 2, title: 'New'},
-    {id: 3, title: 'Coming soon'},
+    { id: 0, title: 'Favorites' },
+    { id: 1, title: 'Trending' },
+    { id: 2, title: 'New' },
+    { id: 3, title: 'Coming soon' },
   ]; // TEMP
 
   const overviewRef = useRef<View>(null);
@@ -161,7 +161,10 @@ const Overview = () => {
 
   const onClose = () => {
     setElementOpened(null); // TODO: animations are cut off too early
-    blur.value = withTiming(0, {duration: 700, easing: Easing.out(Easing.exp)});
+    blur.value = withTiming(0, {
+      duration: 700,
+      easing: Easing.out(Easing.exp),
+    });
   };
 
   return (
@@ -172,21 +175,25 @@ const Overview = () => {
         style={{
           backgroundColor: ENABLE_DEBUG_COLORS ? '#666' : 'black',
           zIndex: 1,
-        }}>
+        }}
+      >
         <Animated.ScrollView
           style={animatedOverviewStyle}
-          scrollEnabled={!elementOpened}>
+          scrollEnabled={!elementOpened}
+        >
           <Pressable
             style={{
               margin: 12,
               backgroundColor: ENABLE_DEBUG_COLORS ? 'blue' : undefined,
               gap: 20,
             }}
-            onPress={onClose}>
-            {ROWS.map(rowData => (
-              <View key={rowData.id} style={{gap: 8}}>
+            onPress={onClose}
+          >
+            {ROWS.map((rowData) => (
+              <View key={rowData.id} style={{ gap: 8 }}>
                 <Text
-                  style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
+                  style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}
+                >
                   {rowData.title}
                 </Text>
                 <Row scrollEnabled={!elementOpened}>
@@ -194,8 +201,8 @@ const Overview = () => {
                     <TilePresentation
                       key={item.id}
                       item={item}
-                      onTap={viewRef => onElementTap(viewRef, index)}
-                      isOpened={elementOpened?.id === item.id}
+                      onTap={(viewRef) => onElementTap(viewRef, index)}
+                      // isOpened={elementOpened?.id === item.id}
                     />
                   ))}
                 </Row>
@@ -216,16 +223,19 @@ const Overview = () => {
             zIndex: 98,
           },
           animatedBlurStyle,
-        ]}>
+        ]}
+      >
         <Canvas
           style={{
             flex: 1,
-          }}>
+          }}
+        >
           <Image
             image={snapshot}
             fit="contain"
             width={snapshotOrigin?.width || 0}
-            height={snapshotOrigin?.height || 0}>
+            height={snapshotOrigin?.height || 0}
+          >
             <Blur blur={blur} />
           </Image>
         </Canvas>
@@ -237,7 +247,8 @@ const Overview = () => {
             zIndex: 99,
             width: screenWidth,
             height: screenHeight,
-          }}>
+          }}
+        >
           <OverlayAnchor item={elementOpened} hide={onClose} />
         </View>
       )}

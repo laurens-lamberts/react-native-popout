@@ -1,14 +1,16 @@
 {
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"],
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
+      "react": ["./node_modules/react"],
       "react-native-popout-transition": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
+    "jsx": "react-native",
     "lib": ["esnext"],
     "module": "esnext",
     "moduleResolution": "node",
@@ -16,13 +18,12 @@
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
-    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "verbatimModuleSyntax": true
-  }
+  },
+  "include": ["src"]
 }

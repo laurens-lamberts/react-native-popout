@@ -5,12 +5,14 @@ import {
   ColorMatrix,
   Image,
   SkImage,
-  useImage,
 } from '@shopify/react-native-skia';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {View, ViewStyle, useWindowDimensions} from 'react-native';
-import {OVERLAY_BACKDROP_FROM_IMAGE} from '../app/config/settings';
-import Animated, {SharedValue, useAnimatedStyle} from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, ViewStyle, useWindowDimensions } from 'react-native';
+import { OVERLAY_BACKDROP_FROM_IMAGE } from '../app/config/settings';
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 
 const AnimatedCanvas = Animated.createAnimatedComponent(Canvas);
 
@@ -24,7 +26,7 @@ const OverlayBackdrop = ({
   opacity: SharedValue<number> | number;
 }) => {
   const insets = useSafeAreaInsets();
-  const {width: screenWidth, height: screenHeight} = useWindowDimensions();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const dimmed = blurred;
 
@@ -43,7 +45,9 @@ const OverlayBackdrop = ({
     };
   });
 
-  if (!OVERLAY_BACKDROP_FROM_IMAGE) return <View style={viewStyle} />;
+  if (!OVERLAY_BACKDROP_FROM_IMAGE) {
+    return <View style={viewStyle} />;
+  }
 
   return (
     <AnimatedCanvas style={[viewStyle, animatedStyle]} pointerEvents="none">
@@ -51,7 +55,8 @@ const OverlayBackdrop = ({
         image={image}
         fit="cover"
         width={screenWidth}
-        height={screenHeight}>
+        height={screenHeight}
+      >
         <Blur blur={blurred ? 150 : 0} mode="clamp">
           {dimmed && (
             <ColorMatrix
