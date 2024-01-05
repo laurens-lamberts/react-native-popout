@@ -1,5 +1,7 @@
 import React, { RefObject, useRef, useState } from 'react';
-import Row from '../app/components/Row';
+import { SPRING_CONFIG } from '../config/animations';
+import { Pressable, View, useWindowDimensions } from 'react-native';
+import OverlayAnchor from '../components/OverlayAnchor';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -7,11 +9,6 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { SPRING_CONFIG } from '../app/config/animations';
-import { Pressable, Text, View, useWindowDimensions } from 'react-native';
-import TilePresentation from '../app/components/TilePresentation';
-import OverlayAnchor from '../app/components/OverlayAnchor';
-import { ENABLE_DEBUG_COLORS } from '../app/config/settings';
 import {
   Blur,
   Canvas,
@@ -19,64 +16,47 @@ import {
   SkImage,
   makeImageFromView,
 } from '@shopify/react-native-skia';
+import { PopoutTileType } from '../types/PopoutTile';
 
-export type TileInfo = {
-  id: number;
-  title: string;
-  image: string;
-  origin?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
+type PopoutContextType = {
+  elementOpened: PopoutTileType | null;
+  onElementTap?: (
+    viewRef: RefObject<Animated.View>,
+    item: PopoutTileType
+  ) => void;
+  OverlayComponent: React.ComponentType | null;
+  setOverlayComponent: React.Dispatch<
+    React.SetStateAction<React.ComponentType | null>
+  >;
 };
 
-const DUMMY_IMAGES = [
-  'https://m.media-amazon.com/images/M/MV5BYzhiNDkyNzktNTZmYS00ZTBkLTk2MDAtM2U0YjU1MzgxZjgzXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg',
-  'https://upload.wikimedia.org/wikipedia/en/d/df/CureforWellnessOfficialPoster.jpeg',
-  'https://m.media-amazon.com/images/M/MV5BMTYzMjA3OTgxOV5BMl5BanBnXkFtZTgwMjAwMDU5NjM@._V1_FMjpg_UX1000_.jpg',
-  'https://cms.giggster.com/guide/directus/assets/49134223-36d0-489e-86f3-d2f528e14236?fit=cover&width=400&quality=80',
-  'https://resizing.flixster.com/lpJkDxnEFNQT1OWJjnmYfvpAHJ0=/ems.cHJkLWVtcy1hc3NldHMvdHZzZXJpZXMvUlRUVjI2NjgyOS53ZWJw',
-];
+export const PopoutContext = React.createContext<PopoutContextType>({
+  elementOpened: null,
+  onElementTap: () => {},
+  OverlayComponent: null,
+  setOverlayComponent: () => {},
+});
 
-const DATA = {
-  testCollection: [
-    {
-      id: 0,
-      title: 'Kip',
-      image: DUMMY_IMAGES[0],
-    },
-    {
-      id: 1,
-      title: 'Paard',
-      image: DUMMY_IMAGES[1],
-    },
-    {
-      id: 2,
-      title: 'Koe',
-      image: DUMMY_IMAGES[2],
-    },
-    {
-      id: 3,
-      title: 'Schaap',
-      image: DUMMY_IMAGES[3],
-    },
-  ],
-} as {
-  testCollection: TileInfo[];
-};
-
-const Overview = () => {
-  const [elementOpened, setElementOpened] = useState<TileInfo | null>(null);
+const PopoutRootView = ({
+  children,
+  scroll = 'vertical',
+}: {
+  children: React.ReactNode;
+  scroll: 'disabled' | 'horizontal' | 'vertical';
+}) => {
+  const [elementOpened, setElementOpened] = useState<PopoutTileType | null>(
+    null
+  );
+  const [OverlayComponent, setOverlayComponent] =
+    useState<React.ComponentType | null>(null);
 
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const onElementTap = async (
     viewRef: RefObject<Animated.View>,
-    index: number
+    popoutTileData: PopoutTileType
   ) => {
-    if (elementOpened) {
+    if (elementOpened || !popoutTileData) {
       setElementOpened(null);
       return;
     }
@@ -85,7 +65,7 @@ const Overview = () => {
 
     viewRef.current?.measureInWindow((x, y, width, height) => {
       setElementOpened({
-        ...DATA.testCollection[index],
+        ...popoutTileData,
         origin: {
           x,
           y,
@@ -121,13 +101,6 @@ const Overview = () => {
       opacity: withSpring(elementOpened ? 1 : 0, SPRING_CONFIG),
     };
   });
-
-  const ROWS = [
-    { id: 0, title: 'Favorites' },
-    { id: 1, title: 'Trending' },
-    { id: 2, title: 'New' },
-    { id: 3, title: 'Coming soon' },
-  ]; // TEMP
 
   const overviewRef = useRef<View>(null);
   const snapshot = useSharedValue<SkImage | null>(null);
@@ -168,46 +141,36 @@ const Overview = () => {
   };
 
   return (
-    <>
+    <PopoutContext.Provider
+      value={{
+        elementOpened,
+        onElementTap,
+        OverlayComponent,
+        setOverlayComponent,
+      }}
+    >
       <View
         pointerEvents="box-none"
         ref={overviewRef}
         style={{
-          backgroundColor: ENABLE_DEBUG_COLORS ? '#666' : 'black',
           zIndex: 1,
+          flex: 1,
         }}
       >
         <Animated.ScrollView
-          style={animatedOverviewStyle}
-          scrollEnabled={!elementOpened}
+          style={[{ flex: 1 }, animatedOverviewStyle]}
+          scrollEnabled={!elementOpened && scroll !== 'disabled'}
+          horizontal={scroll === 'horizontal'}
         >
           <Pressable
             style={{
               margin: 12,
-              backgroundColor: ENABLE_DEBUG_COLORS ? 'blue' : undefined,
               gap: 20,
+              flex: 1,
             }}
             onPress={onClose}
           >
-            {ROWS.map((rowData) => (
-              <View key={rowData.id} style={{ gap: 8 }}>
-                <Text
-                  style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}
-                >
-                  {rowData.title}
-                </Text>
-                <Row scrollEnabled={!elementOpened}>
-                  {DATA.testCollection.map((item, index) => (
-                    <TilePresentation
-                      key={item.id}
-                      item={item}
-                      onTap={(viewRef) => onElementTap(viewRef, index)}
-                      // isOpened={elementOpened?.id === item.id}
-                    />
-                  ))}
-                </Row>
-              </View>
-            ))}
+            {children}
           </Pressable>
         </Animated.ScrollView>
       </View>
@@ -249,11 +212,13 @@ const Overview = () => {
             height: screenHeight,
           }}
         >
-          <OverlayAnchor item={elementOpened} hide={onClose} />
+          <OverlayAnchor item={elementOpened} hide={onClose}>
+            {OverlayComponent}
+          </OverlayAnchor>
         </View>
       )}
-    </>
+    </PopoutContext.Provider>
   );
 };
 
-export default Overview;
+export default PopoutRootView;

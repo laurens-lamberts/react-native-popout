@@ -8771,7 +8771,7 @@ __metadata:
 
 "react-native-popout-transition@file:../package::locator=react-native-popout-transition-example%40workspace%3A.":
   version: 0.1.0
-  resolution: "react-native-popout-transition@file:../package#../package::hash=51ec7f&locator=react-native-popout-transition-example%40workspace%3A."
+  resolution: "react-native-popout-transition@file:../package#../package::hash=34173b&locator=react-native-popout-transition-example%40workspace%3A."
   peerDependencies:
     "@shopify/react-native-skia": ">=0.1.200"
     expo-modules-core: ">=1.4.0"
@@ -8781,7 +8781,7 @@ __metadata:
     react-native-image-colors: ">=2.0.0"
     react-native-reanimated: ">=2.0.0"
     react-native-safe-area-context: ">=4.0.0"
-  checksum: f58d79370a0ae85c3d117bdd8a9b60a155cc8d6faeccd8a4bf1e7636b0598fd6cbd5adbe7e9c398bf8f4ba09df9d83bc7e72a5c63271ad074f822bac7c55b0ed
+  checksum: 36b2016f5261ea28b0378df33775508c44f5aa0d6533e9d33c0a16c678ed136bc587966ee8a79ec5411b311445b3ffc37cb5e6a2fff6666252b7563b45fd489c
   languageName: node
   linkType: hard
 

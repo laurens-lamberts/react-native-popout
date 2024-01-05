@@ -8,7 +8,7 @@ import {
 } from '@shopify/react-native-skia';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, ViewStyle, useWindowDimensions } from 'react-native';
-import { OVERLAY_BACKDROP_FROM_IMAGE } from '../app/config/settings';
+import { OVERLAY_BACKDROP_FROM_IMAGE } from '../config/settings';
 import Animated, {
   SharedValue,
   useAnimatedStyle,

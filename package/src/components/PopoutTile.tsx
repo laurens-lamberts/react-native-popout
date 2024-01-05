@@ -1,8 +1,8 @@
 import React, { RefObject, useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { TileInfo } from '../../screens/Overview';
-import { BORDER_RADIUS_TILE, ENABLE_DEBUG_COLORS } from '../config/settings';
+import { BORDER_RADIUS_TILE } from '../config/settings';
+import { PopoutTileType } from '../types/PopoutTile';
 
 export const TILE_HEIGHT = 160;
 export const TILE_WIDTH = 108;
@@ -12,14 +12,13 @@ const TilePresentation = ({
   item,
 }: {
   onTap: (viewRef: RefObject<Animated.View>) => void;
-  item: TileInfo;
+  item: PopoutTileType;
 }) => {
   const viewRef = useRef<Animated.View>(null);
 
   return (
     <Pressable
       style={{
-        backgroundColor: ENABLE_DEBUG_COLORS ? 'orange' : undefined,
         height: TILE_HEIGHT,
         width: TILE_WIDTH,
       }}
@@ -31,7 +30,7 @@ const TilePresentation = ({
         exiting={FadeOut.duration(200)} // TODO: this is not working
         style={[
           {
-            backgroundColor: ENABLE_DEBUG_COLORS ? 'salmon' : 'white',
+            backgroundColor: 'white',
             height: TILE_HEIGHT,
             width: TILE_WIDTH,
             padding: 12,

@@ -8,13 +8,13 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "wmlInit": "npm install -g wml && watchman watch /Users/laurenslamberts/.nvm/versions/node/v20.10.0/lib/node_modules/wml/src",
+    "wmlInstall": "npm install -g wml",
     "wmlPermission": "sudo chmod -R 777 ./node_modules",
-    "wmlAddWatch": "wml add ../package ./node_modules/react-native-popout-transition",
-    "wmlStart": "wml start",
+    "wmlRegisterWatch": "wml add ../package ./node_modules/react-native-popout-transition",
+    "wmlStart": "watchman watch /Users/laurenslamberts/.nvm/versions/node/v20.10.0/lib/node_modules/wml/src && wml start",
     "DISABLED_preinstall": "echo \"Setting permissions\" && yarn wmlPermission",
     "DISABLED_postinstall": "echo \"Removing symlink dir as wml takes it from here...\" && rm -rf ./node_modules/react-native-popout-transition",
-    "prestart": "echo \"Adding wml watch and starting wml...\" && yarn wmlAddWatch && yarn wmlStart"
+    "prestart": "echo \"Adding wml watch and starting wml...\" && yarn wmlStart"
   },
   "dependencies": {
     "@shopify/react-native-skia": "^0.1.230",

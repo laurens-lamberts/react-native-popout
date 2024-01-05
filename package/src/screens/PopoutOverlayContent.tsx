@@ -1,13 +1,13 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {TileInfo} from './Overview';
-import {ScrollView} from 'react-native-gesture-handler';
+import { Text, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { PopoutTileType } from '../types/PopoutTile';
 
-const OverlayContent = ({
+const PopoutOverlayContent = ({
   item,
   textColor,
 }: {
-  item: TileInfo;
+  item: PopoutTileType;
   textColor: string;
 }) => {
   return (
@@ -16,8 +16,9 @@ const OverlayContent = ({
         style={{
           backgroundColor: 'rgba(102, 119, 136, 0.3)',
           padding: 12,
-        }}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
+        }}
+      >
+        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
           {item.title}
         </Text>
       </View>
@@ -25,11 +26,13 @@ const OverlayContent = ({
         contentContainerStyle={{
           gap: 20,
           padding: 12,
-        }}>
+        }}
+      >
         <Text
           style={{
             color: textColor,
-          }}>
+          }}
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
@@ -50,7 +53,8 @@ const OverlayContent = ({
         <Text
           style={{
             color: textColor,
-          }}>
+          }}
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
@@ -71,7 +75,8 @@ const OverlayContent = ({
         <Text
           style={{
             color: textColor,
-          }}>
+          }}
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
@@ -92,7 +97,8 @@ const OverlayContent = ({
         <Text
           style={{
             color: textColor,
-          }}>
+          }}
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           eget velit vitae erat blandit aliquam. Suspendisse potenti. Nulla
           facilisi. Nullam at ante vitae sem aliquam aliquet. Donec euismod,
@@ -115,4 +121,4 @@ const OverlayContent = ({
   );
 };
 
-export default OverlayContent;
+export default PopoutOverlayContent;

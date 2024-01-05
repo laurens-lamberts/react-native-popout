@@ -1,20 +1,17 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { View } from 'react-native';
-import { TileInfo } from '../../screens/Overview';
-import Overlay from '../../screens/Overlay';
+import Overlay from '../screens/Overlay';
 import { useImage } from '@shopify/react-native-skia';
+import { PopoutTileType } from '../types/PopoutTile';
 
-const OverlayAnchor = ({
-  item,
-  hide,
-}: {
-  item: TileInfo;
+interface Props {
+  item: PopoutTileType;
   hide: () => void;
-}) => {
+}
+
+const OverlayAnchor = ({ item, hide, children }: PropsWithChildren<Props>) => {
   const skiaImage = useImage(item?.image);
-  if (!skiaImage) {
-    return null;
-  }
+  if (!skiaImage) return null;
 
   return (
     <View
@@ -26,7 +23,9 @@ const OverlayAnchor = ({
         flex: 1,
       }}
     >
-      <Overlay item={item} hide={hide} image={skiaImage} />
+      <Overlay item={item} hide={hide} image={skiaImage}>
+        {children}
+      </Overlay>
     </View>
   );
 };
