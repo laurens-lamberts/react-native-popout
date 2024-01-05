@@ -1,6 +1,11 @@
 import React, { RefObject, useRef, useState } from 'react';
 import { SPRING_CONFIG } from '../config/animations';
-import { Pressable, View, useWindowDimensions } from 'react-native';
+import {
+  Pressable,
+  SafeAreaView,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import OverlayAnchor from '../components/OverlayAnchor';
 import Animated, {
   Easing,
@@ -16,6 +21,7 @@ import {
   SkImage,
   makeImageFromView,
 } from '@shopify/react-native-skia';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
 
 type PopoutContextType = {
@@ -149,74 +155,70 @@ const PopoutRootView = ({
         setOverlayComponent,
       }}
     >
-      <View
-        pointerEvents="box-none"
-        ref={overviewRef}
-        style={{
-          zIndex: 1,
-          flex: 1,
-        }}
-      >
-        <Animated.ScrollView
-          style={[{ flex: 1 }, animatedOverviewStyle]}
-          scrollEnabled={!elementOpened && scroll !== 'disabled'}
-          horizontal={scroll === 'horizontal'}
-        >
-          <Pressable
-            style={{
-              margin: 12,
-              gap: 20,
-              flex: 1,
-            }}
-            onPress={onClose}
-          >
-            {children}
-          </Pressable>
-        </Animated.ScrollView>
-      </View>
-      <Animated.View
-        pointerEvents="none"
-        style={[
-          {
-            position: 'absolute',
-            left: snapshotOrigin?.x,
-            top: snapshotOrigin?.y,
-            width: snapshotOrigin?.width,
-            height: snapshotOrigin?.height,
-            zIndex: 98,
-          },
-          animatedBlurStyle,
-        ]}
-      >
-        <Canvas
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View
+          pointerEvents="box-none"
+          ref={overviewRef}
           style={{
+            zIndex: 1,
             flex: 1,
           }}
         >
-          <Image
-            image={snapshot}
-            fit="contain"
-            width={snapshotOrigin?.width || 0}
-            height={snapshotOrigin?.height || 0}
-          >
-            <Blur blur={blur} />
-          </Image>
-        </Canvas>
-      </Animated.View>
-      {elementOpened && (
-        <View
-          style={{
-            position: 'absolute',
-            zIndex: 99,
-            width: screenWidth,
-            height: screenHeight,
-          }}
-        >
-          <OverlayAnchor item={elementOpened} hide={onClose}>
-            {OverlayComponent}
-          </OverlayAnchor>
+          <Animated.View style={[{ flex: 1 }, animatedOverviewStyle]}>
+            <Pressable
+              style={[{ flex: 1, margin: 12, gap: 20 }]}
+              onPress={onClose}
+              // scrollEnabled={!elementOpened && scroll !== 'disabled'}
+              // horizontal={scroll === 'horizontal'}
+            >
+              {children}
+            </Pressable>
+          </Animated.View>
         </View>
-      )}
+        <Animated.View
+          pointerEvents="none"
+          style={[
+            {
+              position: 'absolute',
+              left: snapshotOrigin?.x,
+              top: snapshotOrigin?.y,
+              width: snapshotOrigin?.width,
+              height: snapshotOrigin?.height,
+              zIndex: 98,
+            },
+            animatedBlurStyle,
+          ]}
+        >
+          <Canvas
+            style={{
+              flex: 1,
+            }}
+          >
+            <Image
+              image={snapshot}
+              fit="contain"
+              width={snapshotOrigin?.width || 0}
+              height={snapshotOrigin?.height || 0}
+            >
+              <Blur blur={blur} />
+            </Image>
+          </Canvas>
+        </Animated.View>
+        {elementOpened && (
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 99,
+              width: screenWidth,
+              height: screenHeight,
+            }}
+          >
+            <OverlayAnchor item={elementOpened} hide={onClose}>
+              {OverlayComponent}
+            </OverlayAnchor>
+          </View>
+        )}
+      </GestureHandlerRootView>
     </PopoutContext.Provider>
   );
 };

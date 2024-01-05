@@ -1,5 +1,12 @@
-import Root from './src/app/examples/example1/Root';
+import Minimal from './src/app/examples/minimal';
+import Netflix from './src/app/examples/netflix';
+import AppStore from './src/app/examples/appstore';
 
-const App = Root;
+// Examples;
+// - Netflix
+// - Minimal
+// - AppStore
+
+const App = Minimal;
 
 export default App;

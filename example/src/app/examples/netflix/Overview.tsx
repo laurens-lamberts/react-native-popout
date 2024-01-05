@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {
   PopoutTile,
   PopoutContext,
@@ -7,13 +7,15 @@ import {
 } from 'react-native-popout-transition';
 import Row from '../../components/Row';
 import {DATA, ROWS} from '../../content/content';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const NetflixExample = () => {
+const Overview = () => {
+  const insets = useSafeAreaInsets();
   const {elementOpened, onElementTap, setOverlayComponent} =
     useContext(PopoutContext);
 
   return (
-    <SafeAreaView style={{gap: 20}}>
+    <ScrollView contentContainerStyle={{gap: 20, paddingTop: insets.top}}>
       {ROWS.map(rowData => (
         <View key={rowData.id} style={{gap: 8}}>
           <Text
@@ -30,13 +32,13 @@ const NetflixExample = () => {
                 key={item.id}
                 item={item}
                 onTap={viewRef => {
-                  onElementTap(viewRef, DATA.testCollection[index]);
                   setOverlayComponent(
                     <PopoutOverlayContent
                       item={DATA.testCollection[index]}
                       textColor="white"
                     />,
                   );
+                  onElementTap(viewRef, DATA.testCollection[index]);
                 }}
                 // isOpened={elementOpened?.id === item.id}
               />
@@ -44,8 +46,8 @@ const NetflixExample = () => {
           </Row>
         </View>
       ))}
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
-export default NetflixExample;
+export default Overview;

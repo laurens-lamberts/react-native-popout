@@ -1,43 +1,41 @@
 import React, { RefObject, useRef } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
 
-export const TILE_HEIGHT = 160;
-export const TILE_WIDTH = 108;
+const TILE_HEIGHT_DEFAULT = 160;
+const TILE_WIDTH_DEFAULT = 108;
 
-const TilePresentation = ({
+const PopoutTile = ({
   onTap,
   item,
+  style,
 }: {
   onTap: (viewRef: RefObject<Animated.View>) => void;
   item: PopoutTileType;
+  style: ViewStyle;
 }) => {
   const viewRef = useRef<Animated.View>(null);
 
   return (
     <Pressable
-      style={{
-        height: TILE_HEIGHT,
-        width: TILE_WIDTH,
-      }}
+      style={[
+        {
+          height: TILE_HEIGHT_DEFAULT,
+          width: TILE_WIDTH_DEFAULT,
+          backgroundColor: 'white',
+          borderRadius: BORDER_RADIUS_TILE,
+          overflow: 'hidden',
+        },
+        style,
+      ]}
       onPress={() => onTap(viewRef)}
     >
       {/* {!isOpened && ( */}
       <Animated.View
         entering={FadeIn.delay(200)}
         exiting={FadeOut.duration(200)} // TODO: this is not working
-        style={[
-          {
-            backgroundColor: 'white',
-            height: TILE_HEIGHT,
-            width: TILE_WIDTH,
-            padding: 12,
-            borderRadius: BORDER_RADIUS_TILE,
-            overflow: 'hidden',
-          },
-        ]}
         ref={viewRef}
       >
         <Animated.Image
@@ -48,15 +46,14 @@ const TilePresentation = ({
           entering={FadeIn}
           style={{
             position: 'absolute',
-            width: TILE_WIDTH,
-            height: TILE_HEIGHT,
+            width: !!style?.width ? style.width : TILE_WIDTH_DEFAULT,
+            height: !!style?.height ? style.height : TILE_HEIGHT_DEFAULT,
           }}
         />
-        {/* <Text>{item.title}</Text> */}
       </Animated.View>
       {/* )} */}
     </Pressable>
   );
 };
 
-export default TilePresentation;
+export default PopoutTile;
