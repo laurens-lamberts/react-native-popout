@@ -1,5 +1,5 @@
 {
-  "name": "ScreenAnimations",
+  "name": "react-native-popout-transition-example",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,7 +7,14 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "wmlInit": "npm install -g wml && watchman watch /Users/laurenslamberts/.nvm/versions/node/v20.10.0/lib/node_modules/wml/src",
+    "wmlPermission": "sudo chmod -R 777 ./node_modules",
+    "wmlAddWatch": "wml add ../package ./node_modules/react-native-popout-transition",
+    "wmlStart": "wml start",
+    "DISABLED_preinstall": "echo \"Setting permissions\" && yarn wmlPermission",
+    "DISABLED_postinstall": "echo \"Removing symlink dir as wml takes it from here...\" && rm -rf ./node_modules/react-native-popout-transition",
+    "prestart": "echo \"Adding wml watch and starting wml...\" && yarn wmlAddWatch && yarn wmlStart"
   },
   "dependencies": {
     "@shopify/react-native-skia": "^0.1.230",
@@ -35,7 +42,8 @@
     "jest": "^29.6.3",
     "prettier": "2.8.8",
     "react-test-renderer": "18.2.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "wml": "^0.0.83"
   },
   "engines": {
     "node": ">= 18"
