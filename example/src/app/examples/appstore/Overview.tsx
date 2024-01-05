@@ -11,14 +11,22 @@ import {DATA} from '../../content/content';
 import Row from '../../components/Row';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
+const MARGIN = 20;
+
 const Overview = () => {
   const insets = useSafeAreaInsets();
-  const {width: screenWidth, height: screenHeight} = useWindowDimensions();
+  const {width: screenWidth} = useWindowDimensions();
   const {elementOpened, onElementTap, setOverlayComponent} =
     useContext(PopoutContext);
 
   return (
-    <ScrollView contentContainerStyle={{gap: 20, paddingTop: insets.top}}>
+    <ScrollView
+      contentContainerStyle={{
+        gap: 20,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        marginHorizontal: MARGIN,
+      }}>
       {DATA.testCollection.map((item, index) => (
         <PopoutTile
           key={item.id}
@@ -33,8 +41,8 @@ const Overview = () => {
           }}
           style={{
             borderRadius: 20,
-            width: screenWidth - 20,
-            height: screenWidth - 20,
+            width: screenWidth - MARGIN * 2,
+            height: screenWidth - MARGIN * 2,
           }}
         />
       ))}

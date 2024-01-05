@@ -156,17 +156,9 @@ const PopoutRootView = ({
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <View
-          pointerEvents="box-none"
-          ref={overviewRef}
-          style={{
-            zIndex: 1,
-            flex: 1,
-          }}
-        >
-          <Animated.View style={[{ flex: 1 }, animatedOverviewStyle]}>
+        <View pointerEvents="box-none" ref={overviewRef} style={{ flex: 1 }}>
+          <Animated.View style={animatedOverviewStyle}>
             <Pressable
-              style={[{ flex: 1, margin: 12, gap: 20 }]}
               onPress={onClose}
               // scrollEnabled={!elementOpened && scroll !== 'disabled'}
               // horizontal={scroll === 'horizontal'}

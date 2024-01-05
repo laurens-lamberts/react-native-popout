@@ -15,7 +15,8 @@ const Overview = () => {
     useContext(PopoutContext);
 
   return (
-    <ScrollView contentContainerStyle={{gap: 20, paddingTop: insets.top}}>
+    <ScrollView
+      contentContainerStyle={{gap: 20, margin: 20, marginTop: insets.top}}>
       {ROWS.map(rowData => (
         <View key={rowData.id} style={{gap: 8}}>
           <Text
@@ -26,7 +27,7 @@ const Overview = () => {
             }}>
             {rowData.title}
           </Text>
-          <Row scrollEnabled={!elementOpened}>
+          <Row scrollEnabled={!elementOpened} style={{marginHorizontal: -20}}>
             {DATA.testCollection.map((item, index) => (
               <PopoutTile
                 key={item.id}
