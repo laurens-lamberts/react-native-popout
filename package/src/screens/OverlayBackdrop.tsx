@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Blur,
   Canvas,
@@ -13,6 +13,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { PopoutContext } from '../components/PopoutRootView';
 
 const AnimatedCanvas = Animated.createAnimatedComponent(Canvas);
 
@@ -25,7 +26,12 @@ const OverlayBackdrop = ({
   blurred?: boolean;
   opacity: SharedValue<number> | number;
 }) => {
-  const insets = useSafeAreaInsets();
+  // TODO: refactor into hook, together with the one in Overlay.tsx
+  const { overlayUnderNotch } = useContext(PopoutContext);
+  const safeAreaInsets = useSafeAreaInsets(); // TODO: make more generic
+  const insets = overlayUnderNotch
+    ? { top: 0, bottom: 0, left: 0, right: 0 }
+    : safeAreaInsets;
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const dimmed = blurred;

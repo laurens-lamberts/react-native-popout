@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useEffect, useMemo } from 'react';
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -19,6 +24,7 @@ import OverlayBackdrop from './OverlayBackdrop';
 import { SkImage } from '@shopify/react-native-skia';
 import { BORDER_RADIUS_OVERLAY, BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
+import { PopoutContext } from '../components/PopoutRootView';
 
 interface Props extends React.ComponentProps<typeof Animated.View> {
   item: PopoutTileType;
@@ -27,8 +33,12 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
 }
 const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
-  const insets = useSafeAreaInsets(); // TODO: make more generic
-  const screenHeightMinusInset = screenHeight - insets.top;
+
+  // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
+  const { overlayUnderNotch } = useContext(PopoutContext);
+  const insets = useSafeAreaInsets();
+  const screenHeightMinusInset =
+    screenHeight - (overlayUnderNotch ? 0 : insets.top);
 
   // We have all separate values, because we need to perform the animations imperatively due to new data coming in via props
   const overlayProgress = useSharedValue(0);
@@ -77,7 +87,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
     overlayProgress.value = withTiming(1, SPRING_CONFIG);
     overlayX.value = withTiming(-(item?.origin?.x || 0), SPRING_CONFIG);
     overlayY.value = withTiming(
-      -(item.origin?.y || 0) + insets.top,
+      -(item.origin?.y || 0) + (overlayUnderNotch ? 0 : insets.top),
       SPRING_CONFIG
     );
     // overlayHeight.value = withTiming(item.origin?.height, {duration: 0});
@@ -172,7 +182,13 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
       <GestureDetector gesture={panGesture}>
         <View>
           <OverlayBackdrop image={image} blurred opacity={1} />
-          <View>{children}</View>
+          <View
+            style={{
+              paddingTop: overlayUnderNotch ? insets.top : 0,
+            }}
+          >
+            {children}
+          </View>
           <CloseButton hide={onClose} />
           <OverlayBackdrop image={image} opacity={shadowImageOpacity} />
         </View>

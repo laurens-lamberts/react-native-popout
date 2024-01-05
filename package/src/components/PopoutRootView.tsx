@@ -34,6 +34,8 @@ type PopoutContextType = {
   setOverlayComponent: React.Dispatch<
     React.SetStateAction<React.ComponentType | null>
   >;
+  overlayUnderNotch: boolean;
+  setOverlayUnderNotch: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const PopoutContext = React.createContext<PopoutContextType>({
@@ -41,20 +43,17 @@ export const PopoutContext = React.createContext<PopoutContextType>({
   onElementTap: () => {},
   OverlayComponent: null,
   setOverlayComponent: () => {},
+  overlayUnderNotch: true,
+  setOverlayUnderNotch: () => {},
 });
 
-const PopoutRootView = ({
-  children,
-  scroll = 'vertical',
-}: {
-  children: React.ReactNode;
-  scroll: 'disabled' | 'horizontal' | 'vertical';
-}) => {
+const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
   const [elementOpened, setElementOpened] = useState<PopoutTileType | null>(
     null
   );
   const [OverlayComponent, setOverlayComponent] =
     useState<React.ComponentType | null>(null);
+  const [overlayUnderNotch, setOverlayUnderNotch] = useState(true);
 
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
@@ -150,9 +149,11 @@ const PopoutRootView = ({
     <PopoutContext.Provider
       value={{
         elementOpened,
+        overlayUnderNotch,
         onElementTap,
         OverlayComponent,
         setOverlayComponent,
+        setOverlayUnderNotch,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>

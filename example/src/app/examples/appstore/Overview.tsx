@@ -16,8 +16,14 @@ const MARGIN = 20;
 const Overview = () => {
   const insets = useSafeAreaInsets();
   const {width: screenWidth} = useWindowDimensions();
-  const {elementOpened, onElementTap, setOverlayComponent} =
-    useContext(PopoutContext);
+  const {
+    elementOpened,
+    onElementTap,
+    setOverlayComponent,
+    setOverlayUnderNotch,
+  } = useContext(PopoutContext);
+
+  const tileWidth = screenWidth - MARGIN * 2;
 
   return (
     <ScrollView
@@ -40,11 +46,20 @@ const Overview = () => {
             onElementTap(viewRef, DATA.testCollection[index]);
           }}
           style={{
-            borderRadius: 20,
-            width: screenWidth - MARGIN * 2,
-            height: screenWidth - MARGIN * 2,
-          }}
-        />
+            borderRadius: 12,
+            width: tileWidth,
+            height: tileWidth * 1.3,
+          }}>
+          <View
+            style={{
+              height: 60,
+              top: tileWidth * 1.3 - 60,
+              padding: 20,
+              backgroundColor: 'rgba(225,20,20,0.7)',
+            }}>
+            <Text style={{color: 'white'}}>Paard</Text>
+          </View>
+        </PopoutTile>
       ))}
     </ScrollView>
   );

@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react';
+import React, { PropsWithChildren, RefObject, useRef } from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
@@ -7,15 +7,18 @@ import { PopoutTileType } from '../types/PopoutTile';
 const TILE_HEIGHT_DEFAULT = 160;
 const TILE_WIDTH_DEFAULT = 108;
 
+interface Props {
+  onTap: (viewRef: RefObject<Animated.View>) => void;
+  item: PopoutTileType;
+  style: ViewStyle;
+}
+
 const PopoutTile = ({
   onTap,
   item,
   style,
-}: {
-  onTap: (viewRef: RefObject<Animated.View>) => void;
-  item: PopoutTileType;
-  style: ViewStyle;
-}) => {
+  children,
+}: PropsWithChildren<Props>) => {
   const viewRef = useRef<Animated.View>(null);
 
   return (
@@ -50,6 +53,7 @@ const PopoutTile = ({
             height: !!style?.height ? style.height : TILE_HEIGHT_DEFAULT,
           }}
         />
+        {children}
       </Animated.View>
       {/* )} */}
     </Pressable>

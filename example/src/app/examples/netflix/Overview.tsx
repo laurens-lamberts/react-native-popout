@@ -11,8 +11,12 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Overview = () => {
   const insets = useSafeAreaInsets();
-  const {elementOpened, onElementTap, setOverlayComponent} =
-    useContext(PopoutContext);
+  const {
+    elementOpened,
+    onElementTap,
+    setOverlayComponent,
+    setOverlayUnderNotch,
+  } = useContext(PopoutContext);
 
   return (
     <ScrollView
@@ -33,6 +37,7 @@ const Overview = () => {
                 key={item.id}
                 item={item}
                 onTap={viewRef => {
+                  setOverlayUnderNotch(false);
                   setOverlayComponent(
                     <PopoutOverlayContent
                       item={DATA.testCollection[index]}
