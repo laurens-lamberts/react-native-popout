@@ -2,9 +2,7 @@
 
 A popout-style transition using reanimated, skia and gesture handler
 
-![Video](./resources/react-native-popout-demo-2024-01-06-compressed.mp4)
-
-Features;
+![Demo GIF](./resources/react-native-popout-demo-2024-01-06.gif)
 
 - Custom renderings in both the tile and popout.
 - Popout animates from- and to the tile.

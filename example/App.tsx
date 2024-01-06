@@ -7,6 +7,6 @@ import AppStore from './src/app/examples/appstore';
 // - Minimal
 // - AppStore
 
-const App = AppStore;
+const App = Netflix;
 
 export default App;
