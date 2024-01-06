@@ -1,5 +1,3 @@
-Sure, here's a basic API specification for your package:
-
 # API Specification
 
 ## [`PopoutRootView`](command:_github.copilot.openSymbolInFile?%5B%22package%2Fsrc%2Fcomponents%2FPopoutRootView.tsx%22%2C%22PopoutRootView%22%5D "package/src/components/PopoutRootView.tsx")
@@ -41,24 +39,30 @@ import { PopoutTile } from "<your-library-name>";
 
 ## [`PopoutContext`](command:_github.copilot.openSymbolInFile?%5B%22package%2Fsrc%2Fcomponents%2FPopoutRootView.tsx%22%2C%22PopoutContext%22%5D "package/src/components/PopoutRootView.tsx")
 
-TODO (below is not yet correct)
-
 [`PopoutContext`](command:_github.copilot.openSymbolInFile?%5B%22package%2Fsrc%2Fcomponents%2FPopoutRootView.tsx%22%2C%22PopoutContext%22%5D "package/src/components/PopoutRootView.tsx") is a React context that provides the state and actions for the popout transition.
 
 ### Values
 
-- `isOpen`: boolean - Whether the popout transition is open.
-- `open`: Function - A function to open the popout transition.
-- `close`: Function - A function to close the popout transition.
+- `elementOpened`: PopoutTileType | null - The currently opened popout tile, or null if no tile is opened.
+- `onElementTap`: Function - A function to be called when a popout tile is tapped. It receives a reference to the Animated.View and the tapped PopoutTileType item.
+- `OverlayComponent`: React.ComponentType | null - The component to be rendered as an overlay, or null if no overlay should be rendered.
+- `setOverlayComponent`: Function - Function to set the OverlayComponent. It receives a React.ComponentType or null.
+- `overlayUnderNotch`: boolean - Boolean indicating whether the overlay should be rendered under the notch.
+- `setOverlayUnderNotch`: Function - Function to set the overlayUnderNotch property. It receives a boolean.
 
 ### Usage
 
 ```typescript
 import { useContext } from "react";
-import { PopoutContext } from "<your-library-name>";
+import { PopoutContext } from "react-native-popout";
 
 // In your component:
-const { isOpen, open, close } = useContext(PopoutContext);
+const {
+  elementOpened,
+  onElementTap,
+  OverlayComponent,
+  setOverlayComponent,
+  overlayUnderNotch,
+  setOverlayUnderNotch,
+} = useContext(PopoutContext);
 ```
-
-Please replace `<your-library-name>` with the actual name of your library.
