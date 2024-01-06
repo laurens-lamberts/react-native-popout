@@ -10,7 +10,7 @@ const TILE_WIDTH_DEFAULT = 108;
 interface Props {
   onTap: (viewRef: RefObject<Animated.View>) => void;
   item: PopoutTileType;
-  style: ViewStyle;
+  style?: ViewStyle;
 }
 
 const PopoutTile = ({

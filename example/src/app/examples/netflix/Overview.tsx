@@ -38,12 +38,12 @@ const Overview = () => {
                 item={item}
                 onTap={viewRef => {
                   setOverlayUnderNotch(false);
-                  setOverlayComponent(
+                  setOverlayComponent(() => (
                     <PopoutOverlayContent
                       item={DATA.testCollection[index]}
                       textColor="white"
-                    />,
-                  );
+                    />
+                  ));
                   onElementTap(viewRef, DATA.testCollection[index]);
                 }}
                 // isOpened={elementOpened?.id === item.id}

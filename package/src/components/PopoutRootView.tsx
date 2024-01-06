@@ -21,7 +21,7 @@ import { PopoutTileType } from '../types/PopoutTile';
 
 type PopoutContextType = {
   elementOpened: PopoutTileType | null;
-  onElementTap?: (
+  onElementTap: (
     viewRef: RefObject<Animated.View>,
     item: PopoutTileType
   ) => void;
