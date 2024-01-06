@@ -2,7 +2,7 @@
 
 A popout-style transition using reanimated, skia and gesture handler
 
-TODO: enter video here
+![Video](./resources/react-native-popout-demo-2024-01-06.mp4)
 
 Features;
 
