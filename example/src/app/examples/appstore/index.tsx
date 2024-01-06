@@ -1,5 +1,5 @@
 import React from 'react';
-import PopoutRootView from 'react-native-popout-transition';
+import PopoutRootView from 'react-native-popout';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Overview from './Overview';
 

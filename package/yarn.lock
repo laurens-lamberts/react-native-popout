@@ -11295,9 +11295,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-popout-transition@workspace:.":
+"react-native-popout@workspace:.":
   version: 0.0.0-use.local
-  resolution: "react-native-popout-transition@workspace:."
+  resolution: "react-native-popout@workspace:."
   dependencies:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.23.7

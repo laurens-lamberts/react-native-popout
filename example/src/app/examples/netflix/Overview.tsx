@@ -4,7 +4,7 @@ import {
   PopoutTile,
   PopoutContext,
   PopoutOverlayContent,
-} from 'react-native-popout-transition';
+} from 'react-native-popout';
 import Row from '../../components/Row';
 import {DATA, ROWS} from '../../content/content';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';

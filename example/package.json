@@ -1,5 +1,5 @@
 {
-  "name": "react-native-popout-transition-example",
+  "name": "react-native-popout-example",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,10 +10,10 @@
     "test": "jest",
     "wmlInstall": "npm install -g wml",
     "wmlPermission": "sudo chmod -R 777 ./node_modules",
-    "wmlRegisterWatch": "wml add ../package ./node_modules/react-native-popout-transition",
+    "wmlRegisterWatch": "wml add ../package ./node_modules/react-native-popout",
     "wmlStart": "watchman watch /Users/laurenslamberts/.nvm/versions/node/v20.10.0/lib/node_modules/wml/src && wml start",
     "DISABLED_preinstall": "echo \"Setting permissions\" && yarn wmlPermission",
-    "DISABLED_postinstall": "echo \"Removing symlink dir as wml takes it from here...\" && rm -rf ./node_modules/react-native-popout-transition",
+    "DISABLED_postinstall": "echo \"Removing symlink dir as wml takes it from here...\" && rm -rf ./node_modules/react-native-popout",
     "prestart": "echo \"Adding wml watch and starting wml...\" && yarn wmlStart"
   },
   "dependencies": {
@@ -23,7 +23,7 @@
     "react-native": "0.73.1",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-image-colors": "^2.3.0",
-    "react-native-popout-transition": "file:../package",
+    "react-native-popout": "file:../package",
     "react-native-reanimated": "^3.6.1",
     "react-native-safe-area-context": "^4.8.2"
   },

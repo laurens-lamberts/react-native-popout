@@ -6,7 +6,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import {PopoutTile, PopoutContext} from 'react-native-popout-transition';
+import {PopoutTile, PopoutContext} from 'react-native-popout';
 import {DATA} from '../../content/content';
 import Row from '../../components/Row';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';

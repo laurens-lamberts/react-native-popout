@@ -1,6 +1,6 @@
 {
-  "name": "react-native-popout-transition",
-  "version": "0.1.0",
+  "name": "react-native-popout",
+  "version": "0.1.1",
   "description": "A popout-style transition using reanimated, skia and gesture handler",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -9,7 +9,6 @@
   "source": "src/index",
   "files": [
     "src",
-    "react-native-popout-transition.podspec",
     "lib",
     "android",
     "ios",
@@ -27,14 +26,13 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-popout-transition-example",
+    "example": "yarn workspace react-native-popout-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
     "prepare": "bob build",
-    "release": "release-it",
-    "validatePodSpec": "pod spec lint react-native-popout-transition.podspec --allow-warnings"
+    "release": "release-it"
   },
   "keywords": [
     "react-native",
@@ -43,14 +41,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/laurens-lamberts/react-native-popout-transition.git"
+    "url": "git+https://github.com/laurens-lamberts/react-native-popout.git"
   },
   "author": "Laurens Lamberts <laurenslamberts@hotmail.com> (https://github.com/laurens-lamberts)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/laurens-lamberts/react-native-popout-transition/issues"
+    "url": "https://github.com/laurens-lamberts/react-native-popout/issues"
   },
-  "homepage": "https://github.com/laurens-lamberts/react-native-popout-transition#readme",
+  "homepage": "https://github.com/laurens-lamberts/react-native-popout#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

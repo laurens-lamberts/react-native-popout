@@ -4,7 +4,7 @@
     "rootDir": ".",
     "paths": {
       "react": ["./node_modules/react"],
-      "react-native-popout-transition": ["./src/index"]
+      "react-native-popout": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

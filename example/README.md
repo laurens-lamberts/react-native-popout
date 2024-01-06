@@ -1,4 +1,4 @@
-# react-native-popout-transition
+# react-native-popout example
 
 Example app for the library.
 Three examples are available;

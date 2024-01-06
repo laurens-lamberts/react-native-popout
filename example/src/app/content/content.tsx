@@ -1,4 +1,4 @@
-import {PopoutTileType} from 'react-native-popout-transition';
+import {PopoutTileType} from 'react-native-popout';
 
 export const DATA = {
   testCollection: [
