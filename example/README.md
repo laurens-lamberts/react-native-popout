@@ -3,9 +3,10 @@
 Example app for the library.
 Three examples are available;
 
-- Netflix
-- AppStore
-- Minimal
+- Netflix: a basic remake of the Netflix app transitions
+- AppStore: a basic remake of the iOS App store transitions
+- Minimal: a minimal example, just what you need to get started using this library
+- Testing: various different shapes and overlays
 
 You can swap between the examples by changing the `App.tsx` file.
 

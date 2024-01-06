@@ -6,6 +6,7 @@ import AppStore from './src/app/examples/appstore';
 // - Netflix
 // - Minimal
 // - AppStore
+// - Testing
 
 const App = Netflix;
 

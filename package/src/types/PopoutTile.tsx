@@ -1,9 +1,9 @@
-import { ImageSourcePropType } from 'react-native';
+import { ImageRequireSource } from 'react-native';
 
 export type PopoutTileType = {
   id: number;
   title: string;
-  image: ImageSourcePropType;
+  image: ImageRequireSource;
   origin?: {
     x: number;
     y: number;

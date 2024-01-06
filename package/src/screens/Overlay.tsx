@@ -18,7 +18,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { SPRING_CONFIG } from '../config/animations';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import PopoutOverlayContent from './PopoutOverlayContent';
 import CloseButton from '../components/CloseButton';
 import OverlayBackdrop from './OverlayBackdrop';
 import { SkImage } from '@shopify/react-native-skia';

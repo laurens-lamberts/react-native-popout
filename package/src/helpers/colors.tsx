@@ -1,15 +1,15 @@
-import { useMemo } from 'react';
-import { getColors } from 'react-native-image-colors';
+// import { useMemo } from 'react';
+// import { getColors } from 'react-native-image-colors';
 
-export const useImageColors = (url: string) => {
-  return useMemo(() => {
-    return getColors(url, {
-      fallback: '#000000',
-      cache: true,
-      key: url,
-    });
-  }, [url]);
-};
+// export const useImageColors = (url: string) => {
+//   return useMemo(() => {
+//     return getColors(url, {
+//       fallback: '#000000',
+//       cache: true,
+//       key: url,
+//     });
+//   }, [url]);
+// };
 
 export const getReadableTextColorByBackground = (backgroundColor: string) => {
   const hexColor = backgroundColor.replace('#', '');

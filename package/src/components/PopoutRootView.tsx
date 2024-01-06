@@ -1,11 +1,6 @@
 import React, { RefObject, useRef, useState } from 'react';
 import { SPRING_CONFIG } from '../config/animations';
-import {
-  Pressable,
-  SafeAreaView,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import { Pressable, View, useWindowDimensions } from 'react-native';
 import OverlayAnchor from '../components/OverlayAnchor';
 import Animated, {
   Easing,

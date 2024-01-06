@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, RefObject, useRef } from 'react';
-import { Pressable, StyleProp, ViewStyle } from 'react-native';
+import { Pressable, ViewStyle } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
