@@ -42,9 +42,7 @@ const PopoutTile = ({
         ref={viewRef}
       >
         <Animated.Image
-          src={item.image}
-          // @ts-ignore works!
-          source={undefined}
+          source={item.image}
           resizeMode={'cover'}
           entering={FadeIn}
           style={{
