@@ -1,4 +1,4 @@
-# react-native-popout-transition
+# react-native-popout
 
 > [!WARNING]  
 > This library is still in development. It is not yet ready for production use.
@@ -32,13 +32,13 @@ I find this transition to be natural and visually pleasing. Using the `reanimate
 To install the library, navigate to your project directory and run:
 
 ```bash
-npm install --save react-native-popout-transition
+npm install --save react-native-popout
 ```
 
 or if you are using Yarn:
 
 ```bash
-yarn add react-native-popout-transition
+yarn add react-native-popout
 ```
 
 and if not yet present in your project, install the following packages;
@@ -63,7 +63,7 @@ Here's a minimal example of how to use the library:
 ### Your App.tsx / index.js file
 
 ```typescriptreact
-import PopoutRootView from 'react-native-popout-transition';
+import PopoutRootView from 'react-native-popout';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Screen from './Screen';
 
@@ -85,7 +85,7 @@ export default App;
 ```typescriptreact
 import React, {useContext} from 'react';
 import {SafeAreaView, ScrollView, Text, View} from 'react-native';
-import {PopoutTile, PopoutContext, PopoutTileType} from 'react-native-popout-transition';
+import {PopoutTile, PopoutContext, PopoutTileType} from 'react-native-popout';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const TEST_ITEM = {
