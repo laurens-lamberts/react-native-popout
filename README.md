@@ -1,5 +1,8 @@
 # react-native-popout-transition
 
+> [!WARNING]  
+> This library is still in development. It is not yet ready for production use.
+
 A popout-style transition using reanimated, skia and gesture handler
 
 ![Demo GIF](./resources/react-native-popout-demo-2024-01-06.gif)
@@ -49,6 +52,8 @@ Make sure you added the following to your info.plist file `dict`, in order to su
 ```
 
 ## Usage
+
+API specification can be found [here](API.md).
 
 Here's a minimal example of how to use the library:
 

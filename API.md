@@ -41,6 +41,8 @@ import { PopoutTile } from "<your-library-name>";
 
 ## [`PopoutContext`](command:_github.copilot.openSymbolInFile?%5B%22package%2Fsrc%2Fcomponents%2FPopoutRootView.tsx%22%2C%22PopoutContext%22%5D "package/src/components/PopoutRootView.tsx")
 
+TODO (below is not yet correct)
+
 [`PopoutContext`](command:_github.copilot.openSymbolInFile?%5B%22package%2Fsrc%2Fcomponents%2FPopoutRootView.tsx%22%2C%22PopoutContext%22%5D "package/src/components/PopoutRootView.tsx") is a React context that provides the state and actions for the popout transition.
 
 ### Values
