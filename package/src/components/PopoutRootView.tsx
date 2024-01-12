@@ -34,6 +34,10 @@ type PopoutContextType = {
   setOverlayUnderNotch: React.Dispatch<React.SetStateAction<boolean>>;
   tileBorderRadius: number;
   setTileBorderRadius: React.Dispatch<React.SetStateAction<number>>;
+  backdropScale: boolean;
+  setBackdropScale: React.Dispatch<React.SetStateAction<boolean>>;
+  backdropBlur: boolean;
+  setBackdropBlur: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const PopoutContext = React.createContext<PopoutContextType>({
@@ -45,6 +49,10 @@ export const PopoutContext = React.createContext<PopoutContextType>({
   setOverlayUnderNotch: () => {},
   tileBorderRadius: BORDER_RADIUS_TILE,
   setTileBorderRadius: () => {},
+  backdropScale: true,
+  setBackdropScale: () => {},
+  backdropBlur: true,
+  setBackdropBlur: () => {},
 });
 
 const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
@@ -55,6 +63,8 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     useState<React.ComponentType | null>(null);
   const [overlayUnderNotch, setOverlayUnderNotch] = useState(true);
   const [tileBorderRadius, setTileBorderRadius] = useState(BORDER_RADIUS_TILE);
+  const [backdropScale, setBackdropScale] = useState(true);
+  const [backdropBlur, setBackdropBlur] = useState(true);
 
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
@@ -86,12 +96,17 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     return {
       transform: [
         {
-          scale: withSpring(elementOpened ? 0.94 : 1, {
-            ...TRANSITION_CONFIG,
-          }),
+          scale: backdropScale
+            ? withSpring(elementOpened ? 0.94 : 1, {
+                ...TRANSITION_CONFIG,
+              })
+            : 1,
         },
       ],
-      opacity: withSpring(elementOpened ? 0 : 1, TRANSITION_CONFIG),
+      opacity: withSpring(
+        elementOpened && backdropBlur ? 0 : 1,
+        TRANSITION_CONFIG
+      ),
     };
   });
 
@@ -99,9 +114,11 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     return {
       transform: [
         {
-          scale: withSpring(elementOpened ? 0.94 : 1, {
-            ...TRANSITION_CONFIG,
-          }),
+          scale: backdropScale
+            ? withSpring(elementOpened ? 0.94 : 1, {
+                ...TRANSITION_CONFIG,
+              })
+            : 1,
         },
       ],
       opacity: withSpring(elementOpened ? 1 : 0, TRANSITION_CONFIG),
@@ -149,14 +166,18 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
   return (
     <PopoutContext.Provider
       value={{
-        elementOpened,
-        overlayUnderNotch,
-        tileBorderRadius,
-        onElementTap,
         OverlayComponent,
+        elementOpened,
+        onElementTap,
         setOverlayComponent,
+        overlayUnderNotch,
         setOverlayUnderNotch,
+        tileBorderRadius,
         setTileBorderRadius,
+        backdropScale,
+        setBackdropScale,
+        backdropBlur,
+        setBackdropBlur,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -171,35 +192,37 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
             </Pressable>
           </Animated.View>
         </View>
-        <Animated.View
-          pointerEvents="none"
-          style={[
-            {
-              position: 'absolute',
-              left: snapshotOrigin?.x,
-              top: snapshotOrigin?.y,
-              width: snapshotOrigin?.width,
-              height: snapshotOrigin?.height,
-              zIndex: 98,
-            },
-            animatedBlurStyle,
-          ]}
-        >
-          <Canvas
-            style={{
-              flex: 1,
-            }}
+        {backdropBlur && (
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              {
+                position: 'absolute',
+                left: snapshotOrigin?.x,
+                top: snapshotOrigin?.y,
+                width: snapshotOrigin?.width,
+                height: snapshotOrigin?.height,
+                zIndex: 98,
+              },
+              animatedBlurStyle,
+            ]}
           >
-            <Image
-              image={snapshot}
-              fit="contain"
-              width={snapshotOrigin?.width || 0}
-              height={snapshotOrigin?.height || 0}
+            <Canvas
+              style={{
+                flex: 1,
+              }}
             >
-              <Blur blur={blur} />
-            </Image>
-          </Canvas>
-        </Animated.View>
+              <Image
+                image={snapshot}
+                fit="contain"
+                width={snapshotOrigin?.width || 0}
+                height={snapshotOrigin?.height || 0}
+              >
+                <Blur blur={blur} />
+              </Image>
+            </Canvas>
+          </Animated.View>
+        )}
         {elementOpened && (
           <View
             style={{

@@ -14,6 +14,8 @@ interface Props {
   style?: ViewStyle;
   fadeIn: boolean;
   overlayUnderNotch: boolean;
+  backdropBlur: boolean;
+  backdropScale: boolean;
 }
 
 const PopoutTile = ({
@@ -23,10 +25,16 @@ const PopoutTile = ({
   children,
   fadeIn = true,
   overlayUnderNotch = true,
+  backdropBlur = true,
+  backdropScale = true,
 }: PropsWithChildren<Props>) => {
   const viewRef = useRef<Animated.View>(null);
-  const { setOverlayUnderNotch, setTileBorderRadius } =
-    useContext(PopoutContext);
+  const {
+    setOverlayUnderNotch,
+    setTileBorderRadius,
+    setBackdropScale,
+    setBackdropBlur,
+  } = useContext(PopoutContext);
 
   const borderRadius = (style?.borderRadius as number) || BORDER_RADIUS_TILE;
 
@@ -46,6 +54,8 @@ const PopoutTile = ({
       onPress={() => {
         setOverlayUnderNotch(overlayUnderNotch);
         setTileBorderRadius(borderRadius);
+        setBackdropScale(backdropScale);
+        setBackdropBlur(backdropBlur);
         onTap(viewRef);
       }}
     >
