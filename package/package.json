@@ -63,6 +63,7 @@
     "@react-native/metro-config": "^0.73.2",
     "@react-native/typescript-config": "^0.73.1",
     "@release-it/conventional-changelog": "^5.0.0",
+    "@release-it/keep-a-changelog": "^5.0.0",
     "@shopify/react-native-skia": "^0.1.230",
     "@types/jest": "^28.1.2",
     "@types/react": "^18.2.6",
