@@ -1,7 +1,7 @@
-import {SpringConfig} from 'react-native-reanimated/lib/typescript/reanimated2/animation/springUtils';
+import { Easing, WithTimingConfig } from 'react-native-reanimated';
 
-export const SPRING_CONFIG: SpringConfig = {
-  damping: 18,
-  stiffness: 120,
+export const TRANSITION_CONFIG: WithTimingConfig = {
+  duration: 500,
+  easing: Easing.bezier(0.4, 0, 0.2, 1),
   // overshootClamping: true,
 };

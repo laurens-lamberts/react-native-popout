@@ -16,7 +16,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { SPRING_CONFIG } from '../config/animations';
+import { TRANSITION_CONFIG } from '../config/animations';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CloseButton from '../components/CloseButton';
 import OverlayBackdrop from './OverlayBackdrop';
@@ -60,44 +60,44 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
 
   const resetOverlay = () => {
     'worklet';
-    overlayProgress.value = withTiming(0, SPRING_CONFIG, () => {
+    overlayProgress.value = withTiming(0, TRANSITION_CONFIG, () => {
       runOnJS(hide)(); // todo; earlier
     });
-    overlayX.value = withTiming(0, SPRING_CONFIG);
-    overlayY.value = withTiming(0, SPRING_CONFIG);
+    overlayX.value = withTiming(0, TRANSITION_CONFIG);
+    overlayY.value = withTiming(0, TRANSITION_CONFIG);
     overlayScale.value = withTiming(
       (item.origin?.width || 0) / screenWidth,
-      SPRING_CONFIG
+      TRANSITION_CONFIG
     );
-    shadowImageOpacity.value = withTiming(1, SPRING_CONFIG);
+    shadowImageOpacity.value = withTiming(1, TRANSITION_CONFIG);
     overlayWidth.value = withTiming(
       (item.origin?.width || 0) / scale,
-      SPRING_CONFIG
+      TRANSITION_CONFIG
     );
     overlayHeight.value = withTiming(
       (item.origin?.height || 0) / scale,
-      SPRING_CONFIG
+      TRANSITION_CONFIG
     );
   };
   const resetPan = () => {
     'worklet';
-    panX.value = withSpring(0, SPRING_CONFIG);
-    panY.value = withSpring(0, SPRING_CONFIG);
-    panScale.value = withSpring(1, SPRING_CONFIG);
+    panX.value = withSpring(0, TRANSITION_CONFIG);
+    panY.value = withSpring(0, TRANSITION_CONFIG);
+    panScale.value = withSpring(1, TRANSITION_CONFIG);
   };
   const onOpen = () => {
     'worklet';
     // Entering animation
-    overlayProgress.value = withTiming(1, SPRING_CONFIG);
-    overlayX.value = withTiming(-(item?.origin?.x || 0), SPRING_CONFIG);
+    overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
+    overlayX.value = withTiming(-(item?.origin?.x || 0), TRANSITION_CONFIG);
     overlayY.value = withTiming(
       -(item.origin?.y || 0) + (overlayUnderNotch ? 0 : insets.top),
-      SPRING_CONFIG
+      TRANSITION_CONFIG
     );
-    overlayWidth.value = withTiming(screenWidth, SPRING_CONFIG);
-    overlayHeight.value = withTiming(screenHeightMinusInset, SPRING_CONFIG);
-    overlayScale.value = withTiming(1, SPRING_CONFIG);
-    shadowImageOpacity.value = withTiming(0, SPRING_CONFIG);
+    overlayWidth.value = withTiming(screenWidth, TRANSITION_CONFIG);
+    overlayHeight.value = withTiming(screenHeightMinusInset, TRANSITION_CONFIG);
+    overlayScale.value = withTiming(1, TRANSITION_CONFIG);
+    shadowImageOpacity.value = withTiming(0, TRANSITION_CONFIG);
   };
   const onClose = () => {
     'worklet';

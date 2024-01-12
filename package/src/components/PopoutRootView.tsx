@@ -1,5 +1,5 @@
 import React, { RefObject, useRef, useState } from 'react';
-import { SPRING_CONFIG } from '../config/animations';
+import { TRANSITION_CONFIG } from '../config/animations';
 import { Pressable, View, useWindowDimensions } from 'react-native';
 import OverlayAnchor from '../components/OverlayAnchor';
 import Animated, {
@@ -87,11 +87,11 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       transform: [
         {
           scale: withSpring(elementOpened ? 0.94 : 1, {
-            ...SPRING_CONFIG,
+            ...TRANSITION_CONFIG,
           }),
         },
       ],
-      opacity: withSpring(elementOpened ? 0 : 1, SPRING_CONFIG),
+      opacity: withSpring(elementOpened ? 0 : 1, TRANSITION_CONFIG),
     };
   });
 
@@ -100,11 +100,11 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       transform: [
         {
           scale: withSpring(elementOpened ? 0.94 : 1, {
-            ...SPRING_CONFIG,
+            ...TRANSITION_CONFIG,
           }),
         },
       ],
-      opacity: withSpring(elementOpened ? 1 : 0, SPRING_CONFIG),
+      opacity: withSpring(elementOpened ? 1 : 0, TRANSITION_CONFIG),
     };
   });
 
