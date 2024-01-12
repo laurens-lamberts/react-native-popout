@@ -1,8 +1,9 @@
-import React, { PropsWithChildren, RefObject, useRef } from 'react';
+import React, { PropsWithChildren, RefObject, useContext, useRef } from 'react';
 import { Image, Pressable, ViewStyle } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
+import { PopoutContext } from './PopoutRootView';
 
 const TILE_HEIGHT_DEFAULT = 160;
 const TILE_WIDTH_DEFAULT = 108;
@@ -12,6 +13,7 @@ interface Props {
   item: PopoutTileType;
   style?: ViewStyle;
   fadeIn: boolean;
+  overlayUnderNotch: boolean;
 }
 
 const PopoutTile = ({
@@ -20,8 +22,13 @@ const PopoutTile = ({
   style,
   children,
   fadeIn = true,
+  overlayUnderNotch = true,
 }: PropsWithChildren<Props>) => {
   const viewRef = useRef<Animated.View>(null);
+  const { setOverlayUnderNotch, setTileBorderRadius } =
+    useContext(PopoutContext);
+
+  const borderRadius = (style?.borderRadius as number) || BORDER_RADIUS_TILE;
 
   return (
     <Pressable
@@ -30,13 +37,17 @@ const PopoutTile = ({
           height: TILE_HEIGHT_DEFAULT,
           width: TILE_WIDTH_DEFAULT,
           backgroundColor: 'white',
-          borderRadius: BORDER_RADIUS_TILE,
+          borderRadius,
           overflow: 'hidden',
         },
         style,
       ]}
       ref={viewRef}
-      onPress={() => onTap(viewRef)}
+      onPress={() => {
+        setOverlayUnderNotch(overlayUnderNotch);
+        setTileBorderRadius(borderRadius);
+        onTap(viewRef);
+      }}
     >
       <Animated.View entering={fadeIn ? FadeIn.delay(200) : undefined}>
         <Image

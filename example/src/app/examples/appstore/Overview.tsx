@@ -16,12 +16,8 @@ const MARGIN = 20;
 const Overview = () => {
   const insets = useSafeAreaInsets();
   const {width: screenWidth} = useWindowDimensions();
-  const {
-    elementOpened,
-    onElementTap,
-    setOverlayComponent,
-    setOverlayUnderNotch,
-  } = useContext(PopoutContext);
+  const {elementOpened, onElementTap, setOverlayComponent} =
+    useContext(PopoutContext);
 
   const tileWidth = screenWidth - MARGIN * 2;
 

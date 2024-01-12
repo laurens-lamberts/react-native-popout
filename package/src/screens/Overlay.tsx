@@ -34,7 +34,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
-  const { overlayUnderNotch } = useContext(PopoutContext);
+  const { overlayUnderNotch, tileBorderRadius } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
     screenHeight - (overlayUnderNotch ? 0 : insets.top);
@@ -122,7 +122,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
       borderRadius: interpolate(
         overlayProgress.value,
         [0, 1],
-        [BORDER_RADIUS_TILE, BORDER_RADIUS_OVERLAY]
+        [BORDER_RADIUS_OVERLAY * (1 / scale), BORDER_RADIUS_OVERLAY]
       ),
       opacity: interpolate(overlayProgress.value, [0, 0.05, 1], [0, 0.7, 1]),
     };

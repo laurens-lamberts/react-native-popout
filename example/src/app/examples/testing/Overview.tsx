@@ -13,12 +13,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 const Overview = () => {
   const insets = useSafeAreaInsets();
   const {width: screenWidth} = useWindowDimensions();
-  const {
-    elementOpened,
-    onElementTap,
-    setOverlayComponent,
-    setOverlayUnderNotch,
-  } = useContext(PopoutContext);
+  const {elementOpened, onElementTap, setOverlayComponent} =
+    useContext(PopoutContext);
 
   return (
     <ScrollView
@@ -39,9 +35,9 @@ const Overview = () => {
       <PopoutTile
         style={{width: 100, height: 200}}
         item={DATA.testCollection[1]}
+        overlayUnderNotch={false}
         onTap={viewRef => {
           const item = DATA.testCollection[1];
-          setOverlayUnderNotch(false);
           setOverlayComponent(
             <View style={{margin: 20}}>
               <Text style={{color: 'white'}}>{item.title}</Text>
@@ -53,9 +49,9 @@ const Overview = () => {
       <PopoutTile
         style={{width: screenWidth - 40, height: screenWidth - 40}}
         item={DATA.testCollection[2]}
+        overlayUnderNotch={false}
         onTap={viewRef => {
           const item = DATA.testCollection[2];
-          setOverlayUnderNotch(false);
           setOverlayComponent(
             <View style={{margin: 20}}>
               <Text style={{color: 'white'}}>{item.title}</Text>

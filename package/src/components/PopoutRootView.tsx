@@ -18,6 +18,7 @@ import {
 } from '@shopify/react-native-skia';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
+import { BORDER_RADIUS_TILE } from '../config/settings';
 
 type PopoutContextType = {
   elementOpened: PopoutTileType | null;
@@ -31,6 +32,8 @@ type PopoutContextType = {
   >;
   overlayUnderNotch: boolean;
   setOverlayUnderNotch: React.Dispatch<React.SetStateAction<boolean>>;
+  tileBorderRadius: number;
+  setTileBorderRadius: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const PopoutContext = React.createContext<PopoutContextType>({
@@ -40,6 +43,8 @@ export const PopoutContext = React.createContext<PopoutContextType>({
   setOverlayComponent: () => {},
   overlayUnderNotch: true,
   setOverlayUnderNotch: () => {},
+  tileBorderRadius: BORDER_RADIUS_TILE,
+  setTileBorderRadius: () => {},
 });
 
 const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
@@ -49,6 +54,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
   const [OverlayComponent, setOverlayComponent] =
     useState<React.ComponentType | null>(null);
   const [overlayUnderNotch, setOverlayUnderNotch] = useState(true);
+  const [tileBorderRadius, setTileBorderRadius] = useState(BORDER_RADIUS_TILE);
 
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
@@ -145,10 +151,12 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       value={{
         elementOpened,
         overlayUnderNotch,
+        tileBorderRadius,
         onElementTap,
         OverlayComponent,
         setOverlayComponent,
         setOverlayUnderNotch,
+        setTileBorderRadius,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
