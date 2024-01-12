@@ -97,13 +97,11 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       transform: [
         {
           scale: backdropScale
-            ? withSpring(elementOpened ? 0.94 : 1, {
-                ...TRANSITION_CONFIG,
-              })
+            ? withTiming(elementOpened ? 0.94 : 1, TRANSITION_CONFIG)
             : 1,
         },
       ],
-      opacity: withSpring(
+      opacity: withTiming(
         elementOpened && backdropBlur ? 0 : 1,
         TRANSITION_CONFIG
       ),
@@ -115,13 +113,11 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       transform: [
         {
           scale: backdropScale
-            ? withSpring(elementOpened ? 0.94 : 1, {
-                ...TRANSITION_CONFIG,
-              })
+            ? withTiming(elementOpened ? 0.94 : 1, TRANSITION_CONFIG)
             : 1,
         },
       ],
-      opacity: withSpring(elementOpened ? 1 : 0, TRANSITION_CONFIG),
+      opacity: withTiming(elementOpened ? 1 : 0, TRANSITION_CONFIG),
     };
   });
 
