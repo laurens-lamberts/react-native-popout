@@ -48,10 +48,8 @@ const Overview = () => {
               <View
                 key={item.id + rowData.id}
                 style={{
-                  // justifyContent: 'center',
                   alignItems: 'center',
                   width: appIconSize,
-                  overflow: 'visible',
                 }}>
                 <PopoutTile
                   style={{
@@ -67,7 +65,13 @@ const Overview = () => {
                   }}
                   // isOpened={elementOpened?.id === item.id}
                 />
-                <Text style={{color: 'white', marginTop: 6}} numberOfLines={1}>
+                <Text
+                  style={{
+                    color: 'white',
+                    marginTop: 6,
+                    width: appIconSize + 20, // Increase the width to allow text to break out
+                  }}
+                  numberOfLines={1}>
                   {item.title}
                 </Text>
               </View>
