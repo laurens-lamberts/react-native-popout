@@ -44,10 +44,11 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
   const overlayX = useSharedValue(0);
   const overlayY = useSharedValue(0);
 
+  // const aspectRatio = (item.origin?.width || 1) / (item.origin?.height || 1);
   const scale = (item.origin?.width || 0) / screenWidth;
-  // const aspectRatio = (item.origin?.width || 0) / (item.origin?.height || 0);
   const overlayScale = useSharedValue(scale);
-  // const overlayHeight = useSharedValue(item.origin?.height || 0);
+  const overlayWidth = useSharedValue((item.origin?.width || 0) / scale);
+  const overlayHeight = useSharedValue((item.origin?.height || 0) / scale);
 
   const shadowImageOpacity = useSharedValue(1);
 
@@ -69,10 +70,14 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
       SPRING_CONFIG
     );
     shadowImageOpacity.value = withTiming(1, SPRING_CONFIG);
-    /* overlayHeight.value = withTiming(
-      (item.origin?.height || 0) * overlayScale.value,
-      SPRING_CONFIG,
-    ); */
+    overlayWidth.value = withTiming(
+      (item.origin?.width || 0) / scale,
+      SPRING_CONFIG
+    );
+    overlayHeight.value = withTiming(
+      (item.origin?.height || 0) / scale,
+      SPRING_CONFIG
+    );
   };
   const resetPan = () => {
     'worklet';
@@ -89,8 +94,8 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
       -(item.origin?.y || 0) + (overlayUnderNotch ? 0 : insets.top),
       SPRING_CONFIG
     );
-    // overlayHeight.value = withTiming(item.origin?.height, {duration: 0});
-    // overlayHeight.value = withTiming(screenHeight - insets.top, SPRING_CONFIG);
+    overlayWidth.value = withTiming(screenWidth, SPRING_CONFIG);
+    overlayHeight.value = withTiming(screenHeightMinusInset, SPRING_CONFIG);
     overlayScale.value = withTiming(1, SPRING_CONFIG);
     shadowImageOpacity.value = withTiming(0, SPRING_CONFIG);
   };
@@ -112,18 +117,8 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
         { translateY: overlayY.value + panY.value },
         { scale: overlayScale.value + panScale.value - 1 },
       ],
-      /* height: interpolate(
-        overlayScale.value,
-        [0, scale],
-        [item.origin?.height || 0, screenWidth / aspectRatio - insets.top],
-        Extrapolation.CLAMP,
-      ), */
-      /* height: interpolate(
-        overlayScale.value,
-        [0, scale],
-        [item.origin?.height || 0, screenHeight - insets.top],
-        Extrapolation.CLAMP,
-      ), */
+      width: overlayWidth.value,
+      height: overlayHeight.value,
       borderRadius: interpolate(
         overlayProgress.value,
         [0, 1],
@@ -170,7 +165,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
         {
           zIndex: 100,
           width: screenWidth,
-          height: screenHeightMinusInset,
+          // height: screenHeightMinusInset,
           overflow: 'hidden',
           // @ts-ignore works!
           transformOrigin: 'top left',

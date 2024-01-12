@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, RefObject, useRef } from 'react';
-import { Pressable, ViewStyle } from 'react-native';
+import { Image, Pressable, ViewStyle } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
@@ -11,6 +11,7 @@ interface Props {
   onTap: (viewRef: RefObject<Animated.View>) => void;
   item: PopoutTileType;
   style?: ViewStyle;
+  fadeIn: boolean;
 }
 
 const PopoutTile = ({
@@ -18,6 +19,7 @@ const PopoutTile = ({
   item,
   style,
   children,
+  fadeIn = true,
 }: PropsWithChildren<Props>) => {
   const viewRef = useRef<Animated.View>(null);
 
@@ -33,18 +35,13 @@ const PopoutTile = ({
         },
         style,
       ]}
+      ref={viewRef}
       onPress={() => onTap(viewRef)}
     >
-      {/* {!isOpened && ( */}
-      <Animated.View
-        entering={FadeIn.delay(200)}
-        exiting={FadeOut.duration(200)} // TODO: this is not working
-        ref={viewRef}
-      >
-        <Animated.Image
+      <Animated.View entering={fadeIn ? FadeIn.delay(200) : undefined}>
+        <Image
           source={item.image}
           resizeMode={'cover'}
-          entering={FadeIn}
           style={{
             position: 'absolute',
             width: !!style?.width ? style.width : TILE_WIDTH_DEFAULT,
@@ -53,7 +50,6 @@ const PopoutTile = ({
         />
         {children}
       </Animated.View>
-      {/* )} */}
     </Pressable>
   );
 };
