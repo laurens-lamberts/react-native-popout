@@ -93,3 +93,6 @@ lib/
 
 # testing
 /coverage
+
+# All JS files in the 'package' folder, as all files are TS. The JS files are only used by wml for the watch mode.
+package/*.js
