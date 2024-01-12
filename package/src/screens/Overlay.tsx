@@ -165,7 +165,6 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
         {
           zIndex: 100,
           width: screenWidth,
-          // height: screenHeightMinusInset,
           overflow: 'hidden',
           // @ts-ignore works!
           transformOrigin: 'top left',
@@ -184,6 +183,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
             {children}
           </View>
           <CloseButton hide={onClose} />
+          {/* TODO: make the image centered so that it animates from- and back into the tile in 'cover' mode style */}
           <OverlayBackdrop image={image} opacity={shadowImageOpacity} />
         </View>
       </GestureDetector>
