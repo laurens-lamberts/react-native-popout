@@ -8770,8 +8770,8 @@ __metadata:
   linkType: soft
 
 "react-native-popout@file:../package::locator=react-native-popout-example%40workspace%3A.":
-  version: 0.1.0
-  resolution: "react-native-popout@file:../package#../package::hash=5eeb69&locator=react-native-popout-example%40workspace%3A."
+  version: 0.1.1
+  resolution: "react-native-popout@file:../package#../package::hash=48581a&locator=react-native-popout-example%40workspace%3A."
   peerDependencies:
     "@shopify/react-native-skia": ">=0.1.200"
     expo-modules-core: ">=1.4.0"
@@ -8781,7 +8781,7 @@ __metadata:
     react-native-image-colors: ">=2.0.0"
     react-native-reanimated: ">=2.0.0"
     react-native-safe-area-context: ">=4.0.0"
-  checksum: 41e6c7e1add877db01916bd0ced5e1641ec208b095993e48f2312856552a4c104b641e93c95be1fbe19bd43f58e47353b3849fb49d9b1a7f9316b571f55fe7b6
+  checksum: b694d15cc5f6ebafc0d42d1ad96cdb1aa9fe30bc77d4ca4aa349b2df91e437c968cc438dddab96936f9249546ab142673d62d085e224eb0e2b5adc1a05e16a89
   languageName: node
   linkType: hard
 

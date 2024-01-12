@@ -23,7 +23,7 @@ Libraries used;
 - `react-native-gesture-handler` (for dragging the popout)
 - `react-native-safe-area-context` (to ensure the popout renders below a notch, if applicable)
 
-Inspired by the `Netflix`, `Balance` and `App Store` iOS apps.
+Inspired by the [`Netflix`](https://apps.apple.com/us/app/netflix/id363590051), [`Balance`](https://apps.apple.com/to/app/balance-meditation-sleep/id1361356590) and [`App Store`](https://www.apple.com/app-store/) iOS apps.
 
 I find this transition to be natural and visually pleasing. Using the `reanimated` library, it is possible to create a smooth transition between the tile and the popout. Using the `react-native-skia` library, it is possible to add a blur effect to the background of the popout. This makes the popout stand out from the rest of the app, and makes it easier to focus on the popout. The 'react-native-gesture-handler' library is used to make the popout draggable. This makes it possible to close the popout by dragging it down.
 

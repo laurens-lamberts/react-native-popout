@@ -7,6 +7,7 @@ Three examples are available;
 - AppStore: a basic remake of the iOS App store transitions
 - Minimal: a minimal example, just what you need to get started using this library
 - Testing: various different shapes and overlays
+- Springboard: a basic remake of the iOS Springboard transitions (TODO)
 
 You can swap between the examples by changing the `App.tsx` file.
 
