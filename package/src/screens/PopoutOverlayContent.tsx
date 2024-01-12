@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
+import { PopoutContext } from '../components/PopoutRootView';
 
 const PopoutOverlayContent = ({
   item,
@@ -10,11 +11,15 @@ const PopoutOverlayContent = ({
   item: PopoutTileType;
   textColor: string;
 }) => {
+  const { overlayUnderNotch } = useContext(PopoutContext);
+
   return (
     <View>
       <View
         style={{
-          backgroundColor: 'rgba(102, 119, 136, 0.3)',
+          backgroundColor: overlayUnderNotch
+            ? undefined
+            : 'rgba(102, 119, 136, 0.3)',
           padding: 12,
         }}
       >

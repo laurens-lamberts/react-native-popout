@@ -36,5 +36,7 @@ export const ROWS = [
   {id: 0, title: 'Favorites'},
   {id: 1, title: 'Trending'},
   {id: 2, title: 'New'},
-  // {id: 3, title: 'Coming soon'}, // TODO: glitchy when move content than screen height
+  {id: 3, title: 'Another row'},
+  {id: 4, title: 'Yet another row'},
+  {id: 5, title: 'One more...'},
 ];
