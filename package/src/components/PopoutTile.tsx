@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, RefObject, useContext, useRef } from 'react';
 import { Image, Pressable, ViewStyle } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
 import { PopoutContext } from './PopoutRootView';

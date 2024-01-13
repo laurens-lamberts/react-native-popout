@@ -21,7 +21,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CloseButton from '../components/CloseButton';
 import OverlayBackdrop from './OverlayBackdrop';
 import { SkImage } from '@shopify/react-native-skia';
-import { BORDER_RADIUS_OVERLAY, BORDER_RADIUS_TILE } from '../config/settings';
+import { BORDER_RADIUS_OVERLAY } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
 import { PopoutContext } from '../components/PopoutRootView';
 
@@ -34,7 +34,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
-  const { overlayUnderNotch, tileBorderRadius } = useContext(PopoutContext);
+  const { overlayUnderNotch } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
     screenHeight - (overlayUnderNotch ? 0 : insets.top);
