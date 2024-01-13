@@ -51,6 +51,7 @@ const PopoutTile = ({
         style,
       ]}
       ref={viewRef}
+      collapsable={false}
       onPress={() => {
         setOverlayUnderNotch(overlayUnderNotch);
         setTileBorderRadius(borderRadius);

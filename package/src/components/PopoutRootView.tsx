@@ -135,19 +135,23 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     if (!overviewRef.current) {
       return;
     }
-    overviewRef.current.measureInWindow(async (x, y, width, height) => {
-      setSnapshotOrigin({
-        x,
-        y,
-        width,
-        height,
+    try {
+      overviewRef.current.measureInWindow(async (x, y, width, height) => {
+        setSnapshotOrigin({
+          x,
+          y,
+          width,
+          height,
+        });
+        snapshot.value = await makeImageFromView(overviewRef);
+        blur.value = withTiming(8, {
+          duration: 600,
+          easing: Easing.out(Easing.exp),
+        });
       });
-      snapshot.value = await makeImageFromView(overviewRef);
-      blur.value = withTiming(8, {
-        duration: 600,
-        easing: Easing.out(Easing.exp),
-      });
-    });
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   const onClose = () => {
@@ -176,7 +180,12 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <View pointerEvents="box-none" ref={overviewRef} style={{ flex: 1 }}>
+        <View
+          pointerEvents="box-none"
+          ref={overviewRef}
+          collapsable={false}
+          style={{ flex: 1 }}
+        >
           <Animated.View style={animatedOverviewStyle}>
             <Pressable
               onPress={onClose}

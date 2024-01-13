@@ -27,6 +27,7 @@ const CloseButton = ({ hide }: { hide: () => void }) => {
         right: overlayUnderNotch ? insets.top / 2 : 6,
         justifyContent: 'center',
         alignItems: 'center',
+        zIndex: 9999,
       }}
     >
       <Text
