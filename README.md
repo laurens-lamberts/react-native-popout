@@ -5,7 +5,7 @@
 
 A popout-style transition using reanimated, skia and gesture handler
 
-![Demo GIF](./resources/react-native-popout-demo-2024-01-06.gif)
+![Demo GIF](./resources/react-native-popout-demo-2024-01-13.gif)
 
 ## Features
 
