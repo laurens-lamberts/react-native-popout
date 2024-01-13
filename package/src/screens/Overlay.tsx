@@ -13,7 +13,6 @@ import Animated, {
   runOnUI,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import { TRANSITION_CONFIG } from '../config/animations';
