@@ -81,9 +81,9 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
   };
   const resetPan = () => {
     'worklet';
-    panX.value = withSpring(0, TRANSITION_CONFIG);
-    panY.value = withSpring(0, TRANSITION_CONFIG);
-    panScale.value = withSpring(1, TRANSITION_CONFIG);
+    panX.value = withTiming(0, TRANSITION_CONFIG);
+    panY.value = withTiming(0, TRANSITION_CONFIG);
+    panScale.value = withTiming(1, TRANSITION_CONFIG);
   };
   const onOpen = () => {
     'worklet';
