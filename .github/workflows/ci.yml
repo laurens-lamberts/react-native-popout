@@ -18,10 +18,12 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Lint files
-        run: cd package; yarn lint
+        working-directory: ./package
+        run: yarn lint
 
       - name: Typecheck files
-        run: cd package; yarn typecheck
+        working-directory: ./package
+        run: yarn typecheck
 
   test:
     runs-on: ubuntu-latest
@@ -33,7 +35,8 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run unit tests
-        run: cd package; yarn test --maxWorkers=2 --coverage
+        working-directory: ./package
+        run: yarn test --maxWorkers=2 --coverage
 
   build-library:
     runs-on: ubuntu-latest
@@ -45,7 +48,8 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build package
-        run: cd package; yarn prepare
+        working-directory: ./package
+        run: yarn prepare
 
   build-web:
     runs-on: ubuntu-latest
@@ -57,5 +61,6 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build example for Web
+        working-directory: ./package
         run: |
-          cd package; yarn example expo export:web
+          yarn example expo export:web
