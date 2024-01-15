@@ -107,7 +107,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
 
   useEffect(() => {
     runOnUI(onOpen)();
-  }, []);
+  }, [onOpen]);
 
   const overlayAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -143,7 +143,17 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
         .onEnd((event) => {
           event.translationY > 200 ? onClose() : resetPan();
         }),
-    [onClose, insets.top, item, panStartX, panStartY, panX, panY, panScale]
+    [
+      onClose,
+      insets.top,
+      item,
+      panStartX,
+      panStartY,
+      panX,
+      panY,
+      panScale,
+      resetPan,
+    ]
   );
 
   /* const colors = useImageColors(item.image);
