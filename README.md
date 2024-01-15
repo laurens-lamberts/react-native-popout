@@ -3,7 +3,7 @@
 > [!WARNING]  
 > This library is still in development. It is not yet ready for production use.
 
-A popout-style transition using reanimated, skia and gesture handler
+A popout-style transition using [reanimated](https://www.reanimated2.com), [skia](https://skia.org) and [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/)
 
 ![Demo GIF](./resources/react-native-popout-demo-2024-01-13.gif)
 
@@ -18,10 +18,10 @@ A popout-style transition using reanimated, skia and gesture handler
 
 Libraries used;
 
-- `reanimated` (for the transition animation)
-- `react-native-skia` (for image effects).
-- `react-native-gesture-handler` (for dragging the popout)
-- `react-native-safe-area-context` (to ensure the popout renders below a notch, if applicable)
+- [reanimated](https://www.reanimated2.com) for the transition animation
+- [react-native-skia](https://github.com/Shopify/react-native-skia) for image effects.
+- [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/) for dragging the popout
+- [react-native-safe-area-context](https://github.com/th3rdwave/react-native-safe-area-context) to ensure the popout renders below a notch, if applicable
 
 Inspired by the [`Netflix`](https://apps.apple.com/us/app/netflix/id363590051), [`Balance`](https://apps.apple.com/to/app/balance-meditation-sleep/id1361356590) and [`App Store`](https://www.apple.com/app-store/) iOS apps.
 
@@ -47,7 +47,7 @@ and if not yet present in your project, install the following packages;
 yarn add react-native-reanimated react-native-gesture-handler react-native-safe-area-context @shopify/react-native-skia
 ```
 
-Make sure you added the following to your info.plist file `dict`, in order to support 120hz ProMotion iPhone performance:
+Make sure you add the following to your info.plist file `dict`, in order to support 120hz ProMotion iPhone performance:
 
 ```xml
 <key>CADisableMinimumFrameDurationOnPhone</key>
@@ -62,7 +62,7 @@ Here's a minimal example of how to use the library:
 
 ### Your App.tsx / index.js file
 
-```typescriptreact
+```typescript
 import PopoutRootView from 'react-native-popout';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Screen from './Screen';
@@ -82,7 +82,7 @@ export default App;
 
 ### Your Screen.tsx file (or a name of your choice)
 
-```typescriptreact
+```typescript
 import React, {useContext} from 'react';
 import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {PopoutTile, PopoutContext, PopoutTileType} from 'react-native-popout';
