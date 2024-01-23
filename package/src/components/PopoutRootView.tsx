@@ -1,9 +1,11 @@
 import React, { RefObject, useRef, useState } from 'react';
 import { TRANSITION_CONFIG } from '../config/animations';
-import { Pressable, View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import OverlayAnchor from '../components/OverlayAnchor';
 import Animated, {
   Easing,
+  Extrapolation,
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -19,7 +21,6 @@ import {
   Gesture,
   GestureDetector,
   GestureHandlerRootView,
-  TapGestureHandler,
 } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
 import { BORDER_RADIUS_TILE } from '../config/settings';
@@ -70,6 +71,8 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
   const [backdropScale, setBackdropScale] = useState(true);
   const [backdropBlur, setBackdropBlur] = useState(true);
 
+  const panScale = useSharedValue(0.75);
+
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const onElementTap = async (
@@ -96,34 +99,32 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const animatedOverviewStyle = useAnimatedStyle(() => {
+  const backdropScaleStyle = useAnimatedStyle(() => {
     return {
       transform: [
         {
           scale: backdropScale
-            ? withTiming(elementOpened ? 0.94 : 1, TRANSITION_CONFIG)
+            ? interpolate(
+                panScale.value,
+                [0.75, 1],
+                [1, 0.9],
+                Extrapolation.CLAMP
+              )
             : 1,
         },
       ],
-      opacity: withTiming(
-        elementOpened && backdropBlur ? 0 : 1,
-        TRANSITION_CONFIG
-      ),
     };
   });
+  const animatedOverviewStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(
+      elementOpened && backdropBlur ? 0 : 1,
+      TRANSITION_CONFIG
+    ),
+  }));
 
-  const animatedBlurStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          scale: backdropScale
-            ? withTiming(elementOpened ? 0.94 : 1, TRANSITION_CONFIG)
-            : 1,
-        },
-      ],
-      opacity: withTiming(elementOpened ? 1 : 0, TRANSITION_CONFIG),
-    };
-  });
+  const animatedBlurStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(elementOpened ? 1 : 0, TRANSITION_CONFIG),
+  }));
 
   const overviewRef = useRef<View>(null);
   const snapshot = useSharedValue<SkImage | null>(null);
@@ -197,7 +198,9 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
           collapsable={false}
           style={{ flex: 1 }}
         >
-          <Animated.View style={[{ flex: 1 }, animatedOverviewStyle]}>
+          <Animated.View
+            style={[{ flex: 1 }, backdropScaleStyle, animatedOverviewStyle]}
+          >
             <GestureDetector gesture={tap}>{children}</GestureDetector>
           </Animated.View>
         </View>
@@ -213,6 +216,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
                 height: snapshotOrigin?.height,
                 zIndex: 98,
               },
+              backdropScaleStyle,
               animatedBlurStyle,
             ]}
           >
@@ -241,7 +245,11 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
               height: screenHeight,
             }}
           >
-            <OverlayAnchor item={elementOpened} hide={onClose}>
+            <OverlayAnchor
+              item={elementOpened}
+              hide={onClose}
+              panScale={panScale}
+            >
               {OverlayComponent}
             </OverlayAnchor>
           </View>

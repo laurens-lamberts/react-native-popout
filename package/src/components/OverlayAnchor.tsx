@@ -3,13 +3,20 @@ import { View } from 'react-native';
 import Overlay from '../screens/Overlay';
 import { useImage } from '@shopify/react-native-skia';
 import { PopoutTileType } from '../types/PopoutTile';
+import { SharedValue } from 'react-native-reanimated';
 
 interface Props {
   item: PopoutTileType;
   hide: () => void;
+  panScale: SharedValue<number>;
 }
 
-const OverlayAnchor = ({ item, hide, children }: PropsWithChildren<Props>) => {
+const OverlayAnchor = ({
+  item,
+  hide,
+  children,
+  panScale,
+}: PropsWithChildren<Props>) => {
   const skiaImage = useImage(item?.image);
   if (!skiaImage) return null;
 
@@ -23,7 +30,7 @@ const OverlayAnchor = ({ item, hide, children }: PropsWithChildren<Props>) => {
         flex: 1,
       }}
     >
-      <Overlay item={item} hide={hide} image={skiaImage}>
+      <Overlay item={item} hide={hide} image={skiaImage} panScale={panScale}>
         {children}
       </Overlay>
     </View>

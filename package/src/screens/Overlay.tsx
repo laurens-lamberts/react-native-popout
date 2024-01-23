@@ -9,6 +9,7 @@ import { View, useWindowDimensions } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
+  SharedValue,
   interpolate,
   runOnJS,
   runOnUI,
@@ -29,8 +30,15 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
   item: PopoutTileType;
   hide: () => void;
   image: SkImage;
+  panScale: SharedValue<number>;
 }
-const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
+const Overlay = ({
+  item,
+  hide,
+  image,
+  children,
+  panScale,
+}: PropsWithChildren<Props>) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
@@ -54,7 +62,6 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
 
   const panX = useSharedValue(0);
   const panY = useSharedValue(0);
-  const panScale = useSharedValue(1);
   const panStartX = useSharedValue(0);
   const panStartY = useSharedValue(0);
 
@@ -83,11 +90,13 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
     'worklet';
     panX.value = withTiming(0, TRANSITION_CONFIG);
     panY.value = withTiming(0, TRANSITION_CONFIG);
-    panScale.value = withTiming(1, TRANSITION_CONFIG);
+    panScale.value = withTiming(0.75, TRANSITION_CONFIG);
   };
   const onOpen = useCallback(() => {
     'worklet';
     // Entering animation
+    panScale.value = withTiming(1, TRANSITION_CONFIG);
+
     overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
     overlayX.value = withTiming(-(item?.origin?.x || 0), TRANSITION_CONFIG);
     overlayY.value = withTiming(
