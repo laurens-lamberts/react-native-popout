@@ -1,5 +1,6 @@
 import React, {
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -84,7 +85,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
     panY.value = withTiming(0, TRANSITION_CONFIG);
     panScale.value = withTiming(1, TRANSITION_CONFIG);
   };
-  const onOpen = () => {
+  const onOpen = useCallback(() => {
     'worklet';
     // Entering animation
     overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
@@ -97,7 +98,7 @@ const Overlay = ({ item, hide, image, children }: PropsWithChildren<Props>) => {
     overlayHeight.value = withTiming(screenHeightMinusInset, TRANSITION_CONFIG);
     overlayScale.value = withTiming(1, TRANSITION_CONFIG);
     shadowImageOpacity.value = withTiming(0, TRANSITION_CONFIG);
-  };
+  }, [item]);
   const onClose = () => {
     'worklet';
     // Closing animation
