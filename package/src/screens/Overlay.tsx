@@ -90,7 +90,6 @@ const Overlay = ({
     'worklet';
     panX.value = withTiming(0, TRANSITION_CONFIG);
     panY.value = withTiming(0, TRANSITION_CONFIG);
-    panScale.value = withTiming(0.75, TRANSITION_CONFIG);
   };
   const onOpen = useCallback(() => {
     'worklet';
@@ -113,6 +112,7 @@ const Overlay = ({
     // Closing animation
     resetOverlay();
     resetPan();
+    panScale.value = withTiming(0.75, TRANSITION_CONFIG);
   };
 
   useEffect(() => {
@@ -151,7 +151,12 @@ const Overlay = ({
           );
         })
         .onEnd((event) => {
-          event.translationY > 200 ? onClose() : resetPan();
+          if (event.translationY > 200) {
+            onClose();
+          } else {
+            resetPan();
+            panScale.value = withTiming(1, TRANSITION_CONFIG);
+          }
         }),
     [
       onClose,

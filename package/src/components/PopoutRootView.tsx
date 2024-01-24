@@ -7,6 +7,7 @@ import Animated, {
   Extrapolation,
   interpolate,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
@@ -121,10 +122,12 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       TRANSITION_CONFIG
     ),
   }));
-
   const animatedBlurStyle = useAnimatedStyle(() => ({
     opacity: withTiming(elementOpened ? 1 : 0, TRANSITION_CONFIG),
   }));
+  const blur = useDerivedValue(() =>
+    interpolate(panScale.value, [0.75, 0.9, 1], [0, 5, 8], Extrapolation.CLAMP)
+  );
 
   const overviewRef = useRef<View>(null);
   const snapshot = useSharedValue<SkImage | null>(null);
@@ -135,7 +138,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     height: number;
   } | null>(null);
 
-  const blur = useSharedValue(0);
+  // const blur = useSharedValue(0);
 
   const makeOverviewSnapshot = async () => {
     if (!overviewRef.current) {
@@ -150,10 +153,10 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
           height,
         });
         snapshot.value = await makeImageFromView(overviewRef);
-        blur.value = withTiming(8, {
-          duration: 600,
-          easing: Easing.out(Easing.exp),
-        });
+        // blur.value = withTiming(8, {
+        //   duration: 600,
+        //   easing: Easing.out(Easing.exp),
+        // });
       });
     } catch (ex) {
       console.log(ex);
@@ -162,10 +165,10 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
 
   const onClose = () => {
     setElementOpened(null); // TODO: animations are cut off too early
-    blur.value = withTiming(0, {
-      duration: 700,
-      easing: Easing.out(Easing.exp),
-    });
+    // blur.value = withTiming(0, {
+    //   duration: 700,
+    //   easing: Easing.out(Easing.exp),
+    // });
   };
 
   const tap = Gesture.Tap().onTouchesUp((state) => {
