@@ -167,7 +167,7 @@ const Overlay = ({
         [0, 1],
         [tileBorderRadius * (1 / scale), BORDER_RADIUS_OVERLAY]
       ),
-      opacity: interpolate(overlayProgress.value, [0, 0.05, 1], [0, 0.7, 1]),
+      opacity: interpolate(overlayProgress.value, [0, 0.01, 1], [0, 0.99, 1]),
     };
   }, [
     panX,
@@ -242,7 +242,14 @@ const Overlay = ({
     >
       <GestureDetector gesture={panGesture}>
         <View pointerEvents="box-none">
-          <OverlayBackdrop image={image} blurred opacity={1} />
+          <OverlayBackdrop
+            image={image}
+            blurred
+            opacity={1}
+            tileWidth={item?.origin?.width}
+            tileHeight={item?.origin?.height}
+            overlayProgress={overlayProgress}
+          />
           <View
             style={{
               paddingTop: overlayUnderNotch ? insets.top : 0,
@@ -253,7 +260,13 @@ const Overlay = ({
           </View>
           <CloseButton hide={onClose} />
           {/* TODO: make the image centered so that it animates from- and back into the tile in 'cover' mode style */}
-          <OverlayBackdrop image={image} opacity={shadowImageOpacity} />
+          <OverlayBackdrop
+            image={image}
+            opacity={shadowImageOpacity}
+            tileWidth={item?.origin?.width}
+            tileHeight={item?.origin?.height}
+            overlayProgress={overlayProgress}
+          />
         </View>
       </GestureDetector>
     </Animated.View>

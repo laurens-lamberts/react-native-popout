@@ -64,7 +64,7 @@ const PopoutTile = ({
       <Animated.View entering={fadeIn ? FadeIn.delay(200) : undefined}>
         <Image
           source={item.image}
-          resizeMode={'cover'}
+          resizeMode="cover"
           style={{
             position: 'absolute',
             width: style?.width ? style.width : TILE_WIDTH_DEFAULT,

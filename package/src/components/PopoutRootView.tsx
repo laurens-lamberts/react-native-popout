@@ -136,7 +136,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     ),
   }));
   const blur = useDerivedValue(() =>
-    interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
+    interpolate(backdropProgress.value, [0, 1], [0, 14], Extrapolation.CLAMP)
   );
 
   const overviewRef = useRef<View>(null);
@@ -228,7 +228,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
                 width={snapshotOrigin?.width || 0}
                 height={snapshotOrigin?.height || 0}
               >
-                <Blur blur={blur} />
+                <Blur blur={blur} mode="clamp" />
               </Image>
             </Canvas>
           </Animated.View>
