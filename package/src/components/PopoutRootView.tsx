@@ -72,7 +72,9 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
   const [backdropScale, setBackdropScale] = useState(true);
   const [backdropBlur, setBackdropBlur] = useState(true);
 
-  const panScale = useSharedValue(0.75);
+  const panScale = useSharedValue(1);
+  // We keep backdropProgress separate from panScale, as interpolating on the panScale poses problems with the return-to-tile transition
+  const backdropProgress = useSharedValue(0);
 
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
@@ -106,8 +108,8 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
         {
           scale: backdropScale
             ? interpolate(
-                panScale.value,
-                [0.75, 1],
+                backdropProgress.value,
+                [0, 1],
                 [1, 0.9],
                 Extrapolation.CLAMP
               )
@@ -126,7 +128,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     opacity: withTiming(elementOpened ? 1 : 0, TRANSITION_CONFIG),
   }));
   const blur = useDerivedValue(() =>
-    interpolate(panScale.value, [0.75, 0.9, 1], [0, 5, 8], Extrapolation.CLAMP)
+    interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
   );
 
   const overviewRef = useRef<View>(null);
@@ -252,6 +254,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
               item={elementOpened}
               hide={onClose}
               panScale={panScale}
+              backdropProgress={backdropProgress}
             >
               {OverlayComponent}
             </OverlayAnchor>

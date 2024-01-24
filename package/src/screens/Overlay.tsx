@@ -31,6 +31,7 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
   hide: () => void;
   image: SkImage;
   panScale: SharedValue<number>;
+  backdropProgress: SharedValue<number>;
 }
 const Overlay = ({
   item,
@@ -38,6 +39,7 @@ const Overlay = ({
   image,
   children,
   panScale,
+  backdropProgress,
 }: PropsWithChildren<Props>) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
@@ -90,11 +92,13 @@ const Overlay = ({
     'worklet';
     panX.value = withTiming(0, TRANSITION_CONFIG);
     panY.value = withTiming(0, TRANSITION_CONFIG);
+    panScale.value = withTiming(1, TRANSITION_CONFIG);
   };
   const onOpen = useCallback(() => {
     'worklet';
     // Entering animation
     panScale.value = withTiming(1, TRANSITION_CONFIG);
+    backdropProgress.value = withTiming(1, TRANSITION_CONFIG);
 
     overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
     overlayX.value = withTiming(-(item?.origin?.x || 0), TRANSITION_CONFIG);
@@ -112,7 +116,7 @@ const Overlay = ({
     // Closing animation
     resetOverlay();
     resetPan();
-    panScale.value = withTiming(0.75, TRANSITION_CONFIG);
+    backdropProgress.value = withTiming(0, TRANSITION_CONFIG);
   };
 
   useEffect(() => {
@@ -149,13 +153,19 @@ const Overlay = ({
             [1, 0.75],
             Extrapolation.CLAMP
           );
+          backdropProgress.value = interpolate(
+            event.translationY,
+            [0, 500],
+            [1, 0],
+            Extrapolation.CLAMP
+          );
         })
         .onEnd((event) => {
           if (event.translationY > 200) {
             onClose();
           } else {
             resetPan();
-            panScale.value = withTiming(1, TRANSITION_CONFIG);
+            backdropProgress.value = withTiming(1, TRANSITION_CONFIG);
           }
         }),
     [

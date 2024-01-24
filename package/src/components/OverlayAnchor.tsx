@@ -9,6 +9,7 @@ interface Props {
   item: PopoutTileType;
   hide: () => void;
   panScale: SharedValue<number>;
+  backdropProgress: SharedValue<number>;
 }
 
 const OverlayAnchor = ({
@@ -16,6 +17,7 @@ const OverlayAnchor = ({
   hide,
   children,
   panScale,
+  backdropProgress,
 }: PropsWithChildren<Props>) => {
   const skiaImage = useImage(item?.image);
   if (!skiaImage) return null;
@@ -30,7 +32,13 @@ const OverlayAnchor = ({
         flex: 1,
       }}
     >
-      <Overlay item={item} hide={hide} image={skiaImage} panScale={panScale}>
+      <Overlay
+        item={item}
+        hide={hide}
+        image={skiaImage}
+        panScale={panScale}
+        backdropProgress={backdropProgress}
+      >
         {children}
       </Overlay>
     </View>
