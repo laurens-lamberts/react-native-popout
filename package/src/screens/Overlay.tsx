@@ -41,7 +41,8 @@ const Overlay = ({
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
-  const { overlayUnderNotch, elementOpened } = useContext(PopoutContext);
+  const { overlayUnderNotch, elementOpened, tileBorderRadius } =
+    useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
     screenHeight - (overlayUnderNotch ? 0 : insets.top);
@@ -93,7 +94,6 @@ const Overlay = ({
     'worklet';
     // Entering animation
     panScale.value = withTiming(1, TRANSITION_CONFIG);
-    console.log('opOpen');
     backdropProgress.value = withTiming(1, TRANSITION_CONFIG);
 
     overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
@@ -122,16 +122,11 @@ const Overlay = ({
 
   const onClose = () => {
     'worklet';
-    console.log('onClose');
     // Closing animation
     resetOverlay();
     resetPan();
     backdropProgress.value = withTiming(0, TRANSITION_CONFIG);
   };
-
-  // useEffect(() => {
-  //   runOnUI(onOpen)();
-  // }, [onOpen]);
 
   const overlayAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -145,7 +140,7 @@ const Overlay = ({
       borderRadius: interpolate(
         overlayProgress.value,
         [0, 1],
-        [BORDER_RADIUS_OVERLAY * (1 / scale), BORDER_RADIUS_OVERLAY]
+        [tileBorderRadius * (1 / scale), BORDER_RADIUS_OVERLAY]
       ),
       opacity: interpolate(overlayProgress.value, [0, 0.05, 1], [0, 0.7, 1]),
     };
