@@ -122,11 +122,18 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       ],
     };
   });
+  // The app itself will fade-out...
   const animatedOverviewStyle = useAnimatedStyle(() => ({
     opacity: backdropBlur
-      ? interpolate(backdropProgress.value, [0, 1], [1, 0], Extrapolation.CLAMP)
+      ? interpolate(
+          backdropProgress.value,
+          [0, 0.6, 1],
+          [1, 0, 0],
+          Extrapolation.CLAMP
+        )
       : 1,
   }));
+  // The screenshot will fade-in...
   const animatedBlurStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       backdropProgress.value,
@@ -136,7 +143,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     ),
   }));
   const blur = useDerivedValue(() =>
-    interpolate(backdropProgress.value, [0, 1], [0, 14], Extrapolation.CLAMP)
+    interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
   );
 
   const overviewRef = useRef<View>(null);
