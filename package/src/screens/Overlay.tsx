@@ -28,14 +28,12 @@ import { PopoutContext } from '../components/PopoutRootView';
 
 interface Props extends React.ComponentProps<typeof Animated.View> {
   item: PopoutTileType;
-  hide: () => void;
   image: SkImage;
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
 }
 const Overlay = ({
   item,
-  hide,
   image,
   children,
   panScale,
@@ -69,9 +67,7 @@ const Overlay = ({
 
   const resetOverlay = () => {
     'worklet';
-    overlayProgress.value = withTiming(0, TRANSITION_CONFIG, () => {
-      runOnJS(hide)(); // todo; earlier
-    });
+    overlayProgress.value = withTiming(0, TRANSITION_CONFIG);
     overlayX.value = withTiming(0, TRANSITION_CONFIG);
     overlayY.value = withTiming(0, TRANSITION_CONFIG);
     overlayScale.value = withTiming(

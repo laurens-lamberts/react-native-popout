@@ -7,14 +7,12 @@ import { SharedValue } from 'react-native-reanimated';
 
 interface Props {
   item: PopoutTileType;
-  hide: () => void;
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
 }
 
 const OverlayAnchor = ({
   item,
-  hide,
   children,
   panScale,
   backdropProgress,
@@ -31,10 +29,10 @@ const OverlayAnchor = ({
         height: item?.origin?.height,
         flex: 1,
       }}
+      pointerEvents="box-none"
     >
       <Overlay
         item={item}
-        hide={hide}
         image={skiaImage}
         panScale={panScale}
         backdropProgress={backdropProgress}

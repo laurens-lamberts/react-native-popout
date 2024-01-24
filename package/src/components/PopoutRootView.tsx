@@ -82,11 +82,6 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     viewRef: RefObject<Animated.View>,
     popoutTileData: PopoutTileType
   ) => {
-    if (elementOpened || !popoutTileData) {
-      setElementOpened(null);
-      return;
-    }
-
     await makeOverviewSnapshot();
 
     viewRef.current?.measureInWindow((x, y, width, height) => {
@@ -119,13 +114,17 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     };
   });
   const animatedOverviewStyle = useAnimatedStyle(() => ({
-    opacity: withTiming(
-      elementOpened && backdropBlur ? 0 : 1,
-      TRANSITION_CONFIG
-    ),
+    opacity: backdropBlur
+      ? interpolate(backdropProgress.value, [0, 1], [1, 0], Extrapolation.CLAMP)
+      : 1,
   }));
   const animatedBlurStyle = useAnimatedStyle(() => ({
-    opacity: withTiming(elementOpened ? 1 : 0, TRANSITION_CONFIG),
+    opacity: interpolate(
+      backdropProgress.value,
+      [0, 1],
+      [0, 1],
+      Extrapolation.CLAMP
+    ),
   }));
   const blur = useDerivedValue(() =>
     interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
@@ -140,8 +139,6 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     height: number;
   } | null>(null);
 
-  // const blur = useSharedValue(0);
-
   const makeOverviewSnapshot = async () => {
     if (!overviewRef.current) {
       return;
@@ -155,28 +152,16 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
           height,
         });
         snapshot.value = await makeImageFromView(overviewRef);
-        // blur.value = withTiming(8, {
-        //   duration: 600,
-        //   easing: Easing.out(Easing.exp),
-        // });
       });
     } catch (ex) {
       console.log(ex);
     }
   };
 
-  const onClose = () => {
-    setElementOpened(null); // TODO: animations are cut off too early
-    // blur.value = withTiming(0, {
-    //   duration: 700,
-    //   easing: Easing.out(Easing.exp),
-    // });
-  };
-
   const tap = Gesture.Tap().onTouchesUp((state) => {
-    if (state.numberOfTouches > 1) {
-      onClose();
-    }
+    // if (state.numberOfTouches > 1) {
+    //   onClose();
+    // }
   });
 
   return (
@@ -241,25 +226,23 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
             </Canvas>
           </Animated.View>
         )}
-        {elementOpened && (
-          <View
-            style={{
-              position: 'absolute',
-              zIndex: 99,
-              width: screenWidth,
-              height: screenHeight,
-            }}
+        <View
+          style={{
+            position: 'absolute',
+            zIndex: 99,
+            width: screenWidth,
+            height: screenHeight,
+          }}
+          pointerEvents="box-none"
+        >
+          <OverlayAnchor
+            item={elementOpened}
+            panScale={panScale}
+            backdropProgress={backdropProgress}
           >
-            <OverlayAnchor
-              item={elementOpened}
-              hide={onClose}
-              panScale={panScale}
-              backdropProgress={backdropProgress}
-            >
-              {OverlayComponent}
-            </OverlayAnchor>
-          </View>
-        )}
+            {OverlayComponent}
+          </OverlayAnchor>
+        </View>
       </GestureHandlerRootView>
     </PopoutContext.Provider>
   );
