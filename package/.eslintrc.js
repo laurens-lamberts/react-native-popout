@@ -10,7 +10,6 @@ module.exports = {
           '(useAnimatedStyle|useAnimatedProps|useDerivedValue|useAnimatedGestureHandler)',
       },
     ],
-    '@typescript-eslint/prefer-optional-chain': 'warn',
     'object-shorthand': ['warn', 'always'],
     'react-native/no-inline-styles': 'off',
   },
