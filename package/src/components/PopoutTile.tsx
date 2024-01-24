@@ -12,10 +12,10 @@ interface Props {
   onTap: (viewRef: RefObject<Animated.View>) => void;
   item: PopoutTileType;
   style?: ViewStyle;
-  fadeIn: boolean;
-  overlayUnderNotch: boolean;
-  backdropBlur: boolean;
-  backdropScale: boolean;
+  fadeIn?: boolean;
+  overlayUnderNotch?: boolean;
+  backdropBlur?: boolean;
+  backdropScale?: boolean;
 }
 
 const PopoutTile = ({
@@ -59,6 +59,7 @@ const PopoutTile = ({
         setBackdropBlur(backdropBlur);
         onTap(viewRef);
       }}
+      pointerEvents="box-only"
     >
       <Animated.View entering={fadeIn ? FadeIn.delay(200) : undefined}>
         <Image

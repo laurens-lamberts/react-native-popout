@@ -6,7 +6,7 @@ import { PopoutTileType } from '../types/PopoutTile';
 import { SharedValue } from 'react-native-reanimated';
 
 interface Props {
-  item: PopoutTileType;
+  item?: PopoutTileType;
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
 }

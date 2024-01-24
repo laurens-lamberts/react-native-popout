@@ -11,7 +11,6 @@ import Animated, {
   Extrapolation,
   SharedValue,
   interpolate,
-  runOnJS,
   runOnUI,
   useAnimatedStyle,
   useSharedValue,
@@ -27,7 +26,7 @@ import { PopoutTileType } from '../types/PopoutTile';
 import { PopoutContext } from '../components/PopoutRootView';
 
 interface Props extends React.ComponentProps<typeof Animated.View> {
-  item: PopoutTileType;
+  item?: PopoutTileType;
   image: SkImage;
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
@@ -42,7 +41,7 @@ const Overlay = ({
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
-  const { overlayUnderNotch } = useContext(PopoutContext);
+  const { overlayUnderNotch, elementOpened } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
     screenHeight - (overlayUnderNotch ? 0 : insets.top);
@@ -53,10 +52,10 @@ const Overlay = ({
   const overlayY = useSharedValue(0);
 
   // const aspectRatio = (item.origin?.width || 1) / (item.origin?.height || 1);
-  const scale = (item.origin?.width || 0) / screenWidth;
+  const scale = (item?.origin?.width || 0) / screenWidth;
   const overlayScale = useSharedValue(scale);
-  const overlayWidth = useSharedValue((item.origin?.width || 0) / scale);
-  const overlayHeight = useSharedValue((item.origin?.height || 0) / scale);
+  const overlayWidth = useSharedValue((item?.origin?.width || 0) / scale);
+  const overlayHeight = useSharedValue((item?.origin?.height || 0) / scale);
 
   const shadowImageOpacity = useSharedValue(1);
 
@@ -71,16 +70,16 @@ const Overlay = ({
     overlayX.value = withTiming(0, TRANSITION_CONFIG);
     overlayY.value = withTiming(0, TRANSITION_CONFIG);
     overlayScale.value = withTiming(
-      (item.origin?.width || 0) / screenWidth,
+      (item?.origin?.width || 0) / screenWidth,
       TRANSITION_CONFIG
     );
     shadowImageOpacity.value = withTiming(1, TRANSITION_CONFIG);
     overlayWidth.value = withTiming(
-      (item.origin?.width || 0) / scale,
+      (item?.origin?.width || 0) / scale,
       TRANSITION_CONFIG
     );
     overlayHeight.value = withTiming(
-      (item.origin?.height || 0) / scale,
+      (item?.origin?.height || 0) / scale,
       TRANSITION_CONFIG
     );
   };
@@ -94,12 +93,13 @@ const Overlay = ({
     'worklet';
     // Entering animation
     panScale.value = withTiming(1, TRANSITION_CONFIG);
+    console.log('opOpen');
     backdropProgress.value = withTiming(1, TRANSITION_CONFIG);
 
     overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
     overlayX.value = withTiming(-(item?.origin?.x || 0), TRANSITION_CONFIG);
     overlayY.value = withTiming(
-      -(item.origin?.y || 0) + (overlayUnderNotch ? 0 : insets.top),
+      -(item?.origin?.y || 0) + (overlayUnderNotch ? 0 : insets.top),
       TRANSITION_CONFIG
     );
     overlayWidth.value = withTiming(screenWidth, TRANSITION_CONFIG);
@@ -107,17 +107,31 @@ const Overlay = ({
     overlayScale.value = withTiming(1, TRANSITION_CONFIG);
     shadowImageOpacity.value = withTiming(0, TRANSITION_CONFIG);
   }, [item]);
+
+  const innerElementOpened = useSharedValue<PopoutTileType | null>(null);
+  useEffect(() => {
+    if (!elementOpened) {
+      innerElementOpened.value = null;
+      return;
+    }
+    if (!innerElementOpened.value) {
+      innerElementOpened.value = elementOpened;
+      runOnUI(onOpen)();
+    }
+  }, [onOpen, elementOpened]);
+
   const onClose = () => {
     'worklet';
+    console.log('onClose');
     // Closing animation
     resetOverlay();
     resetPan();
     backdropProgress.value = withTiming(0, TRANSITION_CONFIG);
   };
 
-  useEffect(() => {
-    runOnUI(onOpen)();
-  }, [onOpen]);
+  // useEffect(() => {
+  //   runOnUI(onOpen)();
+  // }, [onOpen]);
 
   const overlayAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -160,6 +174,7 @@ const Overlay = ({
           if (event.translationY > 200) {
             onClose();
           } else {
+            console.log('pan gesture cancelled');
             resetPan();
             backdropProgress.value = withTiming(1, TRANSITION_CONFIG);
           }
@@ -201,14 +216,16 @@ const Overlay = ({
         },
         overlayAnimatedStyle,
       ]}
+      pointerEvents="box-none"
     >
       <GestureDetector gesture={panGesture}>
-        <View>
+        <View pointerEvents="box-none">
           <OverlayBackdrop image={image} blurred opacity={1} />
           <View
             style={{
               paddingTop: overlayUnderNotch ? insets.top : 0,
             }}
+            pointerEvents="box-none"
           >
             {children}
           </View>

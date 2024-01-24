@@ -1,15 +1,14 @@
 import React, { RefObject, useRef, useState } from 'react';
-import { TRANSITION_CONFIG } from '../config/animations';
 import { View, useWindowDimensions } from 'react-native';
 import OverlayAnchor from '../components/OverlayAnchor';
 import Animated, {
-  Easing,
   Extrapolation,
   interpolate,
+  runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withTiming,
 } from 'react-native-reanimated';
 import {
   Blur,
@@ -27,7 +26,7 @@ import { PopoutTileType } from '../types/PopoutTile';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 
 type PopoutContextType = {
-  elementOpened: PopoutTileType | null;
+  elementOpened?: PopoutTileType;
   onElementTap: (
     viewRef: RefObject<Animated.View>,
     item: PopoutTileType
@@ -47,7 +46,7 @@ type PopoutContextType = {
 };
 
 export const PopoutContext = React.createContext<PopoutContextType>({
-  elementOpened: null,
+  elementOpened: undefined,
   onElementTap: () => {},
   OverlayComponent: null,
   setOverlayComponent: () => {},
@@ -62,9 +61,7 @@ export const PopoutContext = React.createContext<PopoutContextType>({
 });
 
 const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
-  const [elementOpened, setElementOpened] = useState<PopoutTileType | null>(
-    null
-  );
+  const [elementOpened, setElementOpened] = useState<PopoutTileType>();
   const [OverlayComponent, setOverlayComponent] =
     useState<React.ComponentType | null>(null);
   const [overlayUnderNotch, setOverlayUnderNotch] = useState(true);
@@ -72,11 +69,27 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
   const [backdropScale, setBackdropScale] = useState(true);
   const [backdropBlur, setBackdropBlur] = useState(true);
 
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+
   const panScale = useSharedValue(1);
   // We keep backdropProgress separate from panScale, as interpolating on the panScale poses problems with the return-to-tile transition
   const backdropProgress = useSharedValue(0);
 
-  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const popoutOpened = useSharedValue(false);
+
+  useAnimatedReaction(
+    () => backdropProgress.value,
+    (value) => {
+      if (value > 0 && !popoutOpened.value) {
+        popoutOpened.value = true;
+      }
+      if (value === 0 && !!popoutOpened.value) {
+        popoutOpened.value = false;
+        runOnJS(setElementOpened)(undefined);
+        runOnJS(setOverlayComponent)(null);
+      }
+    }
+  );
 
   const onElementTap = async (
     viewRef: RefObject<Animated.View>,
@@ -210,11 +223,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
               animatedBlurStyle,
             ]}
           >
-            <Canvas
-              style={{
-                flex: 1,
-              }}
-            >
+            <Canvas style={{ flex: 1 }}>
               <Image
                 image={snapshot}
                 fit="contain"

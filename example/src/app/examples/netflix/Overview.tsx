@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import {
   PopoutTile,
   PopoutContext,
@@ -42,7 +42,6 @@ const Overview = () => {
                   ));
                   onElementTap(viewRef, DATA.testCollection[index]);
                 }}
-                // isOpened={elementOpened?.id === item.id}
               />
             ))}
           </Row>

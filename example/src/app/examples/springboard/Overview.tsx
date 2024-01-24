@@ -1,17 +1,6 @@
 import React, {useContext} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native';
-import {
-  PopoutTile,
-  PopoutContext,
-  PopoutOverlayContent,
-} from 'react-native-popout';
-import Row from '../../components/Row';
+import {Text, View, useWindowDimensions} from 'react-native';
+import {PopoutTile, PopoutContext} from 'react-native-popout';
 import {DATA, ROWS} from '../../content/content';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
