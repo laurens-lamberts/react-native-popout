@@ -18,7 +18,9 @@ const OverlayAnchor = ({
   backdropProgress,
 }: PropsWithChildren<Props>) => {
   const skiaImage = useImage(item?.image);
-  if (!skiaImage) return null;
+  if (!skiaImage) {
+    return null;
+  }
 
   return (
     <View

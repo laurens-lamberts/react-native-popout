@@ -17,11 +17,7 @@ import {
   SkImage,
   makeImageFromView,
 } from '@shopify/react-native-skia';
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 
@@ -171,11 +167,11 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const tap = Gesture.Tap().onTouchesUp((state) => {
+  /* const tap = Gesture.Tap().onTouchesUp((state) => {
     // if (state.numberOfTouches > 1) {
     //   onClose();
     // }
-  });
+  }); */
 
   return (
     <PopoutContext.Provider
@@ -204,7 +200,9 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
           <Animated.View
             style={[{ flex: 1 }, backdropScaleStyle, animatedOverviewStyle]}
           >
-            <GestureDetector gesture={tap}>{children}</GestureDetector>
+            {/* <GestureDetector gesture={tap}> */}
+            {children}
+            {/* </GestureDetector> */}
           </Animated.View>
         </View>
         {backdropBlur && (

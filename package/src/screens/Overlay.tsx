@@ -62,10 +62,8 @@ const Overlay = ({
 
   const panX = useSharedValue(0);
   const panY = useSharedValue(0);
-  const panStartX = useSharedValue(0);
-  const panStartY = useSharedValue(0);
 
-  const resetOverlay = () => {
+  const resetOverlay = useCallback(() => {
     'worklet';
     overlayProgress.value = withTiming(0, TRANSITION_CONFIG);
     overlayX.value = withTiming(0, TRANSITION_CONFIG);
@@ -83,13 +81,25 @@ const Overlay = ({
       (item?.origin?.height || 0) / scale,
       TRANSITION_CONFIG
     );
-  };
-  const resetPan = () => {
+  }, [
+    item?.origin?.height,
+    item?.origin?.width,
+    overlayHeight,
+    overlayProgress,
+    overlayScale,
+    overlayWidth,
+    overlayX,
+    overlayY,
+    scale,
+    screenWidth,
+    shadowImageOpacity,
+  ]);
+  const resetPan = useCallback(() => {
     'worklet';
     panX.value = withTiming(0, TRANSITION_CONFIG);
     panY.value = withTiming(0, TRANSITION_CONFIG);
     panScale.value = withTiming(1, TRANSITION_CONFIG);
-  };
+  }, [panX, panY, panScale]);
   const onOpen = useCallback(() => {
     'worklet';
     // Entering animation
@@ -106,7 +116,22 @@ const Overlay = ({
     overlayHeight.value = withTiming(screenHeightMinusInset, TRANSITION_CONFIG);
     overlayScale.value = withTiming(1, TRANSITION_CONFIG);
     shadowImageOpacity.value = withTiming(0, TRANSITION_CONFIG);
-  }, [item]);
+  }, [
+    item,
+    insets.top,
+    overlayUnderNotch,
+    screenHeightMinusInset,
+    backdropProgress,
+    panScale,
+    overlayProgress,
+    overlayX,
+    overlayY,
+    overlayWidth,
+    overlayHeight,
+    overlayScale,
+    shadowImageOpacity,
+    screenWidth,
+  ]);
 
   const innerElementOpened = useSharedValue<PopoutTileType | null>(null);
   useEffect(() => {
@@ -118,15 +143,15 @@ const Overlay = ({
       innerElementOpened.value = elementOpened;
       runOnUI(onOpen)();
     }
-  }, [onOpen, elementOpened]);
+  }, [onOpen, elementOpened, innerElementOpened]);
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     'worklet';
     // Closing animation
     resetOverlay();
     resetPan();
     backdropProgress.value = withTiming(0, TRANSITION_CONFIG);
-  };
+  }, [backdropProgress, resetOverlay, resetPan]);
 
   const overlayAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -144,7 +169,19 @@ const Overlay = ({
       ),
       opacity: interpolate(overlayProgress.value, [0, 0.05, 1], [0, 0.7, 1]),
     };
-  }, [item]);
+  }, [
+    panX,
+    panY,
+    panScale,
+    overlayProgress,
+    overlayX,
+    overlayY,
+    scale,
+    overlayWidth,
+    overlayHeight,
+    tileBorderRadius,
+    overlayScale,
+  ]);
 
   const panGesture = useMemo(
     () =>
@@ -174,17 +211,7 @@ const Overlay = ({
             backdropProgress.value = withTiming(1, TRANSITION_CONFIG);
           }
         }),
-    [
-      onClose,
-      insets.top,
-      item,
-      panStartX,
-      panStartY,
-      panX,
-      panY,
-      panScale,
-      resetPan,
-    ]
+    [onClose, panX, panY, panScale, resetPan, backdropProgress]
   );
 
   /* const colors = useImageColors(item.image);

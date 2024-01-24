@@ -67,8 +67,8 @@ const PopoutTile = ({
           resizeMode={'cover'}
           style={{
             position: 'absolute',
-            width: !!style?.width ? style.width : TILE_WIDTH_DEFAULT,
-            height: !!style?.height ? style.height : TILE_HEIGHT_DEFAULT,
+            width: style?.width ? style.width : TILE_WIDTH_DEFAULT,
+            height: style?.height ? style.height : TILE_HEIGHT_DEFAULT,
           }}
         />
         {children}
