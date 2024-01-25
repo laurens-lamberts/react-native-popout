@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, ViewStyle, useWindowDimensions } from 'react-native';
 import { OVERLAY_BACKDROP_FROM_IMAGE } from '../config/settings';
 import Animated, {
+  Extrapolation,
   SharedValue,
   interpolate,
   useAnimatedStyle,
@@ -64,9 +65,6 @@ const OverlayBackdrop = ({
   }
 
   const aspectRatio = !!tileWidth && !!tileHeight ? tileWidth / tileHeight : 1;
-  // alert(aspectRatio);
-  // Calculate the height of the OverlayBackdrop based on the width of the PopoutTile image and its aspect ratio
-  const width = screenWidth;
 
   const height = useDerivedValue(() => {
     // TODO: in height we need minus 40 for appstore, plus 50 for netflix...
@@ -82,7 +80,7 @@ const OverlayBackdrop = ({
       <Image
         image={image}
         fit="cover"
-        width={width}
+        width={screenWidth}
         height={height}
         // y={-height / 2}
       >
