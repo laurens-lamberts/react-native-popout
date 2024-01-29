@@ -3,7 +3,8 @@
 > [!WARNING]  
 > This library is still in development. It is not yet ready for production use.
 
-A popout-style transition using [reanimated](https://www.reanimated2.com), [react-native-skia](https://github.com/Shopify/react-native-skia) and [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/). The animation runs smooth at 60+ FPS on my iPhone and iOS simulator. Android runs at 50+ FPS on my emulator.
+A popout-style transition using [reanimated](https://www.reanimated2.com), [react-native-skia](https://github.com/Shopify/react-native-skia) and [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/).\
+The animation runs smooth at 60+ FPS on my iPhone and iOS simulator. Android runs at 50+ FPS on my emulator at the moment.
 
 Demo video (download to get a real feel of the smoothness, as the Github video player runs at a lower FPS);
 
