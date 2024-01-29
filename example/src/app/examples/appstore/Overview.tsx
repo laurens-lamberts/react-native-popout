@@ -46,7 +46,7 @@ const Overview = () => {
             width: tileWidth,
             height: tileWidth * 1.3,
           }}>
-          <View
+          {/* <View
             style={{
               height: 60,
               top: tileWidth * 1.3 - 60,
@@ -54,7 +54,7 @@ const Overview = () => {
               backgroundColor: 'rgba(225,20,20,0.7)',
             }}>
             <Text style={{color: 'white'}}>Paard</Text>
-          </View>
+          </View> */}
         </PopoutTile>
       ))}
     </ScrollView>

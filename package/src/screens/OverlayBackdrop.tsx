@@ -76,20 +76,14 @@ const OverlayBackdrop = ({
 
   return (
     <AnimatedCanvas style={[viewStyle, animatedStyle]} pointerEvents="none">
-      <Image
-        image={image}
-        fit="cover"
-        width={screenWidth}
-        height={height}
-        // y={-height / 2}
-      >
-        <Blur blur={blurred ? 150 : 0} mode="clamp">
+      <Image image={image} fit="cover" width={screenWidth} height={height}>
+        <Blur blur={blurred ? 150 : 0} mode="decal">
           {dimmed && (
             <ColorMatrix
               matrix={[
-                0.6, 0.0, 0.0, 0.0, -0.053, 0.0, 0.6, 0.0, 0.0, -0.053, 0.0,
-                0.0, 0.6, 0.0, -0.053, 0.0, 0.0, 0.0, 1.0, 0.0,
-              ]} // generated with https://fecolormatrix.com/; brightness (-0.053) and exposure (0.6)
+                0.7, 0.0, 0.0, 0.0, -0.03, 0.0, 0.7, 0.0, 0.0, -0.03, 0.0, 0.0,
+                0.7, 0.0, -0.03, 0.0, 0.0, 0.0, 1.0, 0.0,
+              ]} // brightness (-0.03) and exposure (0.7)
             />
           )}
         </Blur>
