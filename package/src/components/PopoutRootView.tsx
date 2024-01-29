@@ -122,11 +122,18 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
       ],
     };
   });
+  // The app itself will fade-out...
   const animatedOverviewStyle = useAnimatedStyle(() => ({
     opacity: backdropBlur
-      ? interpolate(backdropProgress.value, [0, 1], [1, 0], Extrapolation.CLAMP)
+      ? interpolate(
+          backdropProgress.value,
+          [0, 0.6, 1],
+          [1, 0, 0],
+          Extrapolation.CLAMP
+        )
       : 1,
   }));
+  // The screenshot will fade-in...
   const animatedBlurStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       backdropProgress.value,
@@ -228,7 +235,7 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
                 width={snapshotOrigin?.width || 0}
                 height={snapshotOrigin?.height || 0}
               >
-                <Blur blur={blur} />
+                <Blur blur={blur} mode="clamp" />
               </Image>
             </Canvas>
           </Animated.View>

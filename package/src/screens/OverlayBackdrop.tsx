@@ -10,8 +10,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, ViewStyle, useWindowDimensions } from 'react-native';
 import { OVERLAY_BACKDROP_FROM_IMAGE } from '../config/settings';
 import Animated, {
+  Extrapolation,
   SharedValue,
+  interpolate,
   useAnimatedStyle,
+  useDerivedValue,
 } from 'react-native-reanimated';
 import { PopoutContext } from '../components/PopoutRootView';
 
@@ -21,10 +24,16 @@ const OverlayBackdrop = ({
   image,
   blurred,
   opacity,
+  tileWidth,
+  tileHeight,
+  overlayProgress,
 }: {
   image: SkImage;
   blurred?: boolean;
   opacity: SharedValue<number> | number;
+  tileWidth?: number;
+  tileHeight?: number;
+  overlayProgress: SharedValue<number>;
 }) => {
   // TODO: refactor into hook, together with the one in Overlay.tsx
   const { overlayUnderNotch } = useContext(PopoutContext);
@@ -55,13 +64,29 @@ const OverlayBackdrop = ({
     return <View style={viewStyle} />;
   }
 
+  const tileRatio = !!tileWidth && !!tileHeight ? tileWidth / tileHeight : 1;
+  const screenRatio = screenHeight / screenWidth;
+
+  const height = useDerivedValue(() => {
+    // TODO: in height we need minus 40 for appstore, plus 50 for netflix...
+    const widthDifference = screenWidth / (tileWidth || 1);
+    const newHeight = (tileHeight || 0) * widthDifference;
+
+    return interpolate(
+      overlayProgress.value,
+      [0, 1],
+      [newHeight, screenHeight]
+    );
+  });
+
   return (
     <AnimatedCanvas style={[viewStyle, animatedStyle]} pointerEvents="none">
       <Image
         image={image}
         fit="cover"
         width={screenWidth}
-        height={screenHeight}
+        height={height}
+        // y={-height / 2}
       >
         <Blur blur={blurred ? 150 : 0} mode="clamp">
           {dimmed && (
