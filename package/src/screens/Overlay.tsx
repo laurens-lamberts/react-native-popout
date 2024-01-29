@@ -198,7 +198,7 @@ const Overlay = ({
           backdropProgress.value = interpolate(
             event.translationY,
             [0, 500],
-            [1, 0],
+            [1, 0.001], // 0.001 to prevent the backdrop from disappearing completely as that triggers an unmount of the overlay
             Extrapolation.CLAMP
           );
         })

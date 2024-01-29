@@ -7,8 +7,6 @@
 
 - More flexibility for the user to configure the 'tile'.
 
-- When you pan-drag an overlay all the way down, it glitches out of view.
-
 # Ideas
 
 - A new mode where the image animates to become the header of the overlay, and the overlay content appears below that header, filling the rest of the screen.
