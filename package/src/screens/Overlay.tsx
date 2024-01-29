@@ -258,7 +258,7 @@ const Overlay = ({
           >
             {children}
           </View>
-          <CloseButton hide={onClose} />
+          <CloseButton hide={onClose} overlayProgress={overlayProgress} />
           {/* TODO: make the image centered so that it animates from- and back into the tile in 'cover' mode style */}
           <OverlayBackdrop
             image={image}
