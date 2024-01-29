@@ -64,11 +64,7 @@ const OverlayBackdrop = ({
     return <View style={viewStyle} />;
   }
 
-  const tileRatio = !!tileWidth && !!tileHeight ? tileWidth / tileHeight : 1;
-  const screenRatio = screenHeight / screenWidth;
-
   const height = useDerivedValue(() => {
-    // TODO: in height we need minus 40 for appstore, plus 50 for netflix...
     const widthDifference = screenWidth / (tileWidth || 1);
     const newHeight = (tileHeight || 0) * widthDifference;
 
