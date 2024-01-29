@@ -10,7 +10,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, ViewStyle, useWindowDimensions } from 'react-native';
 import { OVERLAY_BACKDROP_FROM_IMAGE } from '../config/settings';
 import Animated, {
-  Extrapolation,
   SharedValue,
   interpolate,
   useAnimatedStyle,
@@ -60,10 +59,6 @@ const OverlayBackdrop = ({
     };
   });
 
-  if (!OVERLAY_BACKDROP_FROM_IMAGE) {
-    return <View style={viewStyle} />;
-  }
-
   const height = useDerivedValue(() => {
     const widthDifference = screenWidth / (tileWidth || 1);
     const newHeight = (tileHeight || 0) * widthDifference;
@@ -74,6 +69,10 @@ const OverlayBackdrop = ({
       [newHeight, screenHeight]
     );
   });
+
+  if (!OVERLAY_BACKDROP_FROM_IMAGE) {
+    return <View style={viewStyle} />;
+  }
 
   return (
     <AnimatedCanvas style={[viewStyle, animatedStyle]} pointerEvents="none">
