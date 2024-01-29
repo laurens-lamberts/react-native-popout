@@ -64,14 +64,18 @@ const OverlayBackdrop = ({
     return <View style={viewStyle} />;
   }
 
-  const aspectRatio = !!tileWidth && !!tileHeight ? tileWidth / tileHeight : 1;
+  const tileRatio = !!tileWidth && !!tileHeight ? tileWidth / tileHeight : 1;
+  const screenRatio = screenHeight / screenWidth;
 
   const height = useDerivedValue(() => {
     // TODO: in height we need minus 40 for appstore, plus 50 for netflix...
+    const widthDifference = screenWidth / (tileWidth || 1);
+    const newHeight = (tileHeight || 0) * widthDifference;
+
     return interpolate(
       overlayProgress.value,
       [0, 1],
-      [screenHeight - insets.top - screenWidth * aspectRatio + 50, screenHeight]
+      [newHeight, screenHeight]
     );
   });
 
