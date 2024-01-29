@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Much smoother transition by transitioning the backdrop image into the tile image.
 - Fixed overlay backdrop blur (was not properly blurred)
 
 ## [0.1.5] - 2024-01-24
