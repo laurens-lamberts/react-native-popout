@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef} from 'react';
 import {SafeAreaView, Text, View, useWindowDimensions} from 'react-native';
 import {PopoutTile, PopoutContext} from 'react-native-popout';
 import {DATA} from '../../content/content';
@@ -8,8 +8,15 @@ import {ScrollView} from 'react-native-gesture-handler';
 const Overview = () => {
   const insets = useSafeAreaInsets();
   const {width: screenWidth} = useWindowDimensions();
-  const {elementOpened, onElementTap, setOverlayComponent} =
-    useContext(PopoutContext);
+  const tileOriginContainerRef = useRef<ScrollView>();
+  const {
+    elementOpened,
+    onElementTap,
+    setOverlayComponent,
+    setHasPanHandle,
+    setOverlayBorderRadius,
+    setTileOriginContainerRef,
+  } = useContext(PopoutContext);
 
   return (
     <ScrollView
@@ -17,7 +24,8 @@ const Overview = () => {
         gap: 20,
         paddingTop: insets.top,
         margin: 20,
-      }}>
+      }}
+      ref={tileOriginContainerRef}>
       <Text style={{color: 'white'}}>
         {`backdropBlur false
 backdropScale false
@@ -72,6 +80,33 @@ NOT under notch`}
         overlayUnderNotch={false}
         onTap={viewRef => {
           const item = DATA.testCollection[2];
+          setOverlayComponent(
+            <View style={{margin: 20}}>
+              <Text style={{color: 'white'}}>{item.title}</Text>
+            </View>,
+          );
+          onElementTap(viewRef, item);
+        }}
+      />
+      <Text style={{color: 'white'}}>
+        {`backdropBlur false
+backdropScale false
+landscape ratio
+under notch
+no pan handle
+no overlay border radius
+with container ref`}
+      </Text>
+      <PopoutTile
+        backdropBlur={false}
+        backdropScale={true}
+        style={{width: 200, height: 100}}
+        item={DATA.testCollection[0]}
+        onTap={viewRef => {
+          const item = DATA.testCollection[0];
+          setOverlayBorderRadius(0);
+          setHasPanHandle(false);
+          setTileOriginContainerRef(tileOriginContainerRef);
           setOverlayComponent(
             <View style={{margin: 20}}>
               <Text style={{color: 'white'}}>{item.title}</Text>
