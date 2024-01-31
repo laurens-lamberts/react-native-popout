@@ -79,7 +79,7 @@ const OverlayBackdrop = ({
     <AnimatedCanvas style={[viewStyle, animatedStyle]} pointerEvents="none">
       <Image image={image} fit="cover" width={screenWidth} height={height}>
         {blurred && (
-          <Blur blur={dimmed ? 150 : 15} mode="decal">
+          <Blur blur={dimmed ? 150 : 15} mode={dimmed ? 'decal' : 'clamp'}>
             {dimmed && (
               <ColorMatrix
                 matrix={[
