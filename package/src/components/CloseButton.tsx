@@ -16,7 +16,9 @@ const CloseButton = ({
   hide: () => void;
   overlayProgress: SharedValue<number>;
 }) => {
-  const { overlayUnderNotch } = useContext(PopoutContext);
+  const {
+    overlayConfig: { overlayUnderNotch },
+  } = useContext(PopoutContext);
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
   const insets = useSafeAreaInsets(); // TODO: make more generic
   // const insets = useInsets

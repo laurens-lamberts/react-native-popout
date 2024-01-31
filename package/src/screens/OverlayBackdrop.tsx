@@ -35,8 +35,9 @@ const OverlayBackdrop = ({
   overlayProgress: SharedValue<number>;
 }) => {
   // TODO: refactor into hook, together with the one in Overlay.tsx
-  const { overlayUnderNotch, dimmedOverlayBackdrop } =
-    useContext(PopoutContext);
+  const {
+    overlayConfig: { overlayUnderNotch, dimmedOverlayBackdrop },
+  } = useContext(PopoutContext);
   const safeAreaInsets = useSafeAreaInsets(); // TODO: make more generic
   const insets = overlayUnderNotch
     ? { top: 0, bottom: 0, left: 0, right: 0 }

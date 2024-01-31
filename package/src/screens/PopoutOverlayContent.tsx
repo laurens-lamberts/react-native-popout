@@ -11,7 +11,9 @@ const PopoutOverlayContent = ({
   item: PopoutTileType;
   textColor: string;
 }) => {
-  const { overlayUnderNotch } = useContext(PopoutContext);
+  const {
+    overlayConfig: { overlayUnderNotch },
+  } = useContext(PopoutContext);
 
   return (
     <View>

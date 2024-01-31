@@ -1,21 +1,20 @@
-import React, { PropsWithChildren, RefObject, useContext, useRef } from 'react';
+import React, { ComponentType, useContext, useRef } from 'react';
 import { Image, Pressable, ViewStyle } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
-import { PopoutContext } from './PopoutRootView';
+import { OverlayConfigType, PopoutContext } from './PopoutRootView';
 
 const TILE_HEIGHT_DEFAULT = 160;
 const TILE_WIDTH_DEFAULT = 108;
 
-interface Props {
-  onTap: (viewRef: RefObject<Animated.View>) => void;
+interface Props extends OverlayConfigType {
+  onTap: () => void;
   item: PopoutTileType;
   style?: ViewStyle;
   fadeIn?: boolean;
-  overlayUnderNotch?: boolean;
-  backdropBlur?: boolean;
-  backdropScale?: boolean;
+  children?: React.ReactNode;
+  overlayComponent: ComponentType;
 }
 
 const PopoutTile = ({
@@ -27,16 +26,19 @@ const PopoutTile = ({
   overlayUnderNotch = true,
   backdropBlur = true,
   backdropScale = true,
-}: PropsWithChildren<Props>) => {
+  hasPanHandle = true,
+  dimmedOverlayBackdrop = true,
+  tileOriginContainerRef,
+  overlayBorderRadius,
+  overlayComponent,
+}: Props) => {
   const viewRef = useRef<Animated.View>(null);
-  const {
-    setOverlayUnderNotch,
-    setTileBorderRadius,
-    setBackdropScale,
-    setBackdropBlur,
-  } = useContext(PopoutContext);
+  const { onElementTap } = useContext(PopoutContext);
 
-  const borderRadius = (style?.borderRadius as number) || BORDER_RADIUS_TILE;
+  const borderRadius =
+    typeof style?.borderRadius === 'number'
+      ? style.borderRadius
+      : BORDER_RADIUS_TILE;
 
   return (
     <Pressable
@@ -53,11 +55,22 @@ const PopoutTile = ({
       ref={viewRef}
       collapsable={false}
       onPress={() => {
-        setOverlayUnderNotch(overlayUnderNotch);
-        setTileBorderRadius(borderRadius);
-        setBackdropScale(backdropScale);
-        setBackdropBlur(backdropBlur);
-        onTap(viewRef);
+        onElementTap(
+          viewRef,
+          item,
+          {
+            tileBorderRadius: borderRadius,
+            backdropScale,
+            backdropBlur,
+            hasPanHandle,
+            dimmedOverlayBackdrop,
+            tileOriginContainerRef,
+            overlayBorderRadius,
+            overlayUnderNotch,
+          },
+          overlayComponent
+        );
+        !!onTap && onTap();
       }}
       pointerEvents="box-only"
     >
