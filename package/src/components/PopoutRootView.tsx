@@ -103,7 +103,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     viewRef: RefObject<Animated.View>,
     popoutTileData: PopoutTileType,
     newConfig: OverlayConfigType,
-    overlayComponent: ComponentType
+    newOverlayComponent: ComponentType
   ) => {
     const combinedConfig = {
       ...DEFAULT_OVERLAY_CONFIG,
@@ -111,7 +111,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     };
 
     setOverlayConfig(combinedConfig);
-    setOverlayComponent(overlayComponent);
+    setOverlayComponent(newOverlayComponent);
 
     screenshotNecessary && (await makeOverviewSnapshot());
 
