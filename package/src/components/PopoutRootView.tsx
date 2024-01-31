@@ -19,7 +19,7 @@ import {
 } from '@shopify/react-native-skia';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
-import { BORDER_RADIUS_TILE } from '../config/settings';
+import { BORDER_RADIUS_OVERLAY, BORDER_RADIUS_TILE } from '../config/settings';
 
 type PopoutContextType = {
   elementOpened?: PopoutTileType;
@@ -34,11 +34,15 @@ type PopoutContextType = {
   overlayUnderNotch: boolean;
   setOverlayUnderNotch: React.Dispatch<React.SetStateAction<boolean>>;
   tileBorderRadius: number;
+  overlayBorderRadius: number;
   setTileBorderRadius: React.Dispatch<React.SetStateAction<number>>;
+  setOverlayBorderRadius: React.Dispatch<React.SetStateAction<number>>;
   backdropScale: boolean;
   setBackdropScale: React.Dispatch<React.SetStateAction<boolean>>;
   backdropBlur: boolean;
   setBackdropBlur: React.Dispatch<React.SetStateAction<boolean>>;
+  hasPanHandle: boolean;
+  setHasPanHandle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const PopoutContext = React.createContext<PopoutContextType>({
@@ -50,10 +54,14 @@ export const PopoutContext = React.createContext<PopoutContextType>({
   setOverlayUnderNotch: () => {},
   tileBorderRadius: BORDER_RADIUS_TILE,
   setTileBorderRadius: () => {},
+  overlayBorderRadius: BORDER_RADIUS_OVERLAY,
+  setOverlayBorderRadius: () => {},
   backdropScale: true,
   setBackdropScale: () => {},
   backdropBlur: true,
   setBackdropBlur: () => {},
+  hasPanHandle: true,
+  setHasPanHandle: () => {},
 });
 
 const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
@@ -62,6 +70,10 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
     useState<React.ComponentType | null>(null);
   const [overlayUnderNotch, setOverlayUnderNotch] = useState(true);
   const [tileBorderRadius, setTileBorderRadius] = useState(BORDER_RADIUS_TILE);
+  const [overlayBorderRadius, setOverlayBorderRadius] = useState(
+    BORDER_RADIUS_OVERLAY
+  );
+  const [hasPanHandle, setHasPanHandle] = useState(true);
   const [backdropScale, setBackdropScale] = useState(true);
   const [backdropBlur, setBackdropBlur] = useState(true);
 
@@ -191,10 +203,14 @@ const PopoutRootView = ({ children }: { children: React.ReactNode }) => {
         setOverlayUnderNotch,
         tileBorderRadius,
         setTileBorderRadius,
+        overlayBorderRadius,
+        setOverlayBorderRadius,
         backdropScale,
         setBackdropScale,
         backdropBlur,
         setBackdropBlur,
+        hasPanHandle,
+        setHasPanHandle,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>

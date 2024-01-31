@@ -6,7 +6,12 @@ import React, {
   useMemo,
 } from 'react';
 import { View, useWindowDimensions } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+  ComposedGesture,
+  Gesture,
+  GestureDetector,
+  GestureType,
+} from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
   SharedValue,
@@ -31,6 +36,20 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
 }
+
+const GestureOrNoGesture = ({
+  children,
+  panGesture,
+}: PropsWithChildren<{
+  panGesture: ComposedGesture | GestureType;
+}>) => {
+  const { hasPanHandle } = useContext(PopoutContext);
+  if (hasPanHandle) {
+    return <GestureDetector gesture={panGesture}>{children}</GestureDetector>;
+  }
+  return <>{children}</>;
+};
+
 const Overlay = ({
   item,
   image,
@@ -41,8 +60,12 @@ const Overlay = ({
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
-  const { overlayUnderNotch, elementOpened, tileBorderRadius } =
-    useContext(PopoutContext);
+  const {
+    overlayUnderNotch,
+    elementOpened,
+    tileBorderRadius,
+    overlayBorderRadius,
+  } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
     screenHeight - (overlayUnderNotch ? 0 : insets.top);
@@ -165,7 +188,10 @@ const Overlay = ({
       borderRadius: interpolate(
         overlayProgress.value,
         [0, 1],
-        [tileBorderRadius * (1 / scale), BORDER_RADIUS_OVERLAY]
+        [
+          tileBorderRadius * (1 / scale),
+          overlayBorderRadius || BORDER_RADIUS_OVERLAY,
+        ]
       ),
       opacity: interpolate(overlayProgress.value, [0, 0.01, 1], [0, 0.99, 1]),
     };
@@ -181,6 +207,7 @@ const Overlay = ({
     overlayHeight,
     tileBorderRadius,
     overlayScale,
+    overlayBorderRadius,
   ]);
 
   const panGesture = useMemo(
@@ -240,7 +267,7 @@ const Overlay = ({
       ]}
       pointerEvents="box-none"
     >
-      <GestureDetector gesture={panGesture}>
+      <GestureOrNoGesture panGesture={panGesture}>
         <View pointerEvents="box-none">
           <OverlayBackdrop
             image={image}
@@ -268,7 +295,7 @@ const Overlay = ({
             overlayProgress={overlayProgress}
           />
         </View>
-      </GestureDetector>
+      </GestureOrNoGesture>
     </Animated.View>
   );
 };
