@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+- Added config for dimmedOverlayBackdrop
+
 ## [0.1.8] - 2024-01-31
 
 - setTileOriginContainerRef now provides an option to indicate what root container to use for the tile origin. This is useful when the tile is not a direct child of the root container, but instead in a bottomsheet or any other container that is not occupying the full screen.

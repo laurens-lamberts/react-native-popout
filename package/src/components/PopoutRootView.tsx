@@ -54,6 +54,8 @@ type PopoutContextType = {
   setTileOriginContainerRef: Dispatch<
     SetStateAction<RefObject<View> | undefined>
   >;
+  dimmedOverlayBackdrop: boolean;
+  setDimmedOverlayBackdrop: Dispatch<SetStateAction<boolean>>;
 };
 
 export const PopoutContext = createContext<PopoutContextType>({
@@ -75,6 +77,8 @@ export const PopoutContext = createContext<PopoutContextType>({
   setHasPanHandle: () => {},
   tileOriginContainerRef: undefined,
   setTileOriginContainerRef: () => {},
+  dimmedOverlayBackdrop: true,
+  setDimmedOverlayBackdrop: () => {},
 });
 
 const PopoutRootView = ({ children }: { children: ReactNode }) => {
@@ -89,6 +93,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
   const [hasPanHandle, setHasPanHandle] = useState(true);
   const [backdropScale, setBackdropScale] = useState(true);
   const [backdropBlur, setBackdropBlur] = useState(true);
+  const [dimmedOverlayBackdrop, setDimmedOverlayBackdrop] = useState(true);
   const [tileOriginContainerRef, setTileOriginContainerRef] =
     useState<RefObject<View>>();
 
@@ -247,6 +252,8 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
         setHasPanHandle,
         tileOriginContainerRef,
         setTileOriginContainerRef,
+        dimmedOverlayBackdrop,
+        setDimmedOverlayBackdrop,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>

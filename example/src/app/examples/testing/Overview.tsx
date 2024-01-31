@@ -1,5 +1,5 @@
 import React, {useContext, useRef} from 'react';
-import {SafeAreaView, Text, View, useWindowDimensions} from 'react-native';
+import {Text, View, useWindowDimensions} from 'react-native';
 import {PopoutTile, PopoutContext} from 'react-native-popout';
 import {DATA} from '../../content/content';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -16,6 +16,7 @@ const Overview = () => {
     setHasPanHandle,
     setOverlayBorderRadius,
     setTileOriginContainerRef,
+    setDimmedOverlayBackdrop,
   } = useContext(PopoutContext);
 
   return (
@@ -95,6 +96,7 @@ landscape ratio
 under notch
 no pan handle
 no overlay border radius
+no dimmed overlay backdrop
 with container ref`}
       </Text>
       <PopoutTile
@@ -107,6 +109,7 @@ with container ref`}
           setOverlayBorderRadius(0);
           setHasPanHandle(false);
           setTileOriginContainerRef(tileOriginContainerRef);
+          setDimmedOverlayBackdrop(false);
           setOverlayComponent(
             <View style={{margin: 20}}>
               <Text style={{color: 'white'}}>{item.title}</Text>

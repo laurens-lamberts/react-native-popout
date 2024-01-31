@@ -35,14 +35,15 @@ const OverlayBackdrop = ({
   overlayProgress: SharedValue<number>;
 }) => {
   // TODO: refactor into hook, together with the one in Overlay.tsx
-  const { overlayUnderNotch } = useContext(PopoutContext);
+  const { overlayUnderNotch, dimmedOverlayBackdrop } =
+    useContext(PopoutContext);
   const safeAreaInsets = useSafeAreaInsets(); // TODO: make more generic
   const insets = overlayUnderNotch
     ? { top: 0, bottom: 0, left: 0, right: 0 }
     : safeAreaInsets;
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
-  const dimmed = blurred;
+  const dimmed = blurred && dimmedOverlayBackdrop;
 
   const viewStyle: ViewStyle = {
     position: 'absolute',
@@ -77,16 +78,18 @@ const OverlayBackdrop = ({
   return (
     <AnimatedCanvas style={[viewStyle, animatedStyle]} pointerEvents="none">
       <Image image={image} fit="cover" width={screenWidth} height={height}>
-        <Blur blur={blurred ? 150 : 0} mode="decal">
-          {dimmed && (
-            <ColorMatrix
-              matrix={[
-                0.7, 0.0, 0.0, 0.0, -0.03, 0.0, 0.7, 0.0, 0.0, -0.03, 0.0, 0.0,
-                0.7, 0.0, -0.03, 0.0, 0.0, 0.0, 1.0, 0.0,
-              ]} // brightness (-0.03) and exposure (0.7)
-            />
-          )}
-        </Blur>
+        {blurred && (
+          <Blur blur={dimmed ? 150 : 15} mode="decal">
+            {dimmed && (
+              <ColorMatrix
+                matrix={[
+                  0.7, 0.0, 0.0, 0.0, -0.03, 0.0, 0.7, 0.0, 0.0, -0.03, 0.0,
+                  0.0, 0.7, 0.0, -0.03, 0.0, 0.0, 0.0, 1.0, 0.0,
+                ]} // brightness (-0.03) and exposure (0.7)
+              />
+            )}
+          </Blur>
+        )}
       </Image>
     </AnimatedCanvas>
   );
