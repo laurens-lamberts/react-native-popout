@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useRef } from 'react';
+import React, { ComponentType, useContext, useRef } from 'react';
 import { Image, Pressable, ViewStyle } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
@@ -14,6 +14,7 @@ interface Props extends OverlayConfigType {
   style?: ViewStyle;
   fadeIn?: boolean;
   children?: React.ReactNode;
+  overlayComponent: ComponentType;
 }
 
 const PopoutTile = ({
@@ -54,17 +55,21 @@ const PopoutTile = ({
       ref={viewRef}
       collapsable={false}
       onPress={() => {
-        onElementTap(viewRef, item, {
-          tileBorderRadius: borderRadius,
-          backdropScale,
-          backdropBlur,
-          hasPanHandle,
-          dimmedOverlayBackdrop,
-          tileOriginContainerRef,
-          overlayBorderRadius,
-          overlayUnderNotch,
-          overlayComponent,
-        });
+        onElementTap(
+          viewRef,
+          item,
+          {
+            tileBorderRadius: borderRadius,
+            backdropScale,
+            backdropBlur,
+            hasPanHandle,
+            dimmedOverlayBackdrop,
+            tileOriginContainerRef,
+            overlayBorderRadius,
+            overlayUnderNotch,
+          },
+          overlayComponent
+        );
         !!onTap && onTap();
       }}
       pointerEvents="box-only"

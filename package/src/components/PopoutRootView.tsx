@@ -37,7 +37,6 @@ export type OverlayConfigType = {
   tileOriginContainerRef?: RefObject<View>;
   overlayUnderNotch?: boolean;
   overlayBorderRadius?: number;
-  overlayComponent: ComponentType | null;
 };
 
 type PopoutContextType = {
@@ -45,7 +44,8 @@ type PopoutContextType = {
   onElementTap: (
     viewRef: RefObject<Animated.View>,
     item: PopoutTileType,
-    overlayConfig: OverlayConfigType
+    overlayConfig: OverlayConfigType,
+    overlayComponent: ComponentType
   ) => void;
   overlayConfig: OverlayConfigType;
 };
@@ -59,7 +59,6 @@ const DEFAULT_OVERLAY_CONFIG: OverlayConfigType = {
   tileOriginContainerRef: undefined,
   overlayUnderNotch: true,
   overlayBorderRadius: BORDER_RADIUS_OVERLAY,
-  overlayComponent: null,
 };
 
 export const PopoutContext = createContext<PopoutContextType>({
@@ -75,6 +74,8 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
   const [overlayConfig, setOverlayConfig] = useState<OverlayConfigType>(
     DEFAULT_OVERLAY_CONFIG
   );
+  const [overlayComponent, setOverlayComponent] =
+    useState<ComponentType | null>(null);
 
   const screenshotNecessary =
     overlayConfig.backdropScale || overlayConfig.backdropBlur;
@@ -93,7 +94,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
       if (value === 0 && !!popoutOpened.value) {
         popoutOpened.value = false;
         runOnJS(setElementOpened)(undefined);
-        runOnJS(setOverlayConfig)({ ...overlayConfig, overlayComponent: null });
+        runOnJS(setOverlayComponent)(null);
       }
     }
   );
@@ -101,17 +102,17 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
   const onElementTap = async (
     viewRef: RefObject<Animated.View>,
     popoutTileData: PopoutTileType,
-    newConfig: OverlayConfigType
+    newConfig: OverlayConfigType,
+    overlayComponent: ComponentType
   ) => {
     const combinedConfig = {
       ...DEFAULT_OVERLAY_CONFIG,
       ...newConfig,
-      // overlayComponent: null,
     };
 
     setOverlayConfig(combinedConfig);
+    setOverlayComponent(overlayComponent);
 
-    // alert(JSON.stringify(combinedConfig));
     screenshotNecessary && (await makeOverviewSnapshot());
 
     if (overlayConfig.tileOriginContainerRef?.current) {
@@ -212,8 +213,6 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const OverlayComponent = overlayConfig.overlayComponent;
-
   return (
     <PopoutContext.Provider
       value={{
@@ -277,7 +276,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
             panScale={panScale}
             backdropProgress={backdropProgress}
           >
-            {OverlayComponent}
+            {overlayComponent}
           </OverlayAnchor>
         </View>
       </GestureHandlerRootView>
