@@ -7,10 +7,6 @@
 
 - More flexibility for the user to configure the 'tile'.
 
-- Reset the context to the values that were there before the popout was opened, so new popouts can have their own configuration indepenent of previously opened popouts.
-
-- Refactor the context to accept a single 'config' set instead of a bunch of individual properties.
-
 # Ideas
 
 - A new mode where the image animates to become the header of the overlay, and the overlay content appears below that header, filling the rest of the screen.

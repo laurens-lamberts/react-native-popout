@@ -1,14 +1,7 @@
-import React, {useContext} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native';
-import {PopoutTile, PopoutContext} from 'react-native-popout';
+import React from 'react';
+import {ScrollView, Text, View, useWindowDimensions} from 'react-native';
+import {PopoutTile} from 'react-native-popout';
 import {DATA} from '../../content/content';
-import Row from '../../components/Row';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const MARGIN = 20;
@@ -16,8 +9,6 @@ const MARGIN = 20;
 const Overview = () => {
   const insets = useSafeAreaInsets();
   const {width: screenWidth} = useWindowDimensions();
-  const {elementOpened, onElementTap, setOverlayComponent} =
-    useContext(PopoutContext);
 
   const tileWidth = screenWidth - MARGIN * 2;
 
@@ -33,14 +24,11 @@ const Overview = () => {
         <PopoutTile
           key={item.id}
           item={item}
-          onTap={viewRef => {
-            setOverlayComponent(
-              <View style={{margin: 20}}>
-                <Text style={{color: 'white'}}>{item.title}</Text>
-              </View>,
-            );
-            onElementTap(viewRef, DATA.testCollection[index]);
-          }}
+          overlayComponent={
+            <View style={{margin: 20}}>
+              <Text style={{color: 'white'}}>{item.title}</Text>
+            </View>
+          }
           style={{
             borderRadius: 12,
             width: tileWidth,

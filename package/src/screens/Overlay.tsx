@@ -43,7 +43,9 @@ const GestureOrNoGesture = ({
 }: PropsWithChildren<{
   panGesture: ComposedGesture | GestureType;
 }>) => {
-  const { hasPanHandle } = useContext(PopoutContext);
+  const {
+    overlayConfig: { hasPanHandle },
+  } = useContext(PopoutContext);
   if (hasPanHandle) {
     return <GestureDetector gesture={panGesture}>{children}</GestureDetector>;
   }
@@ -61,10 +63,8 @@ const Overlay = ({
 
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
   const {
-    overlayUnderNotch,
     elementOpened,
-    tileBorderRadius,
-    overlayBorderRadius,
+    overlayConfig: { overlayUnderNotch, tileBorderRadius, overlayBorderRadius },
   } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
@@ -189,7 +189,7 @@ const Overlay = ({
         overlayProgress.value,
         [0, 1],
         [
-          tileBorderRadius * (1 / scale),
+          (tileBorderRadius || 0) * (1 / scale),
           overlayBorderRadius || BORDER_RADIUS_OVERLAY,
         ]
       ),

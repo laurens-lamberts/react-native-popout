@@ -66,13 +66,13 @@ Here's a minimal example of how to use the library:
 ### Your App.tsx / index.js file
 
 ```typescript
-import PopoutRootView from 'react-native-popout';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import Screen from './Screen';
+import PopoutRootView from "react-native-popout";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Screen from "./Screen";
 
 const App = () => {
   return (
-    <SafeAreaProvider style={{backgroundColor: 'black'}}>
+    <SafeAreaProvider style={{ backgroundColor: "black" }}>
       <PopoutRootView>
         <Screen />
       </PopoutRootView>
@@ -99,21 +99,16 @@ const TEST_ITEM = {
 
 const Screen = () => {
   const insets = useSafeAreaInsets();
-  const {onElementTap, setOverlayComponent} =
-    useContext(PopoutContext);
 
   return (
     <View style={{paddingTop: insets.top}}>
       <PopoutTile
         item={TEST_ITEM}
-        onTap={viewRef => {
-          setOverlayComponent(
-            <View style={{margin: 20}}>
-              <Text style={{color: 'white'}}>{item.title}</Text>
-            </View>,
-          );
-          onElementTap(viewRef, TEST_ITEM);
-        }}
+        overlayComponent={
+          <View style={{margin: 20}}>
+            <Text style={{color: 'white'}}>{TEST_ITEM.title}</Text>
+          </View>
+        }
       />
     </View>
   );

@@ -1,9 +1,7 @@
 import React, {
   ComponentType,
-  Dispatch,
   ReactNode,
   RefObject,
-  SetStateAction,
   createContext,
   useRef,
   useState,
@@ -30,81 +28,60 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
 import { BORDER_RADIUS_OVERLAY, BORDER_RADIUS_TILE } from '../config/settings';
 
+export type OverlayConfigType = {
+  tileBorderRadius?: number;
+  backdropScale?: boolean;
+  backdropBlur?: boolean;
+  hasPanHandle?: boolean;
+  dimmedOverlayBackdrop?: boolean;
+  tileOriginContainerRef?: RefObject<View>;
+  overlayUnderNotch?: boolean;
+  overlayBorderRadius?: number;
+  overlayComponent: ComponentType | null;
+};
+
 type PopoutContextType = {
   elementOpened?: PopoutTileType;
   onElementTap: (
     viewRef: RefObject<Animated.View>,
-    item: PopoutTileType
+    item: PopoutTileType,
+    overlayConfig: OverlayConfigType
   ) => void;
-  OverlayComponent: ComponentType | null;
-  setOverlayComponent: Dispatch<SetStateAction<ComponentType | null>>;
-  overlayUnderNotch: boolean;
-  setOverlayUnderNotch: Dispatch<SetStateAction<boolean>>;
-  tileBorderRadius: number;
-  overlayBorderRadius: number;
-  setTileBorderRadius: Dispatch<SetStateAction<number>>;
-  setOverlayBorderRadius: Dispatch<SetStateAction<number>>;
-  backdropScale: boolean;
-  setBackdropScale: Dispatch<SetStateAction<boolean>>;
-  backdropBlur: boolean;
-  setBackdropBlur: Dispatch<SetStateAction<boolean>>;
-  hasPanHandle: boolean;
-  setHasPanHandle: Dispatch<SetStateAction<boolean>>;
-  tileOriginContainerRef?: RefObject<View>;
-  setTileOriginContainerRef: Dispatch<
-    SetStateAction<RefObject<View> | undefined>
-  >;
-  dimmedOverlayBackdrop: boolean;
-  setDimmedOverlayBackdrop: Dispatch<SetStateAction<boolean>>;
+  overlayConfig: OverlayConfigType;
+};
+
+const DEFAULT_OVERLAY_CONFIG: OverlayConfigType = {
+  tileBorderRadius: BORDER_RADIUS_TILE,
+  backdropScale: true,
+  backdropBlur: true,
+  hasPanHandle: true,
+  dimmedOverlayBackdrop: true,
+  tileOriginContainerRef: undefined,
+  overlayUnderNotch: true,
+  overlayBorderRadius: BORDER_RADIUS_OVERLAY,
+  overlayComponent: null,
 };
 
 export const PopoutContext = createContext<PopoutContextType>({
   elementOpened: undefined,
   onElementTap: () => {},
-  OverlayComponent: null,
-  setOverlayComponent: () => {},
-  overlayUnderNotch: true,
-  setOverlayUnderNotch: () => {},
-  tileBorderRadius: BORDER_RADIUS_TILE,
-  setTileBorderRadius: () => {},
-  overlayBorderRadius: BORDER_RADIUS_OVERLAY,
-  setOverlayBorderRadius: () => {},
-  backdropScale: true,
-  setBackdropScale: () => {},
-  backdropBlur: true,
-  setBackdropBlur: () => {},
-  hasPanHandle: true,
-  setHasPanHandle: () => {},
-  tileOriginContainerRef: undefined,
-  setTileOriginContainerRef: () => {},
-  dimmedOverlayBackdrop: true,
-  setDimmedOverlayBackdrop: () => {},
+  overlayConfig: DEFAULT_OVERLAY_CONFIG,
 });
 
 const PopoutRootView = ({ children }: { children: ReactNode }) => {
-  const [elementOpened, setElementOpened] = useState<PopoutTileType>();
-  const [OverlayComponent, setOverlayComponent] =
-    useState<ComponentType | null>(null);
-  const [overlayUnderNotch, setOverlayUnderNotch] = useState(true);
-  const [tileBorderRadius, setTileBorderRadius] = useState(BORDER_RADIUS_TILE);
-  const [overlayBorderRadius, setOverlayBorderRadius] = useState(
-    BORDER_RADIUS_OVERLAY
-  );
-  const [hasPanHandle, setHasPanHandle] = useState(true);
-  const [backdropScale, setBackdropScale] = useState(true);
-  const [backdropBlur, setBackdropBlur] = useState(true);
-  const [dimmedOverlayBackdrop, setDimmedOverlayBackdrop] = useState(true);
-  const [tileOriginContainerRef, setTileOriginContainerRef] =
-    useState<RefObject<View>>();
-
-  const screenshotNecessary = backdropScale || backdropBlur;
-
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
-  const panScale = useSharedValue(1);
-  // We keep backdropProgress separate from panScale, as interpolating on the panScale poses problems with the return-to-tile transition
-  const backdropProgress = useSharedValue(0);
+  const [elementOpened, setElementOpened] = useState<PopoutTileType>();
+  const [overlayConfig, setOverlayConfig] = useState<OverlayConfigType>(
+    DEFAULT_OVERLAY_CONFIG
+  );
 
+  const screenshotNecessary =
+    overlayConfig.backdropScale || overlayConfig.backdropBlur;
+
+  // We keep backdropProgress separate from panScale, as interpolating on the panScale poses problems with the return-to-tile transition
+  const panScale = useSharedValue(1);
+  const backdropProgress = useSharedValue(0);
   const popoutOpened = useSharedValue(false);
 
   useAnimatedReaction(
@@ -116,20 +93,30 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
       if (value === 0 && !!popoutOpened.value) {
         popoutOpened.value = false;
         runOnJS(setElementOpened)(undefined);
-        runOnJS(setOverlayComponent)(null);
+        runOnJS(setOverlayConfig)({ ...overlayConfig, overlayComponent: null });
       }
     }
   );
 
   const onElementTap = async (
     viewRef: RefObject<Animated.View>,
-    popoutTileData: PopoutTileType
+    popoutTileData: PopoutTileType,
+    newConfig: OverlayConfigType
   ) => {
+    const combinedConfig = {
+      ...DEFAULT_OVERLAY_CONFIG,
+      ...newConfig,
+      // overlayComponent: null,
+    };
+
+    setOverlayConfig(combinedConfig);
+
+    // alert(JSON.stringify(combinedConfig));
     screenshotNecessary && (await makeOverviewSnapshot());
 
-    if (tileOriginContainerRef?.current) {
+    if (overlayConfig.tileOriginContainerRef?.current) {
       viewRef.current?.measureLayout(
-        tileOriginContainerRef.current,
+        overlayConfig.tileOriginContainerRef.current,
         (x, y, width, height) => {
           setElementOpened({
             ...popoutTileData,
@@ -161,7 +148,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     return {
       transform: [
         {
-          scale: backdropScale
+          scale: overlayConfig.backdropScale
             ? interpolate(
                 backdropProgress.value,
                 [0, 1],
@@ -175,7 +162,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
   });
   // The app itself will fade-out...
   const animatedOverviewStyle = useAnimatedStyle(() => ({
-    opacity: backdropBlur
+    opacity: overlayConfig.backdropBlur
       ? interpolate(
           backdropProgress.value,
           [0, 0.6, 1],
@@ -225,35 +212,14 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  /* const tap = Gesture.Tap().onTouchesUp((state) => {
-    // if (state.numberOfTouches > 1) {
-    //   onClose();
-    // }
-  }); */
+  const OverlayComponent = overlayConfig.overlayComponent;
 
   return (
     <PopoutContext.Provider
       value={{
-        OverlayComponent,
         elementOpened,
         onElementTap,
-        setOverlayComponent,
-        overlayUnderNotch,
-        setOverlayUnderNotch,
-        tileBorderRadius,
-        setTileBorderRadius,
-        overlayBorderRadius,
-        setOverlayBorderRadius,
-        backdropScale,
-        setBackdropScale,
-        backdropBlur,
-        setBackdropBlur,
-        hasPanHandle,
-        setHasPanHandle,
-        tileOriginContainerRef,
-        setTileOriginContainerRef,
-        dimmedOverlayBackdrop,
-        setDimmedOverlayBackdrop,
+        overlayConfig,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>

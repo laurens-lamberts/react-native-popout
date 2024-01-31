@@ -1,6 +1,6 @@
-import React, {useContext, useRef} from 'react';
+import React, {useRef} from 'react';
 import {Text, View, useWindowDimensions} from 'react-native';
-import {PopoutTile, PopoutContext} from 'react-native-popout';
+import {PopoutTile} from 'react-native-popout';
 import {DATA} from '../../content/content';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -9,15 +9,6 @@ const Overview = () => {
   const insets = useSafeAreaInsets();
   const {width: screenWidth} = useWindowDimensions();
   const tileOriginContainerRef = useRef<ScrollView>();
-  const {
-    elementOpened,
-    onElementTap,
-    setOverlayComponent,
-    setHasPanHandle,
-    setOverlayBorderRadius,
-    setTileOriginContainerRef,
-    setDimmedOverlayBackdrop,
-  } = useContext(PopoutContext);
 
   return (
     <ScrollView
@@ -36,17 +27,13 @@ under notch`}
       <PopoutTile
         backdropBlur={false}
         backdropScale={true}
+        overlayComponent={
+          <View style={{margin: 20}}>
+            <Text style={{color: 'white'}}>overlay component</Text>
+          </View>
+        }
         style={{width: 200, height: 100}}
         item={DATA.testCollection[0]}
-        onTap={viewRef => {
-          const item = DATA.testCollection[0];
-          setOverlayComponent(
-            <View style={{margin: 20}}>
-              <Text style={{color: 'white'}}>{item.title}</Text>
-            </View>,
-          );
-          onElementTap(viewRef, item);
-        }}
       />
       <Text style={{color: 'white'}}>
         {`backdropBlur true
@@ -56,18 +43,14 @@ NOT under notch`}
       </Text>
       <PopoutTile
         backdropScale={false}
+        overlayComponent={
+          <View style={{margin: 20}}>
+            <Text style={{color: 'white'}}>overlay component</Text>
+          </View>
+        }
         style={{width: 100, height: 200}}
         item={DATA.testCollection[1]}
         overlayUnderNotch={false}
-        onTap={viewRef => {
-          const item = DATA.testCollection[1];
-          setOverlayComponent(
-            <View style={{margin: 20}}>
-              <Text style={{color: 'white'}}>{item.title}</Text>
-            </View>,
-          );
-          onElementTap(viewRef, item);
-        }}
       />
       <Text style={{color: 'white'}}>
         {`backdropBlur true
@@ -76,18 +59,14 @@ portrait ratio
 NOT under notch`}
       </Text>
       <PopoutTile
+        overlayComponent={
+          <View style={{margin: 20}}>
+            <Text style={{color: 'white'}}>{DATA.testCollection[2].title}</Text>
+          </View>
+        }
         style={{width: screenWidth - 40, height: screenWidth - 40}}
         item={DATA.testCollection[2]}
         overlayUnderNotch={false}
-        onTap={viewRef => {
-          const item = DATA.testCollection[2];
-          setOverlayComponent(
-            <View style={{margin: 20}}>
-              <Text style={{color: 'white'}}>{item.title}</Text>
-            </View>,
-          );
-          onElementTap(viewRef, item);
-        }}
       />
       <Text style={{color: 'white'}}>
         {`backdropBlur false
@@ -102,21 +81,17 @@ with container ref`}
       <PopoutTile
         backdropBlur={false}
         backdropScale={true}
+        overlayBorderRadius={0.1}
+        hasPanHandle={false}
+        dimmedOverlayBackdrop={false}
+        tileOriginContainerRef={tileOriginContainerRef}
+        overlayComponent={
+          <View style={{margin: 20}}>
+            <Text style={{color: 'white'}}>{DATA.testCollection[0].title}</Text>
+          </View>
+        }
         style={{width: 200, height: 100}}
         item={DATA.testCollection[0]}
-        onTap={viewRef => {
-          const item = DATA.testCollection[0];
-          setOverlayBorderRadius(0);
-          setHasPanHandle(false);
-          setTileOriginContainerRef(tileOriginContainerRef);
-          setDimmedOverlayBackdrop(false);
-          setOverlayComponent(
-            <View style={{margin: 20}}>
-              <Text style={{color: 'white'}}>{item.title}</Text>
-            </View>,
-          );
-          onElementTap(viewRef, item);
-        }}
       />
     </ScrollView>
   );

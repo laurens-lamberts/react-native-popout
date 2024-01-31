@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Text, View, useWindowDimensions} from 'react-native';
-import {PopoutTile, PopoutContext} from 'react-native-popout';
+import {PopoutTile} from 'react-native-popout';
 import {DATA, ROWS} from '../../content/content';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -16,8 +16,6 @@ const Overview = () => {
   // 4 is the amount of icons in a row.
   // 5 is the total amount of spaces horizontally. (3 between the apps, 2 on the sides)
   const horizontalPadding = (screenWidth - appIconSize * 4) / 5;
-
-  const {onElementTap, setOverlayComponent} = useContext(PopoutContext);
 
   return (
     <View style={{gap: 20, marginTop: insets.top + 30}}>
@@ -48,11 +46,7 @@ const Overview = () => {
                   }}
                   key={item.id}
                   item={item}
-                  onTap={viewRef => {
-                    setOverlayComponent(<View style={{margin: 20}}></View>);
-                    onElementTap(viewRef, DATA.testCollection[index]);
-                  }}
-                  // isOpened={elementOpened?.id === item.id}
+                  overlayComponent={<View style={{margin: 20}}></View>}
                 />
                 <Text
                   style={{

@@ -1,13 +1,11 @@
-import React, {useContext} from 'react';
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
-import {PopoutTile, PopoutContext} from 'react-native-popout';
+import React from 'react';
+import {ScrollView, Text, View} from 'react-native';
+import {PopoutTile} from 'react-native-popout';
 import {DATA} from '../../content/content';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Overview = () => {
   const insets = useSafeAreaInsets();
-  const {elementOpened, onElementTap, setOverlayComponent} =
-    useContext(PopoutContext);
 
   return (
     <ScrollView contentContainerStyle={{gap: 20, paddingTop: insets.top}}>
@@ -15,14 +13,11 @@ const Overview = () => {
         <PopoutTile
           key={item.id}
           item={item}
-          onTap={viewRef => {
-            setOverlayComponent(
-              <View style={{margin: 20}}>
-                <Text style={{color: 'white'}}>{item.title}</Text>
-              </View>,
-            );
-            onElementTap(viewRef, DATA.testCollection[index]);
-          }}
+          overlayComponent={() => (
+            <View style={{margin: 20}}>
+              <Text style={{color: 'white'}}>{item.title}</Text>
+            </View>
+          )}
         />
       ))}
     </ScrollView>
