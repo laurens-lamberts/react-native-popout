@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- turned all overlay configuration into PopoutTile params, removing the need for reading the context from your project. This also looks better in code.
+- turned all overlay configuration into PopoutTile params, removing the need for reading the context from your project. This also looks better in code. OnTap is now an optional param.
 
 ## [0.1.10] - 2024-01-31
 
