@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+- Added `onClose` callback to `PopoutTile` component
+- Added custom CloseButton to `PopoutTile` component
+- Renamed components to have Pascal-casing
+
 ## [0.1.11] - 2024-01-31
 
 - turned all overlay configuration into PopoutTile params, removing the need for reading the context from your project. This also looks better in code. OnTap is now an optional param.

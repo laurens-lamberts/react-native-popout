@@ -16,6 +16,7 @@ import Animated, {
   Extrapolation,
   SharedValue,
   interpolate,
+  runOnJS,
   runOnUI,
   useAnimatedStyle,
   useSharedValue,
@@ -65,6 +66,8 @@ const Overlay = ({
   const {
     elementOpened,
     overlayConfig: { overlayUnderNotch, tileBorderRadius, overlayBorderRadius },
+    closeButtonComponent,
+    onCloseCallbackRef,
   } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
@@ -174,7 +177,8 @@ const Overlay = ({
     resetOverlay();
     resetPan();
     backdropProgress.value = withTiming(0, TRANSITION_CONFIG);
-  }, [backdropProgress, resetOverlay, resetPan]);
+    !!onCloseCallbackRef?.current && runOnJS(onCloseCallbackRef.current)();
+  }, [backdropProgress, resetOverlay, resetPan, onCloseCallbackRef]);
 
   const overlayAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -285,7 +289,11 @@ const Overlay = ({
           >
             {children}
           </View>
-          <CloseButton hide={onClose} overlayProgress={overlayProgress} />
+          {closeButtonComponent ? (
+            <>{closeButtonComponent(onClose)}</>
+          ) : (
+            <CloseButton hide={onClose} overlayProgress={overlayProgress} />
+          )}
           {/* TODO: make the image centered so that it animates from- and back into the tile in 'cover' mode style */}
           <OverlayBackdrop
             image={image}

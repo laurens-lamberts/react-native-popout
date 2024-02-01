@@ -10,15 +10,18 @@ const TILE_WIDTH_DEFAULT = 108;
 
 interface Props extends OverlayConfigType {
   onTap: () => void;
+  onClose: () => void;
   item: PopoutTileType;
   style?: ViewStyle;
   fadeIn?: boolean;
   children?: React.ReactNode;
-  overlayComponent: ComponentType;
+  OverlayComponent: ComponentType;
+  CloseButtonComponent: (closeOverlay: () => void) => ComponentType;
 }
 
 const PopoutTile = ({
   onTap,
+  onClose,
   item,
   style,
   children,
@@ -30,7 +33,8 @@ const PopoutTile = ({
   dimmedOverlayBackdrop = true,
   tileOriginContainerRef,
   overlayBorderRadius,
-  overlayComponent,
+  OverlayComponent,
+  CloseButtonComponent,
 }: Props) => {
   const viewRef = useRef<Animated.View>(null);
   const { onElementTap } = useContext(PopoutContext);
@@ -55,10 +59,10 @@ const PopoutTile = ({
       ref={viewRef}
       collapsable={false}
       onPress={() => {
-        onElementTap(
+        onElementTap({
           viewRef,
-          item,
-          {
+          popoutTileData: item,
+          overlayConfig: {
             tileBorderRadius: borderRadius,
             backdropScale,
             backdropBlur,
@@ -68,8 +72,10 @@ const PopoutTile = ({
             overlayBorderRadius,
             overlayUnderNotch,
           },
-          overlayComponent
-        );
+          OverlayComponent,
+          CloseButtonComponent,
+          onClose,
+        });
         !!onTap && onTap();
       }}
       pointerEvents="box-only"

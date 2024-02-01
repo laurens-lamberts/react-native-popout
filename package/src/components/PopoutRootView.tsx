@@ -28,6 +28,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
 import { BORDER_RADIUS_OVERLAY, BORDER_RADIUS_TILE } from '../config/settings';
 
+type CloseButtonComponentType =
+  | ((closeOverlay: () => void) => ComponentType)
+  | null;
+
 export type OverlayConfigType = {
   tileBorderRadius?: number;
   backdropScale?: boolean;
@@ -39,15 +43,21 @@ export type OverlayConfigType = {
   overlayBorderRadius?: number;
 };
 
+type OnElementTapType = {
+  viewRef: RefObject<Animated.View>;
+  popoutTileData: PopoutTileType;
+  overlayConfig: OverlayConfigType;
+  OverlayComponent: ComponentType;
+  CloseButtonComponent: (closeOverlay: () => void) => ComponentType;
+  onClose?: () => void;
+};
+
 type PopoutContextType = {
   elementOpened?: PopoutTileType;
-  onElementTap: (
-    viewRef: RefObject<Animated.View>,
-    item: PopoutTileType,
-    overlayConfig: OverlayConfigType,
-    overlayComponent: ComponentType
-  ) => void;
   overlayConfig: OverlayConfigType;
+  onCloseCallbackRef: React.MutableRefObject<(() => void) | undefined>;
+  onElementTap: (input: OnElementTapType) => void;
+  closeButtonComponent: CloseButtonComponentType;
 };
 
 const DEFAULT_OVERLAY_CONFIG: OverlayConfigType = {
@@ -65,6 +75,8 @@ export const PopoutContext = createContext<PopoutContextType>({
   elementOpened: undefined,
   onElementTap: () => {},
   overlayConfig: DEFAULT_OVERLAY_CONFIG,
+  onCloseCallbackRef: { current: undefined },
+  closeButtonComponent: null,
 });
 
 const PopoutRootView = ({ children }: { children: ReactNode }) => {
@@ -76,6 +88,10 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
   );
   const [overlayComponent, setOverlayComponent] =
     useState<ComponentType | null>(null);
+  const [closeButtonComponent, setCloseButtonComponent] =
+    useState<CloseButtonComponentType>(null);
+
+  const onCloseCallbackRef = useRef<(() => void) | undefined>(undefined);
 
   const screenshotNecessary =
     overlayConfig.backdropScale || overlayConfig.backdropBlur;
@@ -99,25 +115,31 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  const onElementTap = async (
-    viewRef: RefObject<Animated.View>,
-    popoutTileData: PopoutTileType,
-    newConfig: OverlayConfigType,
-    newOverlayComponent: ComponentType
-  ) => {
+  const onElementTap = async ({
+    viewRef,
+    popoutTileData,
+    overlayConfig: newOverlayConfig,
+    OverlayComponent,
+    CloseButtonComponent,
+    onClose,
+  }: OnElementTapType) => {
     const combinedConfig = {
       ...DEFAULT_OVERLAY_CONFIG,
-      ...newConfig,
+      ...newOverlayConfig,
     };
 
     setOverlayConfig(combinedConfig);
-    setOverlayComponent(newOverlayComponent);
+    setOverlayComponent(OverlayComponent);
+    CloseButtonComponent && setCloseButtonComponent(CloseButtonComponent);
+    if (onClose) {
+      onCloseCallbackRef.current = onClose;
+    }
 
     screenshotNecessary && (await makeOverviewSnapshot());
 
-    if (overlayConfig.tileOriginContainerRef?.current) {
+    if (newOverlayConfig.tileOriginContainerRef?.current) {
       viewRef.current?.measureLayout(
-        overlayConfig.tileOriginContainerRef.current,
+        newOverlayConfig.tileOriginContainerRef.current,
         (x, y, width, height) => {
           setElementOpened({
             ...popoutTileData,
@@ -219,6 +241,8 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
         elementOpened,
         onElementTap,
         overlayConfig,
+        onCloseCallbackRef,
+        closeButtonComponent,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
