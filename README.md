@@ -104,11 +104,11 @@ const Screen = () => {
     <View style={{paddingTop: insets.top}}>
       <PopoutTile
         item={TEST_ITEM}
-        overlayComponent={
+        OverlayComponent={() => (
           <View style={{margin: 20}}>
             <Text style={{color: 'white'}}>{TEST_ITEM.title}</Text>
           </View>
-        }
+        )}
       />
     </View>
   );

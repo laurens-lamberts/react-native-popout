@@ -1,5 +1,5 @@
 import React, {
-  ComponentType,
+  FC,
   ReactNode,
   RefObject,
   createContext,
@@ -28,9 +28,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PopoutTileType } from '../types/PopoutTile';
 import { BORDER_RADIUS_OVERLAY, BORDER_RADIUS_TILE } from '../config/settings';
 
-type CloseButtonComponentType =
-  | ((closeOverlay: () => void) => ComponentType)
-  | null;
+export type CloseButtonComponentType = React.FC<{
+  closeOverlay: () => void;
+}> | null;
 
 export type OverlayConfigType = {
   tileBorderRadius?: number;
@@ -47,8 +47,8 @@ type OnElementTapType = {
   viewRef: RefObject<Animated.View>;
   popoutTileData: PopoutTileType;
   overlayConfig: OverlayConfigType;
-  OverlayComponent: ComponentType;
-  CloseButtonComponent: (closeOverlay: () => void) => ComponentType;
+  OverlayComponent: FC;
+  CloseButtonComponent: CloseButtonComponentType;
   onClose?: () => void;
 };
 
@@ -57,7 +57,7 @@ type PopoutContextType = {
   overlayConfig: OverlayConfigType;
   onCloseCallbackRef: React.MutableRefObject<(() => void) | undefined>;
   onElementTap: (input: OnElementTapType) => void;
-  closeButtonComponent: CloseButtonComponentType;
+  CloseButtonComponent: CloseButtonComponentType;
 };
 
 const DEFAULT_OVERLAY_CONFIG: OverlayConfigType = {
@@ -76,7 +76,7 @@ export const PopoutContext = createContext<PopoutContextType>({
   onElementTap: () => {},
   overlayConfig: DEFAULT_OVERLAY_CONFIG,
   onCloseCallbackRef: { current: undefined },
-  closeButtonComponent: null,
+  CloseButtonComponent: null,
 });
 
 const PopoutRootView = ({ children }: { children: ReactNode }) => {
@@ -86,10 +86,10 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
   const [overlayConfig, setOverlayConfig] = useState<OverlayConfigType>(
     DEFAULT_OVERLAY_CONFIG
   );
-  const [overlayComponent, setOverlayComponent] =
-    useState<ComponentType | null>(null);
-  const [closeButtonComponent, setCloseButtonComponent] =
-    useState<CloseButtonComponentType>(null);
+  const overlayComponent = useRef<React.FC | null>(() => <></>);
+  const OverlayComponent = overlayComponent.current;
+  const closeButtonComponent = useRef<CloseButtonComponentType>(() => <></>);
+  const CloseButtonComponent = closeButtonComponent.current;
 
   const onCloseCallbackRef = useRef<(() => void) | undefined>(undefined);
 
@@ -110,7 +110,9 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
       if (value === 0 && !!popoutOpened.value) {
         popoutOpened.value = false;
         runOnJS(setElementOpened)(undefined);
-        runOnJS(setOverlayComponent)(null);
+        // if (previous || 0 > 0) {
+        //   overlayComponent.current = null;
+        // }
       }
     }
   );
@@ -119,8 +121,8 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     viewRef,
     popoutTileData,
     overlayConfig: newOverlayConfig,
-    OverlayComponent,
-    CloseButtonComponent,
+    OverlayComponent: _OverlayComponent,
+    CloseButtonComponent: _CloseButtonComponent,
     onClose,
   }: OnElementTapType) => {
     const combinedConfig = {
@@ -129,8 +131,9 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     };
 
     setOverlayConfig(combinedConfig);
-    setOverlayComponent(OverlayComponent);
-    CloseButtonComponent && setCloseButtonComponent(CloseButtonComponent);
+    overlayComponent.current = _OverlayComponent;
+    closeButtonComponent.current = _CloseButtonComponent;
+
     if (onClose) {
       onCloseCallbackRef.current = onClose;
     }
@@ -242,7 +245,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
         onElementTap,
         overlayConfig,
         onCloseCallbackRef,
-        closeButtonComponent,
+        CloseButtonComponent,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -300,7 +303,9 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
             panScale={panScale}
             backdropProgress={backdropProgress}
           >
-            {overlayComponent}
+            {typeof OverlayComponent === 'function' ? (
+              <OverlayComponent />
+            ) : null}
           </OverlayAnchor>
         </View>
       </GestureHandlerRootView>

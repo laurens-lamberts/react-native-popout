@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, Text, View, useWindowDimensions} from 'react-native';
 import {PopoutTile} from 'react-native-popout';
 import {DATA} from '../../content/content';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -27,11 +27,11 @@ under notch`}
       <PopoutTile
         backdropBlur={false}
         backdropScale={true}
-        overlayComponent={
+        OverlayComponent={() => (
           <View style={{margin: 20}}>
             <Text style={{color: 'white'}}>overlay component</Text>
           </View>
-        }
+        )}
         style={{width: 200, height: 100}}
         item={DATA.testCollection[0]}
       />
@@ -43,11 +43,11 @@ NOT under notch`}
       </Text>
       <PopoutTile
         backdropScale={false}
-        overlayComponent={
+        OverlayComponent={() => (
           <View style={{margin: 20}}>
             <Text style={{color: 'white'}}>overlay component</Text>
           </View>
-        }
+        )}
         style={{width: 100, height: 200}}
         item={DATA.testCollection[1]}
         overlayUnderNotch={false}
@@ -59,11 +59,11 @@ portrait ratio
 NOT under notch`}
       </Text>
       <PopoutTile
-        overlayComponent={
+        OverlayComponent={() => (
           <View style={{margin: 20}}>
             <Text style={{color: 'white'}}>{DATA.testCollection[2].title}</Text>
           </View>
-        }
+        )}
         style={{width: screenWidth - 40, height: screenWidth - 40}}
         item={DATA.testCollection[2]}
         overlayUnderNotch={false}
@@ -76,7 +76,8 @@ under notch
 no pan handle
 no overlay border radius
 no dimmed overlay backdrop
-with container ref`}
+with container ref
+with custom close button`}
       </Text>
       <PopoutTile
         backdropBlur={false}
@@ -85,11 +86,29 @@ with container ref`}
         hasPanHandle={false}
         dimmedOverlayBackdrop={false}
         tileOriginContainerRef={tileOriginContainerRef}
-        overlayComponent={
+        OverlayComponent={() => (
           <View style={{margin: 20}}>
             <Text style={{color: 'white'}}>{DATA.testCollection[0].title}</Text>
           </View>
-        }
+        )}
+        CloseButtonComponent={({closeOverlay}) => (
+          <Pressable
+            onPress={closeOverlay}
+            style={{
+              position: 'absolute',
+              top: insets.top + 6,
+              right: 6,
+              width: 24,
+              height: 24,
+              borderRadius: 12,
+              backgroundColor: 'rgba(225,20,20,0.7)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 99999,
+            }}>
+            <Text style={{color: 'white'}}>×</Text>
+          </Pressable>
+        )}
         style={{width: 200, height: 100}}
         item={DATA.testCollection[0]}
       />

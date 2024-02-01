@@ -13,7 +13,7 @@ const Overview = () => {
         <PopoutTile
           key={item.id}
           item={item}
-          overlayComponent={() => (
+          OverlayComponent={() => (
             <View style={{margin: 20}}>
               <Text style={{color: 'white'}}>{item.title}</Text>
             </View>

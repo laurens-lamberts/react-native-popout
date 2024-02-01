@@ -46,7 +46,7 @@ const Overview = () => {
                   }}
                   key={item.id}
                   item={item}
-                  overlayComponent={<View style={{margin: 20}}></View>}
+                  OverlayComponent={() => <View style={{margin: 20}}></View>}
                 />
                 <Text
                   style={{

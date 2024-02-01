@@ -66,7 +66,6 @@ const Overlay = ({
   const {
     elementOpened,
     overlayConfig: { overlayUnderNotch, tileBorderRadius, overlayBorderRadius },
-    closeButtonComponent,
     onCloseCallbackRef,
   } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
@@ -289,12 +288,7 @@ const Overlay = ({
           >
             {children}
           </View>
-          {closeButtonComponent ? (
-            <>{closeButtonComponent(onClose)}</>
-          ) : (
-            <CloseButton hide={onClose} overlayProgress={overlayProgress} />
-          )}
-          {/* TODO: make the image centered so that it animates from- and back into the tile in 'cover' mode style */}
+          <CloseButton hide={onClose} overlayProgress={overlayProgress} />
           <OverlayBackdrop
             image={image}
             opacity={shadowImageOpacity}

@@ -32,12 +32,12 @@ const Overview = () => {
                 key={item.id}
                 item={item}
                 overlayUnderNotch={false}
-                overlayComponent={
+                OverlayComponent={() => (
                   <PopoutOverlayContent
                     item={DATA.testCollection[index]}
                     textColor="white"
                   />
-                }
+                )}
               />
             ))}
           </Row>

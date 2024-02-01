@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 import { Pressable, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PopoutContext } from './PopoutRootView';
@@ -9,22 +9,10 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
-const CloseButton = ({
-  hide,
+const OpacityContainer = ({
   overlayProgress,
-}: {
-  hide: () => void;
-  overlayProgress: SharedValue<number>;
-}) => {
-  const {
-    overlayConfig: { overlayUnderNotch },
-  } = useContext(PopoutContext);
-  // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
-  const insets = useSafeAreaInsets(); // TODO: make more generic
-  // const insets = useInsets
-  //   ? safeAreaInsets
-  //   : { top: 0, bottom: 0, left: 0, right: 0 };
-
+  children,
+}: PropsWithChildren<{ overlayProgress: SharedValue<number> }>) => {
   const animatedOpacity = useAnimatedStyle(() => ({
     opacity: interpolate(
       overlayProgress.value,
@@ -35,44 +23,73 @@ const CloseButton = ({
   }));
 
   return (
+    <Animated.View
+      style={[
+        {
+          position: 'absolute',
+          width: '100%',
+          zIndex: 9999,
+        },
+        animatedOpacity,
+      ]}
+    >
+      {children}
+    </Animated.View>
+  );
+};
+
+const CloseButton = ({ closeOverlay }: { closeOverlay: () => void }) => {
+  const {
+    overlayConfig: { overlayUnderNotch },
+  } = useContext(PopoutContext);
+  const insets = useSafeAreaInsets();
+
+  return (
     <Pressable
-      onPress={hide}
+      onPress={closeOverlay}
       style={{
         position: 'absolute',
         top: overlayUnderNotch ? insets.top : 6,
         right: overlayUnderNotch ? insets.top / 2 : 6,
-        zIndex: 9999,
+        borderRadius: 18,
+        height: 36,
+        width: 36,
+        backgroundColor: '#666',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      <Animated.View
-        style={[
-          {
-            borderRadius: 18,
-            height: 36,
-            width: 36,
-            backgroundColor: '#333',
-            position: 'absolute',
-            right: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-          animatedOpacity,
-        ]}
+      <Text
+        style={{
+          color: 'white',
+          fontSize: 24,
+          fontWeight: 'bold',
+          top: -2, // ?
+          left: 1, // ?
+        }}
       >
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 24,
-            fontWeight: 'bold',
-            top: -2, // ?
-            left: 1, // ?
-          }}
-        >
-          ×
-        </Text>
-      </Animated.View>
+        ×
+      </Text>
     </Pressable>
   );
 };
 
-export default CloseButton;
+export default ({
+  overlayProgress,
+  hide: closeOverlay,
+}: {
+  overlayProgress: SharedValue<number>;
+  hide: () => void;
+}) => {
+  const { CloseButtonComponent } = useContext(PopoutContext);
+
+  return (
+    <OpacityContainer overlayProgress={overlayProgress}>
+      {CloseButtonComponent ? (
+        <CloseButtonComponent closeOverlay={closeOverlay} />
+      ) : (
+        <CloseButton closeOverlay={closeOverlay} />
+      )}
+    </OpacityContainer>
+  );
+};

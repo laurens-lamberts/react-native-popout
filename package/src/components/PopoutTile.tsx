@@ -1,9 +1,13 @@
-import React, { ComponentType, useContext, useRef } from 'react';
+import React, { FC, ReactNode, useContext, useRef } from 'react';
 import { Image, Pressable, ViewStyle } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { BORDER_RADIUS_TILE } from '../config/settings';
 import { PopoutTileType } from '../types/PopoutTile';
-import { OverlayConfigType, PopoutContext } from './PopoutRootView';
+import {
+  CloseButtonComponentType,
+  OverlayConfigType,
+  PopoutContext,
+} from './PopoutRootView';
 
 const TILE_HEIGHT_DEFAULT = 160;
 const TILE_WIDTH_DEFAULT = 108;
@@ -14,9 +18,9 @@ interface Props extends OverlayConfigType {
   item: PopoutTileType;
   style?: ViewStyle;
   fadeIn?: boolean;
-  children?: React.ReactNode;
-  OverlayComponent: ComponentType;
-  CloseButtonComponent: (closeOverlay: () => void) => ComponentType;
+  children?: ReactNode;
+  OverlayComponent: FC;
+  CloseButtonComponent: CloseButtonComponentType;
 }
 
 const PopoutTile = ({
@@ -81,15 +85,17 @@ const PopoutTile = ({
       pointerEvents="box-only"
     >
       <Animated.View entering={fadeIn ? FadeIn.delay(200) : undefined}>
-        <Image
-          source={item.image}
-          resizeMode="cover"
-          style={{
-            position: 'absolute',
-            width: style?.width ? style.width : TILE_WIDTH_DEFAULT,
-            height: style?.height ? style.height : TILE_HEIGHT_DEFAULT,
-          }}
-        />
+        {item.image && (
+          <Image
+            source={item.image}
+            resizeMode="cover"
+            style={{
+              position: 'absolute',
+              width: style?.width ? style.width : TILE_WIDTH_DEFAULT,
+              height: style?.height ? style.height : TILE_HEIGHT_DEFAULT,
+            }}
+          />
+        )}
         {children}
       </Animated.View>
     </Pressable>
