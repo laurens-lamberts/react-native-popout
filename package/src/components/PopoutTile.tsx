@@ -13,14 +13,14 @@ const TILE_HEIGHT_DEFAULT = 160;
 const TILE_WIDTH_DEFAULT = 108;
 
 interface Props extends OverlayConfigType {
-  onTap: () => void;
-  onClose: () => void;
   item: PopoutTileType;
+  OverlayComponent: FC;
+  onTap?: () => void;
+  onClose?: () => void;
   style?: ViewStyle;
   fadeIn?: boolean;
   children?: ReactNode;
-  OverlayComponent: FC;
-  CloseButtonComponent: CloseButtonComponentType;
+  CloseButtonComponent?: CloseButtonComponentType;
 }
 
 const PopoutTile = ({

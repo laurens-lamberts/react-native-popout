@@ -48,7 +48,7 @@ type OnElementTapType = {
   popoutTileData: PopoutTileType;
   overlayConfig: OverlayConfigType;
   OverlayComponent: FC;
-  CloseButtonComponent: CloseButtonComponentType;
+  CloseButtonComponent?: CloseButtonComponentType;
   onClose?: () => void;
 };
 
@@ -132,7 +132,9 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
 
     setOverlayConfig(combinedConfig);
     overlayComponent.current = _OverlayComponent;
-    closeButtonComponent.current = _CloseButtonComponent;
+    if (!!_CloseButtonComponent) {
+      closeButtonComponent.current = _CloseButtonComponent;
+    }
 
     if (onClose) {
       onCloseCallbackRef.current = onClose;
@@ -207,7 +209,9 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     ),
   }));
   const blur = useDerivedValue(() =>
-    interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
+    overlayConfig.backdropBlur
+      ? interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
+      : 0
   );
 
   const overviewRef = useRef<View>(null);
