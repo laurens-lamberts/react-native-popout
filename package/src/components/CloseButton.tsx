@@ -49,8 +49,8 @@ const CloseButton = ({ closeOverlay }: { closeOverlay: () => void }) => {
       onPress={closeOverlay}
       style={{
         position: 'absolute',
-        top: overlayNotchInset ? insets.top : 6,
-        right: overlayNotchInset ? insets.top / 2 : 6,
+        top: overlayNotchInset ? 6 : insets.top,
+        right: overlayNotchInset ? 6 : insets.top / 2,
         borderRadius: 18,
         height: 36,
         width: 36,
