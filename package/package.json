@@ -1,6 +1,6 @@
 {
   "name": "react-native-popout",
-  "version": "0.1.15-1",
+  "version": "0.1.15-2",
   "description": "A popout-style transition using reanimated, skia and gesture handler",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
