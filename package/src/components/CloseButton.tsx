@@ -40,7 +40,7 @@ const OpacityContainer = ({
 
 const CloseButton = ({ closeOverlay }: { closeOverlay: () => void }) => {
   const {
-    overlayConfig: { overlayUnderNotch },
+    overlayConfig: { overlayNotchInset },
   } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
 
@@ -49,8 +49,8 @@ const CloseButton = ({ closeOverlay }: { closeOverlay: () => void }) => {
       onPress={closeOverlay}
       style={{
         position: 'absolute',
-        top: overlayUnderNotch ? insets.top : 6,
-        right: overlayUnderNotch ? insets.top / 2 : 6,
+        top: overlayNotchInset ? insets.top : 6,
+        right: overlayNotchInset ? insets.top / 2 : 6,
         borderRadius: 18,
         height: 36,
         width: 36,

@@ -35,15 +35,15 @@ const OverlayBackdrop = ({
   overlayImageStyle?: ViewStyle;
 }) => {
   const {
-    overlayConfig: { overlayUnderNotch, dimmedOverlayBackdrop },
+    overlayConfig: { overlayNotchInset, overlayDimmedBackground },
   } = useContext(PopoutContext);
   const safeAreaInsets = useSafeAreaInsets();
-  const insets = overlayUnderNotch
+  const insets = overlayNotchInset
     ? { top: 0, bottom: 0, left: 0, right: 0 }
     : safeAreaInsets;
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
-  const dimmed = blurred && dimmedOverlayBackdrop;
+  const dimmed = blurred && overlayDimmedBackground;
 
   const viewStyle: ViewStyle = {
     position: 'absolute',

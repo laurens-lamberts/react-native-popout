@@ -37,11 +37,12 @@ export type OverlayConfigType = {
   backdropScale?: boolean;
   backdropBlur?: boolean;
   hasPanHandle?: boolean;
-  dimmedOverlayBackdrop?: boolean;
   tileOriginContainerRef?: RefObject<View>;
-  overlayUnderNotch?: boolean;
+  overlayNotchInset?: boolean;
   overlayBorderRadius?: number;
   overlayImageStyle?: ViewStyle;
+  overlayDimmedBackground?: boolean;
+  overlayBlur?: boolean;
 };
 
 type OnElementTapType = {
@@ -66,10 +67,11 @@ const DEFAULT_OVERLAY_CONFIG: OverlayConfigType = {
   backdropScale: true,
   backdropBlur: true,
   hasPanHandle: true,
-  dimmedOverlayBackdrop: true,
   tileOriginContainerRef: undefined,
-  overlayUnderNotch: true,
+  overlayDimmedBackground: true,
+  overlayNotchInset: true,
   overlayBorderRadius: BORDER_RADIUS_OVERLAY,
+  overlayBlur: true,
 };
 
 export const PopoutContext = createContext<PopoutContextType>({
@@ -303,7 +305,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
             item={elementOpened}
             panScale={panScale}
             backdropProgress={backdropProgress}
-            disableBlur={!overlayConfig.backdropBlur}
+            disableBlur={!overlayConfig.overlayBlur}
             overlayImageStyle={overlayConfig.overlayImageStyle}
           >
             {typeof OverlayComponent === 'function' ? (

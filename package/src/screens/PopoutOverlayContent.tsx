@@ -12,14 +12,14 @@ const PopoutOverlayContent = ({
   textColor: string;
 }) => {
   const {
-    overlayConfig: { overlayUnderNotch },
+    overlayConfig: { overlayNotchInset },
   } = useContext(PopoutContext);
 
   return (
     <View>
       <View
         style={{
-          backgroundColor: overlayUnderNotch
+          backgroundColor: overlayNotchInset
             ? undefined
             : 'rgba(102, 119, 136, 0.3)',
           padding: 12,

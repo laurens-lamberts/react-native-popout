@@ -50,7 +50,7 @@ NOT under notch`}
         )}
         style={{width: 100, height: 200}}
         item={DATA.testCollection[1]}
-        overlayUnderNotch={false}
+        overlayNotchInset={false}
       />
       <Text style={{color: 'white'}}>
         {`backdropBlur true
@@ -66,7 +66,7 @@ NOT under notch`}
         )}
         style={{width: screenWidth - 40, height: screenWidth - 40}}
         item={DATA.testCollection[2]}
-        overlayUnderNotch={false}
+        overlayNotchInset={false}
       />
       <Text style={{color: 'white'}}>
         {`backdropBlur false
@@ -84,7 +84,7 @@ with custom close button`}
         backdropScale={true}
         overlayBorderRadius={0.1}
         hasPanHandle={false}
-        dimmedOverlayBackdrop={false}
+        overlayDimmedBackground={false}
         tileOriginContainerRef={tileOriginContainerRef}
         OverlayComponent={() => (
           <View style={{margin: 20}}>

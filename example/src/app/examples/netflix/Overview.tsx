@@ -31,7 +31,7 @@ const Overview = () => {
               <PopoutTile
                 key={item.id}
                 item={item}
-                overlayUnderNotch={false}
+                overlayNotchInset={false}
                 OverlayComponent={() => (
                   <PopoutOverlayContent
                     item={DATA.testCollection[index]}

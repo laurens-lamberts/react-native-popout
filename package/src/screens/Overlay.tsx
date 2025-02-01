@@ -69,12 +69,12 @@ const Overlay = ({
   // TODO: refactor into hook, together with the one in OverlayBackdrop.tsx
   const {
     elementOpened,
-    overlayConfig: { overlayUnderNotch, tileBorderRadius, overlayBorderRadius },
+    overlayConfig: { overlayNotchInset, tileBorderRadius, overlayBorderRadius },
     onCloseCallbackRef,
   } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
-    screenHeight - (overlayUnderNotch ? 0 : insets.top);
+    screenHeight - (overlayNotchInset ? 0 : insets.top);
 
   // We have all separate values, because we need to perform the animations imperatively due to new data coming in via props
   const overlayProgress = useSharedValue(0);
@@ -138,7 +138,7 @@ const Overlay = ({
     overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
     overlayX.value = withTiming(-(item?.origin?.x || 0), TRANSITION_CONFIG);
     overlayY.value = withTiming(
-      -(item?.origin?.y || 0) + (overlayUnderNotch ? 0 : insets.top),
+      -(item?.origin?.y || 0) + (overlayNotchInset ? 0 : insets.top),
       TRANSITION_CONFIG
     );
     overlayWidth.value = withTiming(screenWidth, TRANSITION_CONFIG);
@@ -148,7 +148,7 @@ const Overlay = ({
   }, [
     item,
     insets.top,
-    overlayUnderNotch,
+    overlayNotchInset,
     screenHeightMinusInset,
     backdropProgress,
     panScale,
@@ -287,7 +287,7 @@ const Overlay = ({
           />
           <View
             style={{
-              paddingTop: overlayUnderNotch ? insets.top : 0,
+              paddingTop: overlayNotchInset ? insets.top : 0,
             }}
             pointerEvents="box-none"
           >
@@ -296,6 +296,7 @@ const Overlay = ({
           <CloseButton hide={onClose} overlayProgress={overlayProgress} />
           <OverlayBackdrop
             image={image}
+            blurred={!disableBlur}
             opacity={shadowImageOpacity}
             tileWidth={item?.origin?.width}
             tileHeight={item?.origin?.height}
