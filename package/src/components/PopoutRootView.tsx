@@ -132,9 +132,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
 
     setOverlayConfig(combinedConfig);
     overlayComponent.current = _OverlayComponent;
-    if (!!_CloseButtonComponent) {
-      closeButtonComponent.current = _CloseButtonComponent;
-    }
+    closeButtonComponent.current = _CloseButtonComponent || null;
 
     if (onClose) {
       onCloseCallbackRef.current = onClose;
@@ -209,9 +207,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
     ),
   }));
   const blur = useDerivedValue(() =>
-    overlayConfig.backdropBlur
-      ? interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
-      : 0
+    interpolate(backdropProgress.value, [0, 1], [0, 8], Extrapolation.CLAMP)
   );
 
   const overviewRef = useRef<View>(null);
@@ -306,6 +302,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
             item={elementOpened}
             panScale={panScale}
             backdropProgress={backdropProgress}
+            disableBlur={!overlayConfig.backdropBlur}
           >
             {typeof OverlayComponent === 'function' ? (
               <OverlayComponent />

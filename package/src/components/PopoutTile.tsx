@@ -54,7 +54,7 @@ const PopoutTile = ({
         {
           height: TILE_HEIGHT_DEFAULT,
           width: TILE_WIDTH_DEFAULT,
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
           borderRadius,
           overflow: 'hidden',
         },
