@@ -54,14 +54,6 @@ const OverlayBackdrop = ({
     backgroundColor: '#000',
   };
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: typeof opacity === 'number' ? opacity : opacity?.value,
-      width: screenWidth,
-      height: height.value,
-    };
-  });
-
   const height = useDerivedValue(() => {
     const widthDifference = screenWidth / (tileWidth || 1);
     const newHeight = (tileHeight || 0) * widthDifference;
@@ -71,6 +63,14 @@ const OverlayBackdrop = ({
       [0, 1],
       [newHeight, screenHeight]
     );
+  });
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: typeof opacity === 'number' ? opacity : opacity?.value || 1,
+      width: screenWidth,
+      height: height?.value || 0,
+    };
   });
 
   if (!OVERLAY_BACKDROP_FROM_IMAGE) {
