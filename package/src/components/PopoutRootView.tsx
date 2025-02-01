@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { View, ViewStyle, useWindowDimensions } from 'react-native';
 import OverlayAnchor from '../components/OverlayAnchor';
 import Animated, {
   Extrapolation,
@@ -41,6 +41,7 @@ export type OverlayConfigType = {
   tileOriginContainerRef?: RefObject<View>;
   overlayUnderNotch?: boolean;
   overlayBorderRadius?: number;
+  overlayImageStyle?: ViewStyle;
 };
 
 type OnElementTapType = {
@@ -303,6 +304,7 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
             panScale={panScale}
             backdropProgress={backdropProgress}
             disableBlur={!overlayConfig.backdropBlur}
+            overlayImageStyle={overlayConfig.overlayImageStyle}
           >
             {typeof OverlayComponent === 'function' ? (
               <OverlayComponent />

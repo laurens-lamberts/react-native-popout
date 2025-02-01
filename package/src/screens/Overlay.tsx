@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { View, ViewStyle, useWindowDimensions } from 'react-native';
 import {
   ComposedGesture,
   Gesture,
@@ -37,6 +37,7 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
   disableBlur?: boolean;
+  overlayImageStyle?: ViewStyle;
 }
 
 const GestureOrNoGesture = ({
@@ -61,6 +62,7 @@ const Overlay = ({
   panScale,
   backdropProgress,
   disableBlur,
+  overlayImageStyle,
 }: PropsWithChildren<Props>) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
@@ -281,6 +283,7 @@ const Overlay = ({
             tileWidth={item?.origin?.width}
             tileHeight={item?.origin?.height}
             overlayProgress={overlayProgress}
+            overlayImageStyle={overlayImageStyle}
           />
           <View
             style={{
@@ -297,6 +300,7 @@ const Overlay = ({
             tileWidth={item?.origin?.width}
             tileHeight={item?.origin?.height}
             overlayProgress={overlayProgress}
+            overlayImageStyle={overlayImageStyle}
           />
         </View>
       </GestureOrNoGesture>

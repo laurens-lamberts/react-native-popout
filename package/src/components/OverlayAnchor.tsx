@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import Overlay from '../screens/Overlay';
 import { useImage } from '@shopify/react-native-skia';
 import { PopoutTileType } from '../types/PopoutTile';
@@ -10,6 +10,7 @@ interface Props {
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
   disableBlur?: boolean;
+  overlayImageStyle?: ViewStyle;
 }
 
 const OverlayAnchor = ({
@@ -18,6 +19,7 @@ const OverlayAnchor = ({
   panScale,
   backdropProgress,
   disableBlur,
+  overlayImageStyle,
 }: PropsWithChildren<Props>) => {
   const skiaImage = useImage(item?.image);
   if (!skiaImage) {
@@ -41,6 +43,7 @@ const OverlayAnchor = ({
         panScale={panScale}
         backdropProgress={backdropProgress}
         disableBlur={disableBlur}
+        overlayImageStyle={overlayImageStyle}
       >
         {children}
       </Overlay>

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - possible fix for overlay height
+- Added overlayImageStyle prop
 
 ## [0.1.15-3] - 2025-02-01
 

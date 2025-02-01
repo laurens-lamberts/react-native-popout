@@ -24,6 +24,7 @@ const OverlayBackdrop = ({
   tileWidth,
   tileHeight,
   overlayProgress,
+  overlayImageStyle,
 }: {
   image: SkImage;
   blurred?: boolean;
@@ -31,6 +32,7 @@ const OverlayBackdrop = ({
   tileWidth?: number;
   tileHeight?: number;
   overlayProgress: SharedValue<number>;
+  overlayImageStyle?: ViewStyle;
 }) => {
   const {
     overlayConfig: { overlayUnderNotch, dimmedOverlayBackdrop },
@@ -77,7 +79,7 @@ const OverlayBackdrop = ({
 
   return (
     <Animated.View style={[viewStyle, animatedStyle]} pointerEvents="none">
-      <Canvas style={{ flex: 1 }}>
+      <Canvas style={[{ flex: 1 }, overlayImageStyle]}>
         <Image image={image} fit="cover" width={screenWidth} height={height}>
           {blurred && (
             <Blur blur={dimmed ? 150 : 15} mode={dimmed ? 'decal' : 'clamp'}>
