@@ -17,8 +17,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PopoutContext } from '../components/PopoutRootView';
 
-const AnimatedCanvas = Animated.createAnimatedComponent(Canvas);
-
 const OverlayBackdrop = ({
   image,
   blurred,
@@ -77,22 +75,24 @@ const OverlayBackdrop = ({
   }
 
   return (
-    <AnimatedCanvas style={[viewStyle, animatedStyle]} pointerEvents="none">
-      <Image image={image} fit="cover" width={screenWidth} height={height}>
-        {blurred && (
-          <Blur blur={dimmed ? 150 : 15} mode={dimmed ? 'decal' : 'clamp'}>
-            {dimmed && (
-              <ColorMatrix
-                matrix={[
-                  0.7, 0.0, 0.0, 0.0, -0.03, 0.0, 0.7, 0.0, 0.0, -0.03, 0.0,
-                  0.0, 0.7, 0.0, -0.03, 0.0, 0.0, 0.0, 1.0, 0.0,
-                ]} // brightness (-0.03) and exposure (0.7)
-              />
-            )}
-          </Blur>
-        )}
-      </Image>
-    </AnimatedCanvas>
+    <Animated.View style={[viewStyle, animatedStyle]} pointerEvents="none">
+      <Canvas style={{ width: screenWidth, height: height.value }}>
+        <Image image={image} fit="cover" width={screenWidth} height={height}>
+          {blurred && (
+            <Blur blur={dimmed ? 150 : 15} mode={dimmed ? 'decal' : 'clamp'}>
+              {dimmed && (
+                <ColorMatrix
+                  matrix={[
+                    0.7, 0.0, 0.0, 0.0, -0.03, 0.0, 0.7, 0.0, 0.0, -0.03, 0.0,
+                    0.0, 0.7, 0.0, -0.03, 0.0, 0.0, 0.0, 1.0, 0.0,
+                  ]} // brightness (-0.03) and exposure (0.7)
+                />
+              )}
+            </Blur>
+          )}
+        </Image>
+      </Canvas>
+    </Animated.View>
   );
 };
 export default OverlayBackdrop;
