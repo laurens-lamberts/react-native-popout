@@ -74,7 +74,7 @@ const Overlay = ({
   } = useContext(PopoutContext);
   const insets = useSafeAreaInsets();
   const screenHeightMinusInset =
-    screenHeight - (overlayNotchInset ? 0 : insets.top);
+    screenHeight - (overlayNotchInset ? insets.top : 0);
 
   // We have all separate values, because we need to perform the animations imperatively due to new data coming in via props
   const overlayProgress = useSharedValue(0);
@@ -138,7 +138,7 @@ const Overlay = ({
     overlayProgress.value = withTiming(1, TRANSITION_CONFIG);
     overlayX.value = withTiming(-(item?.origin?.x || 0), TRANSITION_CONFIG);
     overlayY.value = withTiming(
-      -(item?.origin?.y || 0) + (overlayNotchInset ? 0 : insets.top),
+      -(item?.origin?.y || 0) + (overlayNotchInset ? insets.top : 0),
       TRANSITION_CONFIG
     );
     overlayWidth.value = withTiming(screenWidth, TRANSITION_CONFIG);
@@ -287,7 +287,7 @@ const Overlay = ({
           />
           <View
             style={{
-              paddingTop: overlayNotchInset ? insets.top : 0,
+              paddingTop: overlayNotchInset ? 0 : insets.top,
             }}
             pointerEvents="box-none"
           >

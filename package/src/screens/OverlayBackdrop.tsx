@@ -39,8 +39,8 @@ const OverlayBackdrop = ({
   } = useContext(PopoutContext);
   const safeAreaInsets = useSafeAreaInsets();
   const insets = overlayNotchInset
-    ? { top: 0, bottom: 0, left: 0, right: 0 }
-    : safeAreaInsets;
+    ? safeAreaInsets
+    : { top: 0, bottom: 0, left: 0, right: 0 };
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const dimmed = blurred && overlayDimmedBackground;
