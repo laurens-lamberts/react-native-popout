@@ -32,11 +32,10 @@ const OverlayBackdrop = ({
   tileHeight?: number;
   overlayProgress: SharedValue<number>;
 }) => {
-  // TODO: refactor into hook, together with the one in Overlay.tsx
   const {
     overlayConfig: { overlayUnderNotch, dimmedOverlayBackdrop },
   } = useContext(PopoutContext);
-  const safeAreaInsets = useSafeAreaInsets(); // TODO: make more generic
+  const safeAreaInsets = useSafeAreaInsets();
   const insets = overlayUnderNotch
     ? { top: 0, bottom: 0, left: 0, right: 0 }
     : safeAreaInsets;
@@ -56,6 +55,8 @@ const OverlayBackdrop = ({
   const animatedStyle = useAnimatedStyle(() => {
     return {
       opacity: typeof opacity === 'number' ? opacity : opacity?.value,
+      width: screenWidth,
+      height: height.value,
     };
   });
 
@@ -76,7 +77,7 @@ const OverlayBackdrop = ({
 
   return (
     <Animated.View style={[viewStyle, animatedStyle]} pointerEvents="none">
-      <Canvas style={{ width: screenWidth, height: height.value }}>
+      <Canvas style={{ flex: 1 }}>
         <Image image={image} fit="cover" width={screenWidth} height={height}>
           {blurred && (
             <Blur blur={dimmed ? 150 : 15} mode={dimmed ? 'decal' : 'clamp'}>
