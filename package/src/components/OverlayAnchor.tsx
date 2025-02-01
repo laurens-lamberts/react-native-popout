@@ -9,6 +9,7 @@ interface Props {
   item?: PopoutTileType;
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
+  disableBlur?: boolean;
 }
 
 const OverlayAnchor = ({
@@ -16,6 +17,7 @@ const OverlayAnchor = ({
   children,
   panScale,
   backdropProgress,
+  disableBlur,
 }: PropsWithChildren<Props>) => {
   const skiaImage = useImage(item?.image);
   if (!skiaImage) {
@@ -38,6 +40,7 @@ const OverlayAnchor = ({
         image={skiaImage}
         panScale={panScale}
         backdropProgress={backdropProgress}
+        disableBlur={disableBlur}
       >
         {children}
       </Overlay>

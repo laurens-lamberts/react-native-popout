@@ -36,6 +36,7 @@ interface Props extends React.ComponentProps<typeof Animated.View> {
   image: SkImage;
   panScale: SharedValue<number>;
   backdropProgress: SharedValue<number>;
+  disableBlur?: boolean;
 }
 
 const GestureOrNoGesture = ({
@@ -59,6 +60,7 @@ const Overlay = ({
   children,
   panScale,
   backdropProgress,
+  disableBlur,
 }: PropsWithChildren<Props>) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
@@ -274,7 +276,7 @@ const Overlay = ({
         <View pointerEvents="box-none">
           <OverlayBackdrop
             image={image}
-            blurred
+            blurred={!disableBlur}
             opacity={1}
             tileWidth={item?.origin?.width}
             tileHeight={item?.origin?.height}
