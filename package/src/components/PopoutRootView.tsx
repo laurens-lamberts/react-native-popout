@@ -305,7 +305,6 @@ const PopoutRootView = ({ children }: { children: ReactNode }) => {
             item={elementOpened}
             panScale={panScale}
             backdropProgress={backdropProgress}
-            disableBlur={overlayConfig.overlayBlur === false}
             overlayImageStyle={overlayConfig.overlayImageStyle}
           >
             {typeof OverlayComponent === 'function' ? (
