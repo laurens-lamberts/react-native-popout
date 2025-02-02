@@ -272,7 +272,7 @@ const Overlay = ({
         },
         overlayAnimatedStyle,
       ]}
-      pointerEvents="box-none"
+      pointerEvents="auto"
     >
       <GestureOrNoGesture panGesture={panGesture}>
         <View pointerEvents="box-none">
