@@ -35,7 +35,7 @@ const OverlayBackdrop = ({
   overlayImageStyle?: ViewStyle;
 }) => {
   const {
-    overlayConfig: { overlayNotchInset, overlayDimmedBackground },
+    overlayConfig: { overlayNotchInset, overlayDimmedBackground, overlayBlur },
   } = useContext(PopoutContext);
   const safeAreaInsets = useSafeAreaInsets();
   const insets = overlayNotchInset
@@ -81,7 +81,7 @@ const OverlayBackdrop = ({
     <Animated.View style={[viewStyle, animatedStyle]} pointerEvents="none">
       <Canvas style={[{ flex: 1 }, overlayImageStyle]}>
         <Image image={image} fit="cover" width={screenWidth} height={height}>
-          {blurred && (
+          {blurred && overlayBlur && (
             <Blur blur={dimmed ? 150 : 15} mode={dimmed ? 'decal' : 'clamp'}>
               {dimmed && (
                 <ColorMatrix
