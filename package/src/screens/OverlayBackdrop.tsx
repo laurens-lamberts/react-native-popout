@@ -51,7 +51,7 @@ const OverlayBackdrop = ({
     top: 0,
     width: screenWidth,
     height: screenHeight - insets.top,
-    backgroundColor: '#000',
+    backgroundColor: overlayBlur ? '#000' : undefined,
   };
 
   const height = useDerivedValue(() => {
@@ -80,7 +80,12 @@ const OverlayBackdrop = ({
   return (
     <Animated.View style={[viewStyle, animatedStyle]} pointerEvents="none">
       <Canvas style={[{ flex: 1 }, overlayImageStyle]}>
-        <Image image={image} fit="cover" width={screenWidth} height={height}>
+        <Image
+          image={image}
+          fit={overlayBlur ? 'cover' : 'contain'}
+          width={screenWidth}
+          height={height}
+        >
           {blurred && overlayBlur && (
             <Blur blur={dimmed ? 150 : 15} mode={dimmed ? 'decal' : 'clamp'}>
               {dimmed && (

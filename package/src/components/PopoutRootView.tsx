@@ -71,7 +71,7 @@ const DEFAULT_OVERLAY_CONFIG: OverlayConfigType = {
   overlayDimmedBackground: true,
   overlayNotchInset: true,
   overlayBorderRadius: BORDER_RADIUS_OVERLAY,
-  overlayBlur: true,
+  overlayBlur: false,
 };
 
 export const PopoutContext = createContext<PopoutContextType>({

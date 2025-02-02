@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+- BREAKING CHANGE: changed default of overlayBlur to false
+- BREAKING CHANGE: changed image to "contain" when there is no overlayBlur
+- removed overlay background color when there is no blur
+-
+
 ## [0.1.15-11] - 2025-02-02
 
 - Another attempt to provide option disabling the blur
